@@ -24,12 +24,4 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	public void initialize(IWorkbenchConfigurer configurer) {
 		configurer.setSaveAndRestore(true);
 	}
-
-	// @Override
-	// public void postStartup() {
-	// PreferenceManager pm = PlatformUI.getWorkbench().getPreferenceManager();
-	// pm.remove("org.eclipse.help.ui.browsersPreferencePage");
-	// pm
-	// .remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
-	// }
 }
