@@ -2,9 +2,14 @@ package edu.ualberta.med.biosamplescan.rcp;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+
+import edu.ualberta.med.biosamplescan.gui.Main;
 
 /**
  * This class controls all aspects of the application's execution

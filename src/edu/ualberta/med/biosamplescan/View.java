@@ -4,7 +4,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
+
+import edu.ualberta.med.biosamplescan.gui.*;
 
 public class View extends ViewPart {
 	public static final String ID = "edu.ualberta.med.biosamplescan.view";
@@ -16,11 +20,9 @@ public class View extends ViewPart {
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
-	    client = new Composite(parent, SWT.BORDER);
-	    GridLayout gd = new GridLayout(1, true);
-	    client.setLayout(gd);
-	    Button btn = new Button(client, SWT.NONE);
-	    btn.setText("Acquire");
+	    client = new Composite(parent, SWT.NONE);
+	    Main xx = new Main(client, SWT.BORDER);
+	    
 	}
 
 	/**
@@ -29,4 +31,11 @@ public class View extends ViewPart {
 	public void setFocus() {
 	    client.setFocus();
 	}
+
 }
+/*
+ * 				
+				TableItem item = new TableItem(table1, SWT.NONE);
+			    item.setText(new String[] { "A", "", "" });
+			    item.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+ */
