@@ -21,12 +21,27 @@
       </perspective>
    </extension>
    <extension
+         id="edu.ualberta.med.biosamplescan.Options"
+         name="Options"
          point="org.eclipse.ui.views">
       <view
             name="View"
             class="edu.ualberta.med.biosamplescan.View"
             id="edu.ualberta.med.biosamplescan.view">
       </view>
+      <view
+            class="edu.ualberta.med.biosamplescan.Options"
+            id="edu.ualberta.med.biosamplescan.options"
+            name="Options"
+            restorable="false">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <widget
+            class="biosamplescan.WorkbenchWidget1"
+            id="BioSampleScan.widget1">
+      </widget>
    </extension>
 
 </plugin>

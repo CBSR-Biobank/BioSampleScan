@@ -3,41 +3,48 @@ package edu.ualberta.med.biosamplescan.gui;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.SWT;
 
-public class ProcessingDialog implements Runnable {
 
-	private Shell processShell;
-	private Text waitMsg;
+public class ProcessingDialog extends org.eclipse.swt.widgets.Dialog implements Runnable {
+
+	private Shell dialogShell;
+	private Text debugMsg;
+	public ProcessingDialog(Shell parent, int style) {
+		super(parent, style);
+	}
 
 	public void open(String debugMessage) {
 		try {
-			Shell parent = processShell;
-			processShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+			Shell parent = getParent();
+			dialogShell = new Shell(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 
-			processShell.setLayout(new FormLayout());
-			processShell.setText("Processing");
+			dialogShell.setLayout(new FormLayout());
+			dialogShell.setText("Processing...");
 			{
-				FormData waitMsgLData = new FormData();
-				waitMsgLData.width = 220;
-				waitMsgLData.height = 195;
-				waitMsgLData.left =  new FormAttachment(0, 1000, 0);
-				waitMsgLData.top =  new FormAttachment(0, 1000, 0);
-				waitMsg = new Text(processShell, SWT.MULTI | SWT.WRAP);
-				waitMsg.setLayoutData(waitMsgLData);
-				waitMsg.setEditable(false);
-				waitMsg.setText(debugMessage);
+				FormData debugMsgLData = new FormData();
+				debugMsgLData.width = 220;
+				debugMsgLData.height = 195;
+				debugMsgLData.left =  new FormAttachment(0, 1000, 0);
+				debugMsgLData.top =  new FormAttachment(0, 1000, 0);
+				debugMsg = new Text(dialogShell, SWT.MULTI | SWT.WRAP);
+				debugMsg.setLayoutData(debugMsgLData);
+				debugMsg.setEditable(false);
+				debugMsg.setText(debugMessage);
 			}
-			processShell.layout();
-			processShell.pack();			
-			processShell.setSize(234, 222);
-			processShell.setLocation(processShell.toDisplay(100, 100));
-			processShell.open();
-			Display display = processShell.getDisplay();
-			while (!processShell.isDisposed()) {
+			dialogShell.layout();
+			dialogShell.pack();			
+			dialogShell.setSize(234, 222);
+			dialogShell.setLocation(getParent().toDisplay(100, 100));
+			dialogShell.open();
+			Display display = dialogShell.getDisplay();
+			while (!dialogShell.isDisposed()) {
 				if (!display.readAndDispatch())
 					display.sleep();
 			}
@@ -45,21 +52,11 @@ public class ProcessingDialog implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	public void showMessage() {
-		Thread thread = new Thread(this);
-		thread.start();
-	}
-	@Override
 	public void run() {
-		try {
-			Display display = Display.getDefault();
-			processShell = new Shell(display);
-			this.open("Please Wait");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Display display = Display.getDefault();
+		Shell shell = new Shell(display);
+		DebugDialog inst = new DebugDialog(shell, SWT.NULL);
+		inst.open("Yo!");
 	}
-	public void done() {
-		processShell.setVisible(false);
-	}
+	
 }

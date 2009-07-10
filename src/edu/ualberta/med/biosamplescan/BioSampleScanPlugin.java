@@ -34,14 +34,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 			System.loadLibrary("scanlib");
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-	 * )
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
