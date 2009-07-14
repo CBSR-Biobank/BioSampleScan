@@ -1,6 +1,8 @@
 package edu.ualberta.med.biosamplescan.gui;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -51,6 +53,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuSaveCvsAs;
 	private MenuItem sep3;
 	private TableColumn tableColumn19;
+	private MenuItem menuSaveSelected;
+	private Button loadFromFile;
 	private Button reScanPlateBtn;
 	private MenuItem menuSetMode;
 	private MenuItem menuPlate3;
@@ -62,7 +66,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuOptions;
 	private MenuItem menuScanPlateFile;
 	private MenuItem menuScanImageFile;
-
 	private Button plateBtn[];
 	private Button scanPlateBtn;
 	private Menu menu2;
@@ -93,6 +96,11 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private TableColumn tableColumn15;
 	static private TableColumn tableColumn14;
 	private TableItem[][] tableItems = new TableItem[4][4 * 8];
+	private MenuItem menuSaveBarcode3;
+	private MenuItem menuSaveBarcode2;
+	private MenuItem menuSaveBarcode1;
+	private Menu menu4;
+	private MenuItem menuSaveBarcode;
 
 	private MenuItem filemenu;
 	private ScanLib scanlib = ScanLibFactory.getScanLib();
@@ -119,7 +127,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private void initGUI() {
 		try {
 			this.setLayout(null);
-			this.setEnabled(true);
 			{
 				plateBtn = new Button[3];
 				plateBtn[0] = new Button(this, SWT.CHECK | SWT.LEFT);
@@ -137,13 +144,69 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 						menu1 = new Menu(filemenu);
 						filemenu.setMenu(menu1);
 						{
+							menuSaveBarcode = new MenuItem(menu1, SWT.CASCADE);
+							menuSaveBarcode.setText("Save Barcode...");
+							{
+								menu4 = new Menu(menuSaveBarcode);
+								menuSaveBarcode.setMenu(menu4);
+								{
+									menuSaveBarcode1 = new MenuItem(menu4,
+											SWT.CASCADE);
+									menuSaveBarcode1.setText("From Plate 1");
+									menuSaveBarcode1
+											.addSelectionListener(new SelectionAdapter() {
+												public void widgetSelected(
+														SelectionEvent evt) {
+													menuSaveBarcode1WidgetSelected(evt);
+												}
+											});
+								}
+								{
+									menuSaveBarcode2 = new MenuItem(menu4,
+											SWT.CASCADE);
+									menuSaveBarcode2.setText("From Plate 2");
+									menuSaveBarcode2
+											.addSelectionListener(new SelectionAdapter() {
+												public void widgetSelected(
+														SelectionEvent evt) {
+													menuSaveBarcode2WidgetSelected(evt);
+												}
+											});
+								}
+								{
+									menuSaveBarcode3 = new MenuItem(menu4,
+											SWT.CASCADE);
+									menuSaveBarcode3.setText("From Plate 3");
+									menuSaveBarcode3
+											.addSelectionListener(new SelectionAdapter() {
+												public void widgetSelected(
+														SelectionEvent evt) {
+													menuSaveBarcode3WidgetSelected(evt);
+												}
+											});
+								}
+							}
+						}
+						{
 							menuSaveCvsAs = new MenuItem(menu1, SWT.CASCADE);
-							menuSaveCvsAs.setText("Save Barcodes As...");
+							menuSaveCvsAs.setText("Save All Barcodes...");
 							menuSaveCvsAs
 									.addSelectionListener(new SelectionAdapter() {
 										public void widgetSelected(
 												SelectionEvent evt) {
 											menuSaveCvsAsWidgetSelected(evt);
+										}
+									});
+						}
+						{
+							menuSaveSelected = new MenuItem(menu1, SWT.CASCADE);
+							menuSaveSelected
+									.setText("Save Selected Barcodes...");
+							menuSaveSelected
+									.addSelectionListener(new SelectionAdapter() {
+										public void widgetSelected(
+												SelectionEvent evt) {
+											menuSaveSelectedWidgetSelected(evt);
 										}
 									});
 						}
@@ -641,6 +704,24 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					}
 				});
 			}
+			{
+				loadFromFile = new Button(this, SWT.PUSH | SWT.CENTER);
+				loadFromFile.setText("Load From File");
+				loadFromFile.setBounds(488, 6, 90, 40);
+				loadFromFile.addSelectionListener(new SelectionAdapter() {
+					public void widgetDefaultSelected(SelectionEvent evt) {
+						System.out
+								.println("loadFromFile.widgetDefaultSelected, event="
+										+ evt);
+						// TODO add your code for
+						// loadFromFile.widgetDefaultSelected
+					}
+
+					public void widgetSelected(SelectionEvent evt) {
+						loadFromFileWidgetSelected(evt);
+					}
+				});
+			}
 			pack();
 			this.setSize(800, 600);
 			this.checkTwain();
@@ -677,13 +758,23 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	}
 
-	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {
-		new Thread(processingDialog).start();
-		long a = 1;
-		for (long i = 0; i < 1000000000L; i++) {
-			a = i;
+	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {// save all
+		/*
+		 * new Thread() { public void run() { long a = 1; for (long i = 0; i <
+		 * 1000000000L; i++) { a = i;
+		 * 
+		 * } } }.start();
+		 */
+
+		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
+		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
+		dlg.setText(String.format("Save All Barcodes"));
+		String saveLocation = dlg.open();
+		if (saveLocation == null) {
+			return;
 		}
-		// processingDialog.done();
+		saveAllTables(saveLocation);
+
 	}
 
 	private void menuQuitWidgetSelected(SelectionEvent evt) {
@@ -883,6 +974,30 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
+	private void saveAllTables(String fileLocation) {
+
+		try {
+			BufferedWriter out = new BufferedWriter(
+					new FileWriter(fileLocation));
+			out.write("#Plate,Row,Col,Barcode\r\n");
+			for (int p = 0; p < 3; p++) { // TODO numplates
+				for (int r = 0; r < 8; r++) {
+					for (int c = 0; c < 12; c++) {
+						if (!tableItems[p][r].getText(c + 1).isEmpty()) {
+							out.write(String.format("%d,%s,%d,%s\r\n", p + 1,
+									Character.toString((char) (65 + r)), c + 1,
+									tableItems[p][r].getText(c + 1)));
+						}
+					}
+				}
+			}
+
+			out.close();
+		} catch (Exception e) {// Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
+	}
+
 	private void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean append) {
 		if (plateBtn[0].getSelection() == false
 				&& plateBtn[1].getSelection() == false
@@ -898,6 +1013,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					&& plateBtn[plate].getSelection()) {
 				int scanlibReturn = scanlib.slDecodePlate(configDialog.dpi,
 						plate + 1);
+				FIXSCANLIBINIWRITINGBUG();
 				switch (scanlibReturn) {
 				case (ScanLib.SC_SUCCESS):
 					break;
@@ -990,6 +1106,32 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	private void menuPlate3WidgetSelected(SelectionEvent evt) {
 		menuPlateScanToFile(3);
+	}
+
+	private void menuSaveBarcode1WidgetSelected(SelectionEvent evt) {
+		System.out.println("menuSaveBarcode1.widgetSelected, event=" + evt);
+		// TODO add your code for menuSaveBarcode1.widgetSelected
+	}
+
+	private void menuSaveBarcode2WidgetSelected(SelectionEvent evt) {
+		System.out.println("menuSaveBarcode2.widgetSelected, event=" + evt);
+		// TODO add your code for menuSaveBarcode2.widgetSelected
+	}
+
+	private void menuSaveBarcode3WidgetSelected(SelectionEvent evt) {
+		System.out.println("menuSaveBarcode3.widgetSelected, event=" + evt);
+		// TODO add your code for menuSaveBarcode3.widgetSelected
+	}
+
+	private void loadFromFileWidgetSelected(SelectionEvent evt) {
+		tableScanlibData(1, false);
+		tableScanlibData(2, false);
+		tableScanlibData(3, false);
+	}
+
+	private void menuSaveSelectedWidgetSelected(SelectionEvent evt) {
+		System.out.println("menuSaveSelected.widgetSelected, event=" + evt);
+		// TODO add your code for menuSaveSelected.widgetSelected
 	}
 
 }

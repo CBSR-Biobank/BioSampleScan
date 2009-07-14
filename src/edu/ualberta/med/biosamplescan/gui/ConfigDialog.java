@@ -7,6 +7,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -26,18 +27,9 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private Shell dialogShell;
 	private Label label11;
+	private Label label1;
 	private Text textDpi;
 	private Label label19;
-	private Group group7;
-	private Text textImageRight;
-	private Label label13;
-	private Text textImageBottom;
-	private Label label8;
-	private Text textImageLeft;
-	private Label label3;
-	private Text textImageTop;
-	private Label label1;
-	private Group group6;
 	private Group group5;
 	private Button buttonCancle;
 	private Button buttonConfig;
@@ -112,36 +104,27 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 			dialogShell.setFont(SWTManager.getFont("Tahoma", 10, 1, false,
 					false));
 			{
-				group7 = new Group(dialogShell, SWT.NONE);
-				GridData group7LData = new GridData();
-				group7LData.widthHint = 421;
-				group7LData.heightHint = 31;
-				group7.setLayoutData(group7LData);
-				group7.setText("Resolution Settings");
-				group7.setLayout(null);
+				group1 = new Group(dialogShell, SWT.NONE);
+				FillLayout group1Layout = new FillLayout(
+						org.eclipse.swt.SWT.HORIZONTAL);
+				GridData group1LData = new GridData();
+				group1LData.widthHint = 421;
+				group1LData.heightHint = 13;
+				group1.setLayoutData(group1LData);
+				group1.setLayout(group1Layout);
+				group1.setText("Scanning Settings");
 				{
-					textDpi = new Text(group7, SWT.NONE);
-					textDpi.setBounds(37, 20, 36, 16);
+					label19 = new Label(group1, SWT.NONE);
+					label19.setText("Dots Per Inch:");
+				}
+				{
+					textDpi = new Text(group1, SWT.NONE);
 					textDpi.setTextLimit(3);
 					textDpi.setText("300");
 				}
 				{
-					label19 = new Label(group7, SWT.NONE);
-					label19.setText("DPI:");
-					label19.setBounds(12, 20, 25, 13);
-				}
-			}
-			{
-				group1 = new Group(dialogShell, SWT.NONE);
-				GridData group1LData = new GridData();
-				group1LData.widthHint = 421;
-				group1LData.heightHint = 31;
-				group1.setLayoutData(group1LData);
-				group1.setLayout(null);
-				group1.setText("Light Settings");
-				{
 					label2 = new Label(group1, SWT.NONE);
-					label2.setText("Brightness:");
+					label2.setText("    Brightness:");
 					label2.setBounds(12, 21, 58, 13);
 				}
 				{
@@ -152,7 +135,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 				{
 					label18 = new Label(group1, SWT.NONE);
-					label18.setText("Contrast:");
+					label18.setText("       Contrast:");
 					label18.setBounds(105, 22, 49, 13);
 				}
 				{
@@ -163,122 +146,62 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 			}
 			{
-				group6 = new Group(dialogShell, SWT.NONE);
-				GridData group6LData = new GridData();
-				group6LData.widthHint = 421;
-				group6LData.heightHint = 31;
-				group6.setLayoutData(group6LData);
-				group6.setText("Image Position");
-				group6.setLayout(null);
-				{
-					label1 = new Label(group6, SWT.NONE);
-					label1.setText("Top:");
-					label1.setBounds(67, 17, 22, 13);
-				}
-				{
-					textImageTop = new Text(group6, SWT.NONE);
-					textImageTop.setText("0");
-					textImageTop.setTextLimit(6);
-					textImageTop.setBounds(92, 17, 32, 14);
-				}
-				{
-					label3 = new Label(group6, SWT.NONE);
-					label3.setText("   Left:");
-					label3.setBounds(121, 17, 35, 13);
-				}
-				{
-					textImageLeft = new Text(group6, SWT.NONE);
-					textImageLeft.setText("0");
-					textImageLeft.setTextLimit(6);
-					textImageLeft.setBounds(157, 17, 32, 14);
-				}
-				{
-					label8 = new Label(group6, SWT.NONE);
-					label8.setText("   Bottom:");
-					label8.setBounds(184, 17, 47, 13);
-				}
-				{
-					textImageBottom = new Text(group6, SWT.NONE);
-					textImageBottom.setText("0");
-					textImageBottom.setTextLimit(6);
-					textImageBottom.setBounds(234, 17, 30, 14);
-				}
-				{
-					label13 = new Label(group6, SWT.NONE);
-					label13.setText("    Right:");
-					label13.setBounds(261, 17, 41, 13);
-				}
-				{
-					textImageRight = new Text(group6, SWT.NONE);
-					textImageRight.setText("0");
-					textImageRight.setTextLimit(6);
-					textImageRight.setBounds(305, 17, 29, 14);
-				}
-			}
-			{
 				group2 = new Group(dialogShell, SWT.NONE);
-				group2.setLayout(null);
+				FillLayout group2Layout = new FillLayout(
+						org.eclipse.swt.SWT.HORIZONTAL);
+				group2.setLayout(group2Layout);
 				GridData group2LData = new GridData();
-				group2LData.widthHint = 421;
-				group2LData.heightHint = 31;
+				group2LData.heightHint = 13;
+				group2LData.horizontalAlignment = GridData.FILL;
 				group2.setLayoutData(group2LData);
 				group2.setText("Plate 1 Position");
 				{
 					label5 = new Label(group2, SWT.NONE);
 					label5.setText("Top:");
-					label5.setBounds(67, 17, 22, 13);
 				}
 				{
 					textTop1 = new Text(group2, SWT.NONE);
 					textTop1.setText("0");
 					textTop1.setTextLimit(6);
 					textTop1.setOrientation(SWT.HORIZONTAL);
-					textTop1.setBounds(92, 17, 34, 13);
 					textTop1.setDoubleClickEnabled(false);
 				}
 				{
 					label4 = new Label(group2, SWT.NONE);
-					label4.setText("  Left:");
-					label4.setBounds(125, 17, 29, 13);
+					label4.setText("      Left:");
 				}
 				{
 					textLeft1 = new Text(group2, SWT.NONE);
 					textLeft1.setText("0");
 					textLeft1.setTextLimit(6);
-					textLeft1.setBounds(154, 17, 27, 14);
-					textLeft1.setSize(26, 14);
 				}
 				{
 					label6 = new Label(group2, SWT.NONE);
-					label6.setText("    Bottom:");
-					label6.setBounds(178, 17, 50, 13);
+					label6.setText("   Bottom:");
 				}
 				{
 					textBottom1 = new Text(group2, SWT.NONE);
 					textBottom1.setText("0");
 					textBottom1.setTextLimit(6);
-					textBottom1.setBounds(231, 17, 24, 14);
-					textBottom1.setSize(26, 14);
 				}
 				{
 					label7 = new Label(group2, SWT.NONE);
 					label7.setText("    Right:");
-					label7.setBounds(258, 17, 41, 13);
 				}
 				{
 					textRight1 = new Text(group2, SWT.NONE);
 					textRight1.setText("0");
 					textRight1.setTextLimit(6);
-					textRight1.setBounds(302, 17, 24, 14);
-					textRight1.setSize(26, 14);
 				}
 			}
 			{
 				group3 = new Group(dialogShell, SWT.NONE);
-				group3.setLayout(null);
+				FillLayout group3Layout = new FillLayout(
+						org.eclipse.swt.SWT.HORIZONTAL);
+				group3.setLayout(group3Layout);
 				GridData group3LData = new GridData();
 				group3LData.widthHint = 421;
-				group3LData.heightHint = 31;
+				group3LData.heightHint = 13;
 				group3.setLayoutData(group3LData);
 				group3.setText("Plate 2 Position");
 				{
@@ -290,20 +213,18 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textTop2 = new Text(group3, SWT.NONE);
 					textTop2.setText("0");
 					textTop2.setTextLimit(6);
-					textTop2.setBounds(92, 17, 24, 14);
-					textTop2.setSize(26, 14);
+					textTop2.setBounds(92, 17, 28, 14);
 				}
 				{
 					label10 = new Label(group3, SWT.NONE);
-					label10.setText("    Left:");
+					label10.setText("      Left:");
 					label10.setBounds(119, 17, 35, 13);
 				}
 				{
 					textLeft2 = new Text(group3, SWT.NONE);
 					textLeft2.setText("0");
 					textLeft2.setTextLimit(6);
-					textLeft2.setBounds(157, 17, 24, 14);
-					textLeft2.setSize(26, 14);
+					textLeft2.setBounds(157, 17, 27, 14);
 				}
 				{
 					label11 = new Label(group3, SWT.NONE);
@@ -314,8 +235,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textBottom2 = new Text(group3, SWT.NONE);
 					textBottom2.setText("0");
 					textBottom2.setTextLimit(6);
-					textBottom2.setBounds(234, 17, 24, 14);
-					textBottom2.setSize(26, 14);
+					textBottom2.setBounds(234, 17, 27, 14);
 				}
 				{
 					label12 = new Label(group3, SWT.NONE);
@@ -326,16 +246,17 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textRight2 = new Text(group3, SWT.NONE);
 					textRight2.setText("0");
 					textRight2.setTextLimit(6);
-					textRight2.setBounds(305, 17, 24, 14);
-					textRight2.setSize(26, 14);
+					textRight2.setBounds(305, 17, 28, 14);
 				}
 			}
 			{
 				group4 = new Group(dialogShell, SWT.NONE);
-				group4.setLayout(null);
+				FillLayout group4Layout = new FillLayout(
+						org.eclipse.swt.SWT.HORIZONTAL);
+				group4.setLayout(group4Layout);
 				GridData group4LData = new GridData();
 				group4LData.widthHint = 421;
-				group4LData.heightHint = 31;
+				group4LData.heightHint = 13;
 				group4.setLayoutData(group4LData);
 				group4.setText("Plate 3 Position");
 				{
@@ -347,20 +268,18 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textTop3 = new Text(group4, SWT.NONE);
 					textTop3.setText("0");
 					textTop3.setTextLimit(6);
-					textTop3.setBounds(92, 17, 24, 14);
-					textTop3.setSize(26, 14);
+					textTop3.setBounds(92, 17, 28, 14);
 				}
 				{
 					label15 = new Label(group4, SWT.NONE);
-					label15.setText("    Left:");
+					label15.setText("      Left:");
 					label15.setBounds(119, 17, 35, 13);
 				}
 				{
 					textLeft3 = new Text(group4, SWT.NONE);
 					textLeft3.setText("0");
 					textLeft3.setTextLimit(6);
-					textLeft3.setBounds(157, 17, 24, 14);
-					textLeft3.setSize(26, 14);
+					textLeft3.setBounds(157, 17, 28, 14);
 				}
 				{
 					label16 = new Label(group4, SWT.NONE);
@@ -371,8 +290,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textBottom3 = new Text(group4, SWT.NONE);
 					textBottom3.setText("0");
 					textBottom3.setTextLimit(6);
-					textBottom3.setBounds(234, 17, 24, 14);
-					textBottom3.setSize(26, 14);
+					textBottom3.setBounds(234, 17, 27, 14);
 				}
 				{
 					label17 = new Label(group4, SWT.NONE);
@@ -383,8 +301,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					textRight3 = new Text(group4, SWT.NONE);
 					textRight3.setText("0");
 					textRight3.setTextLimit(6);
-					textRight3.setBounds(305, 17, 24, 14);
-					textRight3.setSize(26, 14);
+					textRight3.setBounds(305, 17, 27, 14);
 				}
 			}
 			{
@@ -420,14 +337,27 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 						}
 					});
 				}
+				{
+					label1 = new Label(group5, SWT.CENTER);
+					RowData label1LData = new RowData();
+					label1LData.width = 263;
+					label1LData.height = 19;
+					label1.setLayoutData(label1LData);
+					label1.setText("\tNote: Twain_bottom= Wia_top+Wia_bottom");
+				}
 			}
-			int iniConfigReturn = this.loadConfigfromIni();
-			if (iniConfigReturn != 0) {
-				System.exit(iniConfigReturn);
+			try {
+				int iniConfigReturn = this.loadConfigfromIni();
+				if (iniConfigReturn != 0) {
+					System.exit(iniConfigReturn);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(-30);
 			}
 			cancledDialog = false;
+
 			if (ConfigMessage.equals("LOAD SETTINGS")) {
-				loadConfigfromIni();
 				return;
 
 			} else {
