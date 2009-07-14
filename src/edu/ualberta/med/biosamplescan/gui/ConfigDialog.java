@@ -112,7 +112,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				group1LData.heightHint = 13;
 				group1.setLayoutData(group1LData);
 				group1.setLayout(group1Layout);
-				group1.setText("Scanning Settings");
+				group1.setText("Scanner Settings");
 				{
 					label19 = new Label(group1, SWT.NONE);
 					label19.setText("Dots Per Inch:");
