@@ -33,7 +33,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 		if (osname.startsWith("Windows")) {
 			System.loadLibrary("scanlib");
 		}
-
 	}
 
 	@Override

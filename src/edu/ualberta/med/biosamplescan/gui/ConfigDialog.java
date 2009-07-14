@@ -426,22 +426,28 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				System.exit(iniConfigReturn);
 			}
 			cancledDialog = false;
+			if (ConfigMessage.equals("LOAD SETTINGS")) {
+				loadConfigfromIni();
+				return;
 
-			dialogShell.layout();
-			dialogShell.pack();
-			dialogShell.setLocation(getParent().toDisplay(100, 100));
-			dialogShell.open();
-			Display display = dialogShell.getDisplay();
-			while (!dialogShell.isDisposed()) {
-				if (!display.readAndDispatch())
-					display.sleep();
+			} else {
+				dialogShell.layout();
+				dialogShell.pack();
+				dialogShell.setLocation(getParent().toDisplay(100, 100));
+				dialogShell.open();
+				Display display = dialogShell.getDisplay();
+
+				while (!dialogShell.isDisposed()) {
+					if (!display.readAndDispatch())
+						display.sleep();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private int loadConfigfromIni() {
+	int loadConfigfromIni() {
 		try {
 			Wini ini = new Wini(new File("scanlib.ini"));
 			try {
@@ -514,6 +520,21 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 			} catch (IllegalArgumentException e) {
 				return -14;
 			}
+			dpi = ScanLib.DPI_300;
+			brightness = Integer.parseInt(textBrightness.getText());
+			contrast = Integer.parseInt(textContrast.getText());
+			plates[0][0] = Double.valueOf(textTop1.getText());
+			plates[0][1] = Double.valueOf(textLeft1.getText());
+			plates[0][2] = Double.valueOf(textBottom1.getText());
+			plates[0][3] = Double.valueOf(textRight1.getText());
+			plates[1][0] = Double.valueOf(textTop2.getText());
+			plates[1][1] = Double.valueOf(textLeft2.getText());
+			plates[1][2] = Double.valueOf(textBottom2.getText());
+			plates[1][3] = Double.valueOf(textRight2.getText());
+			plates[2][0] = Double.valueOf(textTop3.getText());
+			plates[2][1] = Double.valueOf(textLeft3.getText());
+			plates[2][2] = Double.valueOf(textBottom3.getText());
+			plates[2][3] = Double.valueOf(textRight3.getText());
 
 		} catch (InvalidFileFormatException e) {
 			e.printStackTrace();

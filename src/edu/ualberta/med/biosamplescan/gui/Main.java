@@ -51,7 +51,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuSaveCvsAs;
 	private MenuItem sep3;
 	private TableColumn tableColumn19;
-	private Button appendBtn;
 	private Button reScanPlateBtn;
 	private MenuItem menuSetMode;
 	private MenuItem menuPlate3;
@@ -63,9 +62,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuOptions;
 	private MenuItem menuScanPlateFile;
 	private MenuItem menuScanImageFile;
-	private Button plate2Btn;
-	private Button plate1Btn;
-	private Button plate3Btn;
+
+	private Button plateBtn[];
 	private Button scanPlateBtn;
 	private Menu menu2;
 	private MenuItem menuConfiguration;
@@ -123,9 +121,10 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			this.setLayout(null);
 			this.setEnabled(true);
 			{
-				plate1Btn = new Button(this, SWT.CHECK | SWT.LEFT);
-				plate1Btn.setText("Plate 1");
-				plate1Btn.setBounds(20, 22, 63, 18);
+				plateBtn = new Button[3];
+				plateBtn[0] = new Button(this, SWT.CHECK | SWT.LEFT);
+				plateBtn[0].setText("Plate 1");
+				plateBtn[0].setBounds(20, 22, 63, 18);
 			}
 
 			{
@@ -618,24 +617,19 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 				scanPlateBtn.setBounds(698, 6, 90, 40);
 				scanPlateBtn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						scanPlateBtnWidgetSelected(evt);
+						scanPlateBtnWidgetSelected(evt, false);
 					}
 				});
 			}
 			{
-				plate2Btn = new Button(this, SWT.CHECK | SWT.LEFT);
-				plate2Btn.setText("Plate 2");
-				plate2Btn.setBounds(83, 22, 63, 18);
+				plateBtn[1] = new Button(this, SWT.CHECK | SWT.LEFT);
+				plateBtn[1].setText("Plate 2");
+				plateBtn[1].setBounds(83, 22, 63, 18);
 			}
 			{
-				plate3Btn = new Button(this, SWT.CHECK | SWT.LEFT);
-				plate3Btn.setText("Plate 3");
-				plate3Btn.setBounds(146, 22, 63, 18);
-				{
-					appendBtn = new Button(this, SWT.CHECK | SWT.LEFT);
-					appendBtn.setText("Append");
-					appendBtn.setBounds(494, 22, 63, 18);
-				}
+				plateBtn[2] = new Button(this, SWT.CHECK | SWT.LEFT);
+				plateBtn[2].setText("Plate 3");
+				plateBtn[2].setBounds(146, 22, 63, 18);
 			}
 			{
 				reScanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -643,14 +637,14 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 				reScanPlateBtn.setBounds(596, 6, 90, 40);
 				reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						reScanPlateBtnWidgetSelected(evt);
+						scanPlateBtnWidgetSelected(evt, true);
 					}
 				});
 			}
 			pack();
 			this.setSize(800, 600);
-			checkTwain();
-			loadSettings();
+			this.checkTwain();
+			this.loadSettings();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -675,6 +669,12 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void loadSettings() {
+		configDialog.open("LOAD SETTINGS");
+		int cdReturn = configDialog.loadConfigfromIni();
+		if (cdReturn != 0) {
+			errorMsg("Config Settings", cdReturn);
+		}
+
 	}
 
 	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {
@@ -765,7 +765,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					return;
 
 				case (ScanLib.SC_INI_FILE_ERROR):
-					errorMsg("menuConfigurationWidgetSelected, contrast ",
+					errorMsg("menuConfigurationWidgetSelected, Contrast ",
 							scanlibReturn);
 					return;
 				}
@@ -788,38 +788,46 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			}
 			for (int plate = 0; plate < configDialog.PLATENUM; plate++) {
 				if (platesChanged[plate]) {
-					scanlib.slConfigPlateFrame(plate + 1,
+					int scanlibReturn = scanlib.slConfigPlateFrame(plate + 1,
 							configDialog.plates[plate][1],
 							configDialog.plates[plate][0],
 							configDialog.plates[plate][3],
 							configDialog.plates[plate][2]);
+					FIXSCANLIBINIWRITINGBUG();
+					switch (scanlibReturn) {
+					case (ScanLib.SC_SUCCESS):
+						break;
+					case (ScanLib.SC_FAIL):
+						errorMsg(
+								"menuConfigurationWidgetSelected, slConfigPlateFrame",
+								scanlibReturn);
+						return;
+					}
 					if (configDialog.plates[plate][0]
 							+ configDialog.plates[plate][1]
 							+ configDialog.plates[plate][2]
 							+ configDialog.plates[plate][3] > 0) {
-						scanlib.slCalibrateToPlate(configDialog.dpi, plate + 1);
+						scanlibReturn = scanlib.slCalibrateToPlate(
+								configDialog.dpi, plate + 1);
+						FIXSCANLIBINIWRITINGBUG();
+						switch (scanlibReturn) {
+						case (ScanLib.SC_SUCCESS):
+							break;
+						case (ScanLib.SC_INVALID_IMAGE):
+							errorMsg(
+									"menuConfigurationWidgetSelected, Calibratation",
+									scanlibReturn);
+							return;
+
+						case (ScanLib.SC_INI_FILE_ERROR):
+							errorMsg(
+									"menuConfigurationWidgetSelected, Calibratation ",
+									scanlibReturn);
+							return;
+						}
 					}
-					FIXSCANLIBINIWRITINGBUG();
 				}
 			}
-
-			/*
-			 * scanlib.slConfigScannerBrightness(configDialog.brightness);
-			 * scanlib.slConfigScannerContrast(configDialog.contrast);
-			 * scanlib.slConfigPlateFrame(1,
-			 * configDialog.plates[0][0],configDialog
-			 * .plates[0][1],configDialog.plates
-			 * [0][2],configDialog.plates[0][3]); scanlib.slConfigPlateFrame(2,
-			 * configDialog
-			 * .plates[1][0],configDialog.plates[1][1],configDialog.plates
-			 * [1][2],configDialog.plates[1][3]); scanlib.slConfigPlateFrame(3,
-			 * configDialog
-			 * .plates[2][0],configDialog.plates[2][1],configDialog.plates
-			 * [2][2],configDialog.plates[2][3]);
-			 * scanlib.slCalibrateToPlate(configDialog.dpi,1);
-			 * scanlib.slCalibrateToPlate(configDialog.dpi,2);
-			 * scanlib.slCalibrateToPlate(configDialog.dpi,3);
-			 */
 		} else { // first time running
 			int scanlibReturn = scanlib.slConfigScannerBrightness(0);
 			FIXSCANLIBINIWRITINGBUG();
@@ -841,8 +849,15 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	}
 
-	private void tableScanlibData(int table) {
-		boolean append = appendBtn.getSelection();
+	private String nulltoblankString(String in) {
+		if (in == null || in.isEmpty()) {
+			return "";
+		} else {
+			return in;
+		}
+	}
+
+	private void tableScanlibData(int table, boolean append) {
 		try {
 			ScanCell[][] sc = ScanCell.getScanLibResults();
 			String[] row = new String[13];
@@ -852,13 +867,13 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 					if (append) {
 						if (tableItems[table - 1][r].getText(c + 1).isEmpty()) {
-							row[c + 1] = sc[r][c].getValue();
+							row[c + 1] = nulltoblankString(sc[r][c].getValue());
 						} else {
 							row[c + 1] = tableItems[table - 1][r]
 									.getText(c + 1);
 						}
 					} else {
-						row[c + 1] = sc[r][c].getValue();
+						row[c + 1] = nulltoblankString(sc[r][c].getValue());
 					}
 				}
 				tableItems[table - 1][r].setText(row);
@@ -868,27 +883,32 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void scanPlateBtnWidgetSelected(SelectionEvent evt) {
-		if (plate1Btn.getSelection() == false
-				&& plate2Btn.getSelection() == false
-				&& plate3Btn.getSelection() == false) {
+	private void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean append) {
+		if (plateBtn[0].getSelection() == false
+				&& plateBtn[1].getSelection() == false
+				&& plateBtn[2].getSelection() == false) {
 			errorMsg("No Plates Selected", 0);
 			return;
 		}
 
-		if (plate1Btn.getSelection()) {
-			scanlib.slDecodePlate(configDialog.dpi, 1);
-			tableScanlibData(1);
+		for (int plate = 0; plate < configDialog.PLATENUM; plate++) {
+			if (configDialog.plates[plate][0] + configDialog.plates[plate][1]
+					+ configDialog.plates[plate][2]
+					+ configDialog.plates[plate][3] > 0
+					&& plateBtn[plate].getSelection()) {
+				int scanlibReturn = scanlib.slDecodePlate(configDialog.dpi,
+						plate + 1);
+				switch (scanlibReturn) {
+				case (ScanLib.SC_SUCCESS):
+					break;
+				case (ScanLib.SC_INVALID_IMAGE):
+					errorMsg("scanPlateBtnWidgetSelected, DecodePlate",
+							scanlibReturn);
+					return;
+				}
+				tableScanlibData(plate + 1, append);
+			}
 		}
-		if (plate2Btn.getSelection()) {
-			scanlib.slDecodePlate(configDialog.dpi, 2);
-			tableScanlibData(2);
-		}
-		if (plate3Btn.getSelection()) {
-			// scanlib.slDecodePlate(configDialog.dpi,3);
-			tableScanlibData(3);
-		}
-
 	}
 
 	private void menuNewWidgetSelected(SelectionEvent evt) {
@@ -970,11 +990,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	private void menuPlate3WidgetSelected(SelectionEvent evt) {
 		menuPlateScanToFile(3);
-	}
-
-	private void reScanPlateBtnWidgetSelected(SelectionEvent evt) {
-		System.out.println("reScanPlateBtn.widgetSelected, event=" + evt);
-		// TODO add your code for reScanPlateBtn.widgetSelected
 	}
 
 }
