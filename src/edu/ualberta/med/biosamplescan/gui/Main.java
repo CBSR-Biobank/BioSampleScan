@@ -807,7 +807,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void menuQuitWidgetSelected(SelectionEvent evt) {
-		if (confirmMsg("Quitting", "Are You Sure You Want To Quit?")) {
+		if (confirmMsg("Quit", "Do you want to quit?")) {
 			System.exit(1);
 		}
 	}
@@ -1036,16 +1036,18 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void clearPlateBtnWidgetSelected(SelectionEvent evt) {
-
-		for (int p = 0; p < 3; p++) {// TODO platenum
-			if (plateBtn[p].getSelection()) {
-				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
-						tableItems[p][r].setText(c + 1, "");
+		if (confirmMsg("Clear Table(s)",
+				"Do you want to clear all the selected tables?")) {
+			for (int p = 0; p < 3; p++) {// TODO platenum
+				if (plateBtn[p].getSelection()) {
+					for (int r = 0; r < 8; r++) {
+						for (int c = 0; c < 12; c++) {
+							tableItems[p][r].setText(c + 1, "");
+						}
 					}
 				}
-			}
 
+			}
 		}
 	}
 
@@ -1088,10 +1090,12 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void menuNewWidgetSelected(SelectionEvent evt) {// clear tables
-		for (int p = 0; p < 3; p++) {// platenum
-			for (int r = 0; r < 8; r++) {
-				for (int c = 0; c < 12; c++) {
-					tableItems[p][r].setText(c + 1, "");
+		if (confirmMsg("Clear Table(s)", "Do you want to clear all the tables?")) {
+			for (int p = 0; p < 3; p++) {// platenum
+				for (int r = 0; r < 8; r++) {
+					for (int c = 0; c < 12; c++) {
+						tableItems[p][r].setText(c + 1, "");
+					}
 				}
 			}
 		}
