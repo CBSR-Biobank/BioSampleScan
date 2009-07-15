@@ -9,6 +9,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
@@ -22,29 +23,8 @@ import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class Main extends org.eclipse.swt.widgets.Composite {
-
-	{
-		SWTManager.registerResourceUser(this);
-	}
-
 	private Menu mainmenu;
 	private Menu menu1;
-	static private TableColumn tableColumn1;
-	static private TableColumn tableColumn13;
-	static private Table table2;
-	private TableColumn tableColumn12;
-	private TableColumn tableColumn11;
-	private TableColumn tableColumn10;
-	private TableColumn tableColumn9;
-	private TableColumn tableColumn8;
-	private TableColumn tableColumn7;
-	private TableColumn tableColumn6;
-	private TableColumn tableColumn5;
-	private TableColumn tableColumn4;
-	private TableColumn tableColumn3;
-	private TableColumn tableColumn2;
-	static private TableColumn A;
-	static private Table table1;
 	private MenuItem sep2;
 	private Menu menu5;
 	private MenuItem menuSource;
@@ -52,14 +32,11 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuQuit;
 	private MenuItem menuSaveCvsAs;
 	private MenuItem sep3;
-	private TableColumn tableColumn19;
 	private MenuItem menuSaveSelected;
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
 	private MenuItem menuSetMode;
-	private MenuItem menuPlate3;
-	private MenuItem menuPlate2;
-	private MenuItem menuPlate1;
+
 	private Menu menu3;
 	private MenuItem menuNew;
 	private MenuItem menuAutoSaving;
@@ -67,57 +44,39 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private MenuItem menuScanPlateFile;
 	private MenuItem menuScanImageFile;
 	private MenuItem menuSaveSelectd;
-	private Button plateBtn[];
+
 	private Button scanPlateBtn;
 	private Button clearPlateBtn;
 	private Menu menu2;
 	private MenuItem menuConfiguration;
-	private TableColumn tableColumn38;
-	private TableColumn tableColumn37;
-	private TableColumn tableColumn36;
-	private TableColumn tableColumn35;
-	private TableColumn tableColumn34;
-	private TableColumn tableColumn33;
-	private TableColumn tableColumn32;
-	private TableColumn tableColumn31;
-	private TableColumn tableColumn30;
-	private TableColumn tableColumn29;
-	private TableColumn tableColumn28;
-	static private TableColumn tableColumn27;
-	static private TableColumn tableColumn26;
-	static private Table table3;
-	private TableColumn tableColumn25;
-	private TableColumn tableColumn24;
-	private TableColumn tableColumn23;
-	private TableColumn tableColumn22;
-	private TableColumn tableColumn21;
-	private TableColumn tableColumn20;
-	private TableColumn tableColumn18;
-	private TableColumn tableColumn17;
-	private TableColumn tableColumn16;
-	private TableColumn tableColumn15;
-	static private TableColumn tableColumn14;
-	private TableItem[][] tableItems = new TableItem[4][4 * 8];
-	private MenuItem menuSaveBarcode3;
-	private MenuItem menuSaveBarcode2;
-	private MenuItem menuSaveBarcode1;
+
+	private static int MAXPLATES = 4;
+
+	private MenuItem[] menuPlates = new MenuItem[MAXPLATES];
+	private Button[] plateBtn = new Button[MAXPLATES];
+	private MenuItem[] menuSaveBarcodes = new MenuItem[MAXPLATES];
+	private Table[] tables = new Table[MAXPLATES];
+	private TableColumn[][] tableColumns = new TableColumn[MAXPLATES][MAXPLATES * 13];
+	private TableItem[][] tableItems = new TableItem[MAXPLATES][MAXPLATES * 8];
+
 	private Menu menu4;
 	private MenuItem menuSaveBarcode;
 	private MenuItem sep6;
+	private MenuItem filemenu;
 
 	private String lastSaveSelectLocation;
-	private MenuItem filemenu;
 	private ScanLib scanlib = ScanLibFactory.getScanLib();
 	DebugDialog debugDialog = new DebugDialog(getShell(), SWT.NONE);
 	ConfigDialog configDialog = new ConfigDialog(getShell(), SWT.NONE);
 	ProcessingDialog processingDialog = new ProcessingDialog(getShell(),
 			SWT.NONE);
 
-	public void main(String[] args) {
-		showGUI();
+	{
+		SWTManager.registerResourceUser(this);
 	}
 
-	protected void checkSubclass() {
+	public void main(String[] args) {
+		showGUI();
 	}
 
 	public void showGUI() {
@@ -131,13 +90,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private void initGUI() {
 		try {
 			this.setLayout(null);
-			{
-				plateBtn = new Button[3];
-				plateBtn[0] = new Button(this, SWT.CHECK | SWT.LEFT);
-				plateBtn[0].setText("Plate 1");
-				plateBtn[0].setBounds(20, 22, 63, 18);
-			}
-
 			{
 				mainmenu = new Menu(getShell(), SWT.BAR);
 				getShell().setMenuBar(mainmenu);
@@ -169,42 +121,22 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 							{
 								menu4 = new Menu(menuSaveBarcode);
 								menuSaveBarcode.setMenu(menu4);
-								{
-									menuSaveBarcode1 = new MenuItem(menu4,
+
+								menuSaveBarcodes = new MenuItem[MAXPLATES];
+								for (int i = 0; i < MAXPLATES; i++) {
+									menuSaveBarcodes[i] = new MenuItem(menu4,
 											SWT.CASCADE);
-									menuSaveBarcode1.setText("From Plate 1");
-									menuSaveBarcode1
+									menuSaveBarcodes[i].setText(String.format(
+											"From Plate %d", i + 1));
+									menuSaveBarcodes[i]
 											.addSelectionListener(new SelectionAdapter() {
 												public void widgetSelected(
 														SelectionEvent evt) {
-													menuSaveBarcode1WidgetSelected(evt);
+													menuSaveBarcodeWidgetSelected(evt);
 												}
 											});
 								}
-								{
-									menuSaveBarcode2 = new MenuItem(menu4,
-											SWT.CASCADE);
-									menuSaveBarcode2.setText("From Plate 2");
-									menuSaveBarcode2
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuSaveBarcode2WidgetSelected(evt);
-												}
-											});
-								}
-								{
-									menuSaveBarcode3 = new MenuItem(menu4,
-											SWT.CASCADE);
-									menuSaveBarcode3.setText("From Plate 3");
-									menuSaveBarcode3
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuSaveBarcode3WidgetSelected(evt);
-												}
-											});
-								}
+
 							}
 						}
 						{
@@ -333,39 +265,17 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 							{
 								menu3 = new Menu(menuScanPlateFile);
 								menuScanPlateFile.setMenu(menu3);
-								{
-									menuPlate1 = new MenuItem(menu3,
+
+								for (int i = 0; i < MAXPLATES; i++) {
+									menuPlates[i] = new MenuItem(menu3,
 											SWT.CASCADE);
-									menuPlate1.setText("Plate 1");
-									menuPlate1
+									menuPlates[i].setText(String.format(
+											"Plate %d", i + 1));
+									menuPlates[i]
 											.addSelectionListener(new SelectionAdapter() {
 												public void widgetSelected(
 														SelectionEvent evt) {
-													menuPlate1WidgetSelected(evt);
-												}
-											});
-								}
-								{
-									menuPlate2 = new MenuItem(menu3,
-											SWT.CASCADE);
-									menuPlate2.setText("Plate 2");
-									menuPlate2
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuPlate2WidgetSelected(evt);
-												}
-											});
-								}
-								{
-									menuPlate3 = new MenuItem(menu3,
-											SWT.CASCADE);
-									menuPlate3.setText("Plate 3");
-									menuPlate3
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuPlate3WidgetSelected(evt);
+													menuPlateScanToFile(evt);
 												}
 											});
 								}
@@ -377,325 +287,47 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			this.layout();
 			pack();
 			{
-				table1 = new Table(this, SWT.FULL_SELECTION | SWT.EMBEDDED
-						| SWT.V_SCROLL | SWT.BORDER);
-				table1.setLinesVisible(true);
-				table1.setHeaderVisible(true);
-				table1.setBounds(12, 63, 783, 133);
-				table1.setFont(SWTManager
-						.getFont("Calibri", 6, 0, false, false));
 
-				{
-					tableColumn1 = new TableColumn(table1, SWT.NONE);
-					tableColumn1.setWidth(60);
-					tableColumn1.setResizable(false);
+				for (int table = 0; table < MAXPLATES; table++) {
+					tables[table] = new Table(this, SWT.FULL_SELECTION
+							| SWT.EMBEDDED | SWT.V_SCROLL | SWT.BORDER);
+					tables[table].setLinesVisible(true);
+					tables[table].setHeaderVisible(true);
+					tables[table].setBounds(12, 63 + table * 140, 783, 133);
+					tables[table].setFont(SWTManager.getFont("Calibri", 6, 0,
+							false, false));
 
-				}
-				{
-					A = new TableColumn(table1, SWT.NONE);
-					A.setText("1");
-					A.setWidth(57);
-				}
-				{
-					tableColumn2 = new TableColumn(table1, SWT.NONE);
-					tableColumn2.setText("2");
-					tableColumn2.setWidth(60);
-				}
-				{
-					tableColumn3 = new TableColumn(table1, SWT.NONE);
-					tableColumn3.setText("3");
-					tableColumn3.setWidth(60);
-				}
-				{
-					tableColumn4 = new TableColumn(table1, SWT.NONE);
-					tableColumn4.setText("4");
-					tableColumn4.setWidth(60);
-				}
-				{
-					tableColumn5 = new TableColumn(table1, SWT.NONE);
-					tableColumn5.setText("5");
-					tableColumn5.setWidth(60);
-				}
-				{
-					tableColumn6 = new TableColumn(table1, SWT.NONE);
-					tableColumn6.setText("6");
-					tableColumn6.setWidth(60);
-				}
-				{
-					tableColumn7 = new TableColumn(table1, SWT.NONE);
-					tableColumn7.setText("7");
-					tableColumn7.setWidth(60);
-				}
-				{
-					tableColumn8 = new TableColumn(table1, SWT.NONE);
-					tableColumn8.setText("8");
-					tableColumn8.setWidth(60);
-				}
-				{
-					tableColumn9 = new TableColumn(table1, SWT.NONE);
-					tableColumn9.setText("9");
-					tableColumn9.setWidth(60);
-				}
-				{
-					tableColumn10 = new TableColumn(table1, SWT.NONE);
-					tableColumn10.setText("10");
-					tableColumn10.setWidth(60);
-				}
-				{
-					tableColumn11 = new TableColumn(table1, SWT.NONE);
-					tableColumn11.setText("11");
-					tableColumn11.setWidth(60);
-				}
-				{
-					tableColumn12 = new TableColumn(table1, SWT.NONE);
-					tableColumn12.setText("12");
-					tableColumn12.setWidth(60);
-				}
-				{
-					tableItems[0][0] = new TableItem(table1, SWT.NONE);
-					tableItems[0][0].setText("A");
-				}
-				{
-					tableItems[0][1] = new TableItem(table1, SWT.NONE);
-					tableItems[0][1].setText("B");
-				}
-				{
-					tableItems[0][2] = new TableItem(table1, SWT.NONE);
-					tableItems[0][2].setText("C");
-				}
-				{
-					tableItems[0][3] = new TableItem(table1, SWT.NONE);
-					tableItems[0][3].setText("D");
-				}
-				{
-					tableItems[0][4] = new TableItem(table1, SWT.NONE);
-					tableItems[0][4].setText("E");
-				}
-				{
-					tableItems[0][5] = new TableItem(table1, SWT.NONE);
-					tableItems[0][5].setText("F");
-				}
-				{
-					tableItems[0][6] = new TableItem(table1, SWT.NONE);
-					tableItems[0][6].setText("G");
-				}
-				{
-					tableItems[0][7] = new TableItem(table1, SWT.NONE);
-					tableItems[0][7].setText("H");
+					tableColumns[table][0] = new TableColumn(tables[table],
+							SWT.NONE);
+					tableColumns[table][0].setWidth(59);
+					tableColumns[table][0].setResizable(false);
+					for (int i = 0; i < 12; i++) {
+						tableColumns[table][i + 1] = new TableColumn(
+								tables[table], SWT.NONE);
+						tableColumns[table][i + 1].setText(String.format("%d",
+								i + 1));
+						tableColumns[table][i + 1].setWidth(60);
+					}
+					for (int i = 0; i < 8; i++) {
+						tableItems[table][i] = new TableItem(tables[table],
+								SWT.NONE);
+						tableItems[table][i].setText(Character
+								.toString((char) (65 + i)));
+						if (i % 2 != 0) {
+							tableItems[table][i].setBackground(new Color(
+									getDisplay(), 200, 200, 200));
+						} else if (i % 3 == 0) {
+							tableItems[table][i].setBackground(new Color(
+									getDisplay(), 170, 170, 170));
+						} else {
+							tableItems[table][i].setBackground(new Color(
+									getDisplay(), 230, 230, 230));
+						}
+
+					}
 				}
 			}
-			{
-				table2 = new Table(this, SWT.FULL_SELECTION | SWT.EMBEDDED
-						| SWT.V_SCROLL | SWT.BORDER);
-				table2.setHeaderVisible(true);
-				table2.setLinesVisible(true);
-				table2.setBounds(12, 204, 787, 131);
-				table2.setFont(SWTManager
-						.getFont("Calibri", 6, 0, false, false));
-				{
-					tableColumn13 = new TableColumn(table2, SWT.NONE);
-					tableColumn13.setWidth(60);
-					tableColumn13.setResizable(false);
-				}
-				{
-					tableColumn14 = new TableColumn(table2, SWT.NONE);
-					tableColumn14.setText("1");
-					tableColumn14.setWidth(60);
-				}
-				{
-					tableColumn15 = new TableColumn(table2, SWT.NONE);
-					tableColumn15.setText("2");
-					tableColumn15.setWidth(60);
-				}
-				{
-					tableColumn16 = new TableColumn(table2, SWT.NONE);
-					tableColumn16.setText("3");
-					tableColumn16.setWidth(60);
-				}
-				{
-					tableColumn17 = new TableColumn(table2, SWT.NONE);
-					tableColumn17.setText("4");
-					tableColumn17.setWidth(60);
-				}
-				{
-					tableColumn18 = new TableColumn(table2, SWT.NONE);
-					tableColumn18.setText("5");
-					tableColumn18.setWidth(60);
-				}
-				{
-					tableColumn19 = new TableColumn(table2, SWT.NONE);
-					tableColumn19.setText("6");
-					tableColumn19.setWidth(60);
-				}
-				{
-					tableColumn20 = new TableColumn(table2, SWT.NONE);
-					tableColumn20.setText("7");
-					tableColumn20.setWidth(60);
-				}
-				{
-					tableColumn21 = new TableColumn(table2, SWT.NONE);
-					tableColumn21.setText("8");
-					tableColumn21.setWidth(60);
-				}
-				{
-					tableColumn22 = new TableColumn(table2, SWT.NONE);
-					tableColumn22.setText("9");
-					tableColumn22.setWidth(60);
-				}
-				{
-					tableColumn23 = new TableColumn(table2, SWT.NONE);
-					tableColumn23.setText("10");
-					tableColumn23.setWidth(60);
-				}
-				{
-					tableColumn24 = new TableColumn(table2, SWT.NONE);
-					tableColumn24.setText("11");
-					tableColumn24.setWidth(60);
-				}
-				{
-					tableColumn25 = new TableColumn(table2, SWT.NONE);
-					tableColumn25.setText("12");
-					tableColumn25.setWidth(60);
-				}
-				{
-					tableItems[1][0] = new TableItem(table2, SWT.NONE);
-					tableItems[1][0].setText("A");
-				}
-				{
-					tableItems[1][1] = new TableItem(table2, SWT.NONE);
-					tableItems[1][1].setText("B");
-				}
-				{
-					tableItems[1][2] = new TableItem(table2, SWT.NONE);
-					tableItems[1][2].setText("C");
-				}
-				{
-					tableItems[1][3] = new TableItem(table2, SWT.NONE);
-					tableItems[1][3].setText("D");
-				}
-				{
-					tableItems[1][4] = new TableItem(table2, SWT.NONE);
-					tableItems[1][4].setText("E");
-				}
-				{
-					tableItems[1][5] = new TableItem(table2, SWT.NONE);
-					tableItems[1][5].setText("F");
-				}
-				{
-					tableItems[1][6] = new TableItem(table2, SWT.NONE);
-					tableItems[1][6].setText("G");
-				}
-				{
-					tableItems[1][7] = new TableItem(table2, SWT.NONE);
-					tableItems[1][7].setText("H");
-				}
-			}
-			{
-				table3 = new Table(this, SWT.FULL_SELECTION | SWT.EMBEDDED
-						| SWT.V_SCROLL | SWT.BORDER);
-				table3.setHeaderVisible(true);
-				table3.setLinesVisible(true);
-				table3.setBounds(12, 344, 786, 131);
-				table3.setFont(SWTManager
-						.getFont("Calibri", 6, 0, false, false));
-				{
-					tableColumn26 = new TableColumn(table3, SWT.NONE);
-					tableColumn26.setWidth(60);
-					tableColumn26.setResizable(false);
-				}
-				{
-					tableColumn27 = new TableColumn(table3, SWT.NONE);
-					tableColumn27.setText("1");
-					tableColumn27.setWidth(60);
-				}
-				{
-					tableColumn28 = new TableColumn(table3, SWT.NONE);
-					tableColumn28.setText("2");
-					tableColumn28.setWidth(60);
-				}
-				{
-					tableColumn29 = new TableColumn(table3, SWT.NONE);
-					tableColumn29.setText("3");
-					tableColumn29.setWidth(60);
-				}
-				{
-					tableColumn30 = new TableColumn(table3, SWT.NONE);
-					tableColumn30.setText("4");
-					tableColumn30.setWidth(60);
-				}
-				{
-					tableColumn31 = new TableColumn(table3, SWT.NONE);
-					tableColumn31.setText("5");
-					tableColumn31.setWidth(60);
-				}
-				{
-					tableColumn32 = new TableColumn(table3, SWT.NONE);
-					tableColumn32.setText("6");
-					tableColumn32.setWidth(60);
-				}
-				{
-					tableColumn33 = new TableColumn(table3, SWT.NONE);
-					tableColumn33.setText("7");
-					tableColumn33.setWidth(60);
-				}
-				{
-					tableColumn34 = new TableColumn(table3, SWT.NONE);
-					tableColumn34.setText("8");
-					tableColumn34.setWidth(60);
-				}
-				{
-					tableColumn35 = new TableColumn(table3, SWT.NONE);
-					tableColumn35.setText("9");
-					tableColumn35.setWidth(60);
-				}
-				{
-					tableColumn36 = new TableColumn(table3, SWT.NONE);
-					tableColumn36.setText("10");
-					tableColumn36.setWidth(60);
-				}
-				{
-					tableColumn37 = new TableColumn(table3, SWT.NONE);
-					tableColumn37.setText("11");
-					tableColumn37.setWidth(60);
-				}
-				{
-					tableColumn38 = new TableColumn(table3, SWT.NONE);
-					tableColumn38.setText("12");
-					tableColumn38.setWidth(60);
-				}
-				{
-					tableItems[2][0] = new TableItem(table3, SWT.NONE);
-					tableItems[2][0].setText("A");
-				}
-				{
-					tableItems[2][1] = new TableItem(table3, SWT.NONE);
-					tableItems[2][1].setText("B");
-				}
-				{
-					tableItems[2][2] = new TableItem(table3, SWT.NONE);
-					tableItems[2][2].setText("C");
-				}
-				{
-					tableItems[2][3] = new TableItem(table3, SWT.NONE);
-					tableItems[2][3].setText("D");
-				}
-				{
-					tableItems[2][4] = new TableItem(table3, SWT.NONE);
-					tableItems[2][4].setText("E");
-				}
-				{
-					tableItems[2][5] = new TableItem(table3, SWT.NONE);
-					tableItems[2][5].setText("F");
-				}
-				{
-					tableItems[2][6] = new TableItem(table3, SWT.NONE);
-					tableItems[2][6].setText("G");
-				}
-				{
-					tableItems[2][7] = new TableItem(table3, SWT.NONE);
-					tableItems[2][7].setText("H");
-				}
-			}
+
 			{
 				scanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
 				scanPlateBtn.setText("Scan Plate(s)");
@@ -717,15 +349,10 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					}
 				});
 			}
-			{
-				plateBtn[1] = new Button(this, SWT.CHECK | SWT.LEFT);
-				plateBtn[1].setText("Plate 2");
-				plateBtn[1].setBounds(83, 22, 63, 18);
-			}
-			{
-				plateBtn[2] = new Button(this, SWT.CHECK | SWT.LEFT);
-				plateBtn[2].setText("Plate 3");
-				plateBtn[2].setBounds(146, 22, 63, 18);
+			for (int i = 0; i < MAXPLATES; i++) {
+				plateBtn[i] = new Button(this, SWT.CHECK | SWT.LEFT);
+				plateBtn[i].setText(String.format("Plate %d", i + 1));
+				plateBtn[i].setBounds(20 + 63 * i, 22, 63, 18);
 			}
 			{
 				reScanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -748,7 +375,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 				});
 			}
 			pack();
-			this.setSize(800, 600);
+			this.setSize(800, 650);
 			this.checkTwain();
 			this.loadSettings();
 
@@ -788,13 +415,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {// save all
-		/*
-		 * new Thread() { public void run() { long a = 1; for (long i = 0; i <
-		 * 1000000000L; i++) { a = i;
-		 * 
-		 * } } }.start();
-		 */
-
 		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
 		dlg.setText(String.format("Save All Barcodes"));
@@ -802,7 +422,12 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		if (saveLocation == null) {
 			return;
 		}
-		saveTables(saveLocation, true, true, true);
+		boolean[] tablesCheck = new boolean[MAXPLATES];
+		for (int i = 0; i < MAXPLATES; i++) {
+			tablesCheck[i] = true;
+		}
+
+		saveTables(saveLocation, tablesCheck);
 
 	}
 
@@ -1005,19 +630,20 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void saveTables(String fileLocation, boolean plate1,
-			boolean plate2, boolean plate3) {
+	private void saveTables(String fileLocation, boolean[] tables) {
+		if (tables.length < MAXPLATES) {
+			System.out.print("Bad Design Error");
+			System.exit(-666);
+		}
 
 		try {
 			BufferedWriter out = new BufferedWriter(
 					new FileWriter(fileLocation));
 			out.write("#Plate,Row,Col,Barcode\r\n");
-			for (int p = 0; p < 3; p++) {// TODO Platenum
-				if ((p == 0 && !plate1) || (p == 1 && !plate2)
-						|| (p == 2 && !plate3)) {
+			for (int p = 0; p < configDialog.PLATENUM; p++) {
+				if (!tables[p]) {
 					continue;
 				}
-
 				for (int r = 0; r < 8; r++) {
 					for (int c = 0; c < 12; c++) {
 						if (!tableItems[p][r].getText(c + 1).isEmpty()) {
@@ -1037,8 +663,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	private void clearPlateBtnWidgetSelected(SelectionEvent evt) {
 		if (confirmMsg("Clear Table(s)",
-				"Do you want to clear all the selected tables?")) {
-			for (int p = 0; p < 3; p++) {// TODO platenum
+				"Do you want to clear the selected tables?")) {
+			for (int p = 0; p < configDialog.PLATENUM; p++) {
 				if (plateBtn[p].getSelection()) {
 					for (int r = 0; r < 8; r++) {
 						for (int c = 0; c < 12; c++) {
@@ -1084,14 +710,18 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		if (lastSaveSelectLocation == null || lastSaveSelectLocation.isEmpty()) {
 			menuSaveSelectedWidgetSelected(evt);
 		} else {
-			saveTables(lastSaveSelectLocation, plateBtn[0].getSelection(),
-					plateBtn[1].getSelection(), plateBtn[2].getSelection());
+
+			boolean[] tablesCheck = new boolean[MAXPLATES];
+			for (int i = 0; i < MAXPLATES; i++) {
+				tablesCheck[i] = plateBtn[i].getSelection();
+			}
+			saveTables(lastSaveSelectLocation, tablesCheck);
 		}
 	}
 
-	private void menuNewWidgetSelected(SelectionEvent evt) {// clear tables
+	private void menuNewWidgetSelected(SelectionEvent evt) {
 		if (confirmMsg("Clear Table(s)", "Do you want to clear all the tables?")) {
-			for (int p = 0; p < 3; p++) {// platenum
+			for (int p = 0; p < MAXPLATES; p++) {
 				for (int r = 0; r < 8; r++) {
 					for (int c = 0; c < 12; c++) {
 						tableItems[p][r].setText(c + 1, "");
@@ -1102,7 +732,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	}
 
 	private void menuAutoSavingWidgetSelected(SelectionEvent evt) {
-		System.out.println("menuAutoSaving.widgetSelected, event=" + evt);
+		System.out.println("menuAutoSaving.widgetSelected, event="
+				+ evt.data.toString());
 		// TODO add your code for menuAutoSaving.widgetSelected
 	}
 
@@ -1134,7 +765,17 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void menuPlateScanToFile(int platenum) {
+	private void menuPlateScanToFile(SelectionEvent evt) {
+		int platenum = 0;
+		if (evt.toString().indexOf("Plate ") > -1) {
+			platenum = Integer.parseInt(evt.toString().substring(
+					evt.toString().indexOf("Plate ") + 6,
+					evt.toString().indexOf("Plate ") + 7)); /* h3x */
+		}
+		if (platenum == 0) {
+			return;
+		}
+
 		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
 		dlg.setText(String.format("Scan and Save Plate %d", platenum));
@@ -1144,6 +785,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 		int scanlibReturn = scanlib.slScanPlate(ScanLib.DPI_300, platenum,
 				saveLocation);
+		FIXSCANLIBINIWRITINGBUG();
 		switch (scanlibReturn) {
 		case (ScanLib.SC_SUCCESS):
 			break;
@@ -1163,18 +805,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			errorMsg("Scanlib ScanImage", scanlibReturn);
 			break;
 		}
-	}
 
-	private void menuPlate1WidgetSelected(SelectionEvent evt) {
-		menuPlateScanToFile(1);
-	}
-
-	private void menuPlate2WidgetSelected(SelectionEvent evt) {
-		menuPlateScanToFile(2);
-	}
-
-	private void menuPlate3WidgetSelected(SelectionEvent evt) {
-		menuPlateScanToFile(3);
 	}
 
 	private void saveTablePlate(int platenum) {
@@ -1182,37 +813,33 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
 		dlg.setText(String.format("Save Barcodes For Plate %d", platenum));
 		String saveLocation = dlg.open();
+
 		if (saveLocation != null) {
-			switch (platenum) {
-			case (1):
-				saveTables(saveLocation, true, false, false);
-				break;
-			case (2):
-				saveTables(saveLocation, false, true, false);
-				break;
-			case (3):
-				saveTables(saveLocation, false, false, true);
-				break;
+			boolean[] tablesCheck = new boolean[MAXPLATES];
+			for (int i = 0; i < MAXPLATES; i++) {
+				tablesCheck[i] = false;
 			}
+			tablesCheck[platenum - 1] = true;
+
+			saveTables(saveLocation, tablesCheck);
+
 		}
 	}
 
-	private void menuSaveBarcode1WidgetSelected(SelectionEvent evt) {
-		saveTablePlate(1);
-	}
+	private void menuSaveBarcodeWidgetSelected(SelectionEvent evt) {
+		if (evt.toString().indexOf("From Plate ") > -1) {
+			int platenum = Integer.parseInt(evt.toString().substring(
+					evt.toString().indexOf("From Plate ") + 11,
+					evt.toString().indexOf("From Plate ") + 12)); /* h3x */
+			saveTablePlate(platenum);
+		}
 
-	private void menuSaveBarcode2WidgetSelected(SelectionEvent evt) {
-		saveTablePlate(2);
-	}
-
-	private void menuSaveBarcode3WidgetSelected(SelectionEvent evt) {
-		saveTablePlate(3);
 	}
 
 	private void loadFromFileWidgetSelected(SelectionEvent evt) {// TODO remove
-		tableScanlibData(1, false);
-		tableScanlibData(2, false);
-		tableScanlibData(3, false);
+		for (int i = 0; i < MAXPLATES; i++) {
+			tableScanlibData(i + 1, false);
+		}
 	}
 
 	private void menuSaveSelectedWidgetSelected(SelectionEvent evt) {
@@ -1221,8 +848,11 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		dlg.setText(String.format("Save Barcodes For Selected Plates"));
 		String saveLocation = dlg.open();
 		if (saveLocation != null) {
-			saveTables(saveLocation, plateBtn[0].getSelection(), plateBtn[1]
-					.getSelection(), plateBtn[2].getSelection());
+			boolean[] tablesCheck = new boolean[MAXPLATES];
+			for (int i = 0; i < MAXPLATES; i++) {
+				tablesCheck[i] = plateBtn[i].getSelection();
+			}
+			saveTables(saveLocation, tablesCheck);
 			lastSaveSelectLocation = saveLocation;
 		}
 

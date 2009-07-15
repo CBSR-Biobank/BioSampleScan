@@ -23,7 +23,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setInitialSize(new Point(800, 600));
+		configurer.setInitialSize(new Point(800, 650));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		configurer.setTitle("BioBank2 Sample Scanner");
@@ -34,7 +34,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowOpen() {
 		IStatusLineManager statusline = getWindowConfigurer()
-			.getActionBarConfigurer().getStatusLineManager();
+				.getActionBarConfigurer().getStatusLineManager();
 		statusline.setMessage(null, "Application ready");
 	}
 
