@@ -14,7 +14,6 @@ public class View extends ViewPart {
 	public void createPartControl(Composite parent) {
 		client = new Composite(parent, SWT.NONE);
 		new Main(client, SWT.BORDER);
-
 	}
 
 	public void setFocus() {

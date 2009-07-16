@@ -27,6 +27,15 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private Shell dialogShell;
 	private Label label11;
+	private Text textRight4;
+	private Label label20;
+	private Text textBottom4;
+	private Label label13;
+	private Text textLeft4;
+	private Label label8;
+	private Text textTop4;
+	private Label label3;
+	private Group group6;
 	private Label label1;
 	private Text textDpi;
 	private Label label19;
@@ -66,7 +75,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	private Group group2;
 
 	public boolean cancledDialog = false;
-	public int PLATENUM = 3;
+	public int PLATENUM = 4;
 	public int dpi = ScanLib.DPI_300;
 	public int brightness = 0;
 	public int contrast = 0;
@@ -85,6 +94,14 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	public ConfigDialog(Shell parent, int style) {
 		super(parent, style);
+	}
+
+	private String sfix(String in) {
+		if (in == null || in.isEmpty()) {
+			return "0";
+		} else {
+			return in;
+		}
 	}
 
 	public void open(String ConfigMessage) {
@@ -305,6 +322,61 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 			}
 			{
+				group6 = new Group(dialogShell, SWT.NONE);
+				FillLayout group6Layout = new FillLayout(
+						org.eclipse.swt.SWT.HORIZONTAL);
+				group6.setLayout(group6Layout);
+				GridData group6LData = new GridData();
+				group6LData.widthHint = 421;
+				group6LData.heightHint = 13;
+				group6.setLayoutData(group6LData);
+				group6.setText("Plate 4 Position");
+				{
+					label3 = new Label(group6, SWT.NONE);
+					label3.setText("Top:");
+					label3.setBounds(67, 17, 22, 13);
+				}
+				{
+					textTop4 = new Text(group6, SWT.NONE);
+					textTop4.setText("0");
+					textTop4.setTextLimit(6);
+					textTop4.setBounds(92, 17, 28, 14);
+				}
+				{
+					label8 = new Label(group6, SWT.NONE);
+					label8.setText("      Left:");
+					label8.setBounds(119, 17, 35, 13);
+				}
+				{
+					textLeft4 = new Text(group6, SWT.NONE);
+					textLeft4.setText("0");
+					textLeft4.setTextLimit(6);
+					textLeft4.setBounds(157, 17, 28, 14);
+				}
+				{
+					label13 = new Label(group6, SWT.NONE);
+					label13.setText("   Bottom:");
+					label13.setBounds(184, 17, 47, 13);
+				}
+				{
+					textBottom4 = new Text(group6, SWT.NONE);
+					textBottom4.setText("0");
+					textBottom4.setTextLimit(6);
+					textBottom4.setBounds(234, 17, 27, 14);
+				}
+				{
+					label20 = new Label(group6, SWT.NONE);
+					label20.setText("    Right:");
+					label20.setBounds(261, 17, 41, 13);
+				}
+				{
+					textRight4 = new Text(group6, SWT.NONE);
+					textRight4.setText("0");
+					textRight4.setTextLimit(6);
+					textRight4.setBounds(305, 17, 27, 14);
+				}
+			}
+			{
 				group5 = new Group(dialogShell, SWT.NONE);
 				RowLayout group5Layout = new RowLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
@@ -349,6 +421,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 			try {
 				int iniConfigReturn = this.loadConfigfromIni();
 				if (iniConfigReturn != 0) {
+					System.out.println("iniConfigReturn Error");
 					System.exit(iniConfigReturn);
 				}
 			} catch (Exception e) {
@@ -377,101 +450,58 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		}
 	}
 
+	void readPlatesIntoArray(double plateArray[][]) {
+		plateArray[0][0] = Double.valueOf(textTop1.getText());
+		plateArray[0][1] = Double.valueOf(textLeft1.getText());
+		plateArray[0][2] = Double.valueOf(textBottom1.getText());
+		plateArray[0][3] = Double.valueOf(textRight1.getText());
+		plateArray[1][0] = Double.valueOf(textTop2.getText());
+		plateArray[1][1] = Double.valueOf(textLeft2.getText());
+		plateArray[1][2] = Double.valueOf(textBottom2.getText());
+		plateArray[1][3] = Double.valueOf(textRight2.getText());
+		plateArray[2][0] = Double.valueOf(textTop3.getText());
+		plateArray[2][1] = Double.valueOf(textLeft3.getText());
+		plateArray[2][2] = Double.valueOf(textBottom3.getText());
+		plateArray[2][3] = Double.valueOf(textRight3.getText());
+		plateArray[3][0] = Double.valueOf(textTop4.getText());
+		plateArray[3][1] = Double.valueOf(textLeft4.getText());
+		plateArray[3][2] = Double.valueOf(textBottom4.getText());
+		plateArray[3][3] = Double.valueOf(textRight4.getText());
+	}
+
 	int loadConfigfromIni() {
 		try {
 			Wini ini = new Wini(new File("scanlib.ini"));
-			try {
-				textBrightness.setText(ini.get("scanner", "brightness"));
-			} catch (IllegalArgumentException e) {
-				return -1;
-			}
-			try {
-				textContrast.setText(ini.get("scanner", "contrast"));
-			} catch (IllegalArgumentException e) {
-				return -2;
-			}
-			try {
-				textLeft1.setText(ini.get("plate-1", "left"));
-			} catch (IllegalArgumentException e) {
-				return -3;
-			}
-			try {
-				textTop1.setText(ini.get("plate-1", "top"));
-			} catch (IllegalArgumentException e) {
-				return -4;
-			}
-			try {
-				textBottom1.setText(ini.get("plate-1", "bottom"));
-			} catch (IllegalArgumentException e) {
-				return -5;
-			}
-			try {
-				textRight1.setText(ini.get("plate-1", "right"));
-			} catch (IllegalArgumentException e) {
-				return -6;
-			}
-			try {
-				textLeft2.setText(ini.get("plate-2", "left"));
-			} catch (IllegalArgumentException e) {
-				return -7;
-			}
-			try {
-				textTop2.setText(ini.get("plate-2", "top"));
-			} catch (IllegalArgumentException e) {
-				return -8;
-			}
-			try {
-				textBottom2.setText(ini.get("plate-2", "bottom"));
-			} catch (IllegalArgumentException e) {
-				return -9;
-			}
-			try {
-				textRight2.setText(ini.get("plate-2", "right"));
-			} catch (IllegalArgumentException e) {
-				return -10;
-			}
-			try {
-				textLeft3.setText(ini.get("plate-3", "left"));
-			} catch (IllegalArgumentException e) {
-				return -11;
-			}
-			try {
-				textTop3.setText(ini.get("plate-3", "top"));
-			} catch (IllegalArgumentException e) {
-				return -12;
-			}
-			try {
-				textBottom3.setText(ini.get("plate-3", "bottom"));
-			} catch (IllegalArgumentException e) {
-				return -13;
-			}
-			try {
-				textRight3.setText(ini.get("plate-3", "right"));
-			} catch (IllegalArgumentException e) {
-				return -14;
-			}
+			textBrightness.setText(sfix(ini.get("scanner", "brightness")));
+			textContrast.setText(sfix(ini.get("scanner", "contrast")));
+			textLeft1.setText(sfix(ini.get("plate-1", "left")));
+			textTop1.setText(sfix(ini.get("plate-1", "top")));
+			textBottom1.setText(sfix(ini.get("plate-1", "bottom")));
+			textRight1.setText(sfix(ini.get("plate-1", "right")));
+			textLeft2.setText(sfix(ini.get("plate-2", "left")));
+			textTop2.setText(sfix(ini.get("plate-2", "top")));
+			textBottom2.setText(sfix(ini.get("plate-2", "bottom")));
+			textRight2.setText(sfix(ini.get("plate-2", "right")));
+			textLeft3.setText(sfix(ini.get("plate-3", "left")));
+			textTop3.setText(sfix(ini.get("plate-3", "top")));
+			textBottom3.setText(sfix(ini.get("plate-3", "bottom")));
+			textRight3.setText(sfix(ini.get("plate-3", "right")));
+			textLeft4.setText(sfix(ini.get("plate-4", "left")));
+			textTop4.setText(sfix(ini.get("plate-4", "top")));
+			textBottom4.setText(sfix(ini.get("plate-4", "bottom")));
+			textRight4.setText(sfix(ini.get("plate-4", "right")));
+
 			dpi = ScanLib.DPI_300;
 			brightness = Integer.parseInt(textBrightness.getText());
 			contrast = Integer.parseInt(textContrast.getText());
-			plates[0][0] = Double.valueOf(textTop1.getText());
-			plates[0][1] = Double.valueOf(textLeft1.getText());
-			plates[0][2] = Double.valueOf(textBottom1.getText());
-			plates[0][3] = Double.valueOf(textRight1.getText());
-			plates[1][0] = Double.valueOf(textTop2.getText());
-			plates[1][1] = Double.valueOf(textLeft2.getText());
-			plates[1][2] = Double.valueOf(textBottom2.getText());
-			plates[1][3] = Double.valueOf(textRight2.getText());
-			plates[2][0] = Double.valueOf(textTop3.getText());
-			plates[2][1] = Double.valueOf(textLeft3.getText());
-			plates[2][2] = Double.valueOf(textBottom3.getText());
-			plates[2][3] = Double.valueOf(textRight3.getText());
+			readPlatesIntoArray(plates);
 
 		} catch (InvalidFileFormatException e) {
 			e.printStackTrace();
-			return -15;
+			return -50;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return -16;
+			return -51;
 		}
 		return 0;
 	}
@@ -481,42 +511,15 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		dialogShell.dispose();
 	}
 
-	private double concatDouble(double in, double lower, double upper) {// inclusive
-		if (in < lower) {
-			in = lower;
-		}
-		if (in > upper) {
-			in = upper;
-		}
-		return in;
-	}
-
 	private int concatInt(int in, int lower, int upper) {// inclusive
-		if (in < lower) {
-			in = lower;
-		}
-		if (in > upper) {
-			in = upper;
-		}
-		return in;
+		return (in < lower) ? lower : ((in > upper) ? upper : in);
 	}
 
 	private void buttonConfigMouseUp(MouseEvent evt) {
 		try {
 
 			double nplates[][] = new double[PLATENUM][4];
-			nplates[0][0] = Double.valueOf(textTop1.getText());
-			nplates[0][1] = Double.valueOf(textLeft1.getText());
-			nplates[0][2] = Double.valueOf(textBottom1.getText());
-			nplates[0][3] = Double.valueOf(textRight1.getText());
-			nplates[1][0] = Double.valueOf(textTop2.getText());
-			nplates[1][1] = Double.valueOf(textLeft2.getText());
-			nplates[1][2] = Double.valueOf(textBottom2.getText());
-			nplates[1][3] = Double.valueOf(textRight2.getText());
-			nplates[2][0] = Double.valueOf(textTop3.getText());
-			nplates[2][1] = Double.valueOf(textLeft3.getText());
-			nplates[2][2] = Double.valueOf(textBottom3.getText());
-			nplates[2][3] = Double.valueOf(textRight3.getText());
+			readPlatesIntoArray(nplates);
 
 			if ((int) Integer.parseInt(textDpi.getText()) != ScanLib.DPI_300
 					&& (int) Integer.parseInt(textDpi.getText()) != ScanLib.DPI_600) {

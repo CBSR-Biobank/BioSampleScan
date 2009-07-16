@@ -23,11 +23,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setInitialSize(new Point(800, 650));
+		configurer.setInitialSize(new Point(900, 700));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		configurer.setTitle("BioBank2 Sample Scanner");
 		configurer.setShowProgressIndicator(false);
+		configurer.setShowPerspectiveBar(false);
 	}
 
 	// This is the new method

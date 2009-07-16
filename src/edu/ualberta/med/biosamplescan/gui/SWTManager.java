@@ -18,8 +18,6 @@ import org.eclipse.swt.widgets.Widget;
 public class SWTManager {
 	private static HashMap<String, Resource> resources = new HashMap<String, Resource>();
 	private static Vector<Widget> users = new Vector<Widget>();
-	private static SWTManager instance = new SWTManager();
-
 	private static DisposeListener disposeListener = new DisposeListener() {
 		public void widgetDisposed(DisposeEvent e) {
 			users.remove(e.getSource());

@@ -5,7 +5,8 @@
    <extension
          id="application"
          point="org.eclipse.core.runtime.applications">
-      <application>
+      <application
+            visible="true">
          <run
                class="edu.ualberta.med.biosamplescan.rcp.Application">
          </run>
@@ -21,49 +22,74 @@
       </perspective>
    </extension>
    <extension
-         id="edu.ualberta.med.biosamplescan.Options"
-         name="Options"
+         id="edu.ualberta.med.biosamplescan.View"
+         name="Views"
          point="org.eclipse.ui.views">
       <view
-            name="View"
+            allowMultiple="true"
             class="edu.ualberta.med.biosamplescan.View"
-            id="edu.ualberta.med.biosamplescan.view">
+            id="edu.ualberta.med.biosamplescan.view"
+            name="View"
+            restorable="true">
       </view>
       <view
-            class="edu.ualberta.med.biosamplescan.Options"
-            id="edu.ualberta.med.biosamplescan.options"
-            name="Options"
-            restorable="false">
+            allowMultiple="true"
+            class="edu.ualberta.med.biosamplescan.Option"
+            id="edu.ualberta.med.biosamplescan.option"
+            name="Option"
+            restorable="true">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.menus">
-      <widget
-            class="biosamplescan.WorkbenchWidget1"
-            id="BioSampleScan.widget1">
-      </widget>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="edu.ualberta.med.biosamplescan.rcp.perspective">
          <view
+               closeable="true"
                id="edu.ualberta.med.biosamplescan.view"
                minimized="false"
-               ratio="0.95f"
+               moveable="true"
+               ratio="1f"
                relationship="left"
                relative="org.eclipse.ui.editorss"
-               standalone="false">
+               showTitle="true"
+               standalone="false"
+               visible="true">
          </view>
          <view
-               id="edu.ualberta.med.biosamplescan.options"
+               closeable="true"
+               id="edu.ualberta.med.biosamplescan.option"
                minimized="false"
-               ratio="0.95f"
+               moveable="true"
+               ratio="1f"
                relationship="stack"
                relative="edu.ualberta.med.biosamplescan.view"
-               standalone="false">
+               showTitle="true"
+               standalone="false"
+               visible="false">
          </view>
       </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <widget
+            class="edu.ualberta.med.biosamplescan.Menu"
+            id="edu.ualberta.med.biosamplescan.menu">
+      </widget>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="edu.ualberta.med.biosamplescan.rcp.perspective.ViewCmd"
+            name="View Cmd">
+         <defaultHandler
+               class="edu.ualberta.med.biosamplescan.ViewCmdHanlder">
+            <parameter
+                  name="BioSampleScan.parameter1"
+                  value="BioSampleScan.parameter1">
+            </parameter>
+         </defaultHandler>
+      </command>
    </extension>
 
 </plugin>
