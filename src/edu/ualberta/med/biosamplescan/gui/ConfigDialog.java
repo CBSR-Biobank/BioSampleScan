@@ -422,7 +422,6 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				int iniConfigReturn = this.loadConfigfromIni();
 				if (iniConfigReturn != 0) {
 					System.out.println("iniConfigReturn Error");
-					System.exit(iniConfigReturn);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

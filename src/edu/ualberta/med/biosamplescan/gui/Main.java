@@ -586,14 +586,14 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			}
 		} else { // first time running
 			int scanlibReturn = scanlib.slConfigScannerBrightness(0);
-			FIXSCANLIBINIWRITINGBUG();
+
 			if (scanlibReturn != ScanLib.SC_SUCCESS) {
 				errorMsg("Error Failure!!\n"
 						+ "Failed to write to scanlib.ini\n"
 						+ "Application Failure: ", scanlibReturn);
-				System.exit(1);
 			} else {
 				if (new File("scanlib.ini").exists()) {
+					FIXSCANLIBINIWRITINGBUG();
 					menuConfigurationWidgetSelected(evt);
 				} else {
 					MessageDialog.openError(getShell(), "Error Failure!!",
