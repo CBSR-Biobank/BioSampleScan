@@ -2,6 +2,7 @@ package edu.ualberta.med.biosamplescan.gui;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -652,6 +653,10 @@ public class Main extends org.eclipse.swt.widgets.Composite {
                 tableItems[table - 1][r].setText(row);
             }
         }
+        catch (FileNotFoundException e) {
+            MessageDialog.openError(getShell(), "DLL Error",
+                "File scanlib.txt was not found.");
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -724,22 +729,12 @@ public class Main extends org.eclipse.swt.widgets.Composite {
                 + configDialog.plates[plate][2] + configDialog.plates[plate][3] > 0
                 && plateBtn[plate].getSelection()) {
                 int scanlibReturn =
-                    scanlib.slDecodePlate(configDialog.dpi, plate + 1); /*
-                                                                         * TODO
-                                                                         * fix -
-                                                                         * scanlib
-                                                                         * exits
-                                                                         * the
-                                                                         * program
-                                                                         * with
-                                                                         * a
-                                                                         * return
-                                                                         * code
-                                                                         * of 1
-                                                                         * when
-                                                                         * platenum
-                                                                         * > 3
-                                                                         */
+                    scanlib.slDecodePlate(configDialog.dpi, plate + 1);
+
+                /*
+                 * TODO fix - scanlib exits the program with a return code of 1
+                 * when platenum > 3
+                 */
 
                 FIXSCANLIBINIWRITINGBUG();
                 switch (scanlibReturn) {

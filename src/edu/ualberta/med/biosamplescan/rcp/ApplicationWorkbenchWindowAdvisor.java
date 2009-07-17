@@ -26,7 +26,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setInitialSize(new Point(900, 700));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);
-        configurer.setTitle("Canadian BioSample Repository Scanner");
+        configurer.setTitle("CBSR Sample Scanner");
         configurer.setShowProgressIndicator(false);
         configurer.setShowPerspectiveBar(false);
     }
