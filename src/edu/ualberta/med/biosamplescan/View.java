@@ -29,9 +29,8 @@ public class View extends ViewPart {
         // TODO: MOVE FOLLOWING CODE TO TREE VIEWER VIEW WHEN READY
         //
         String osname = System.getProperty("os.name");
-        if (osname.startsWith("Windows")) {
-            ScanLib scanLib = ScanLibFactory.getScanLib();
-            if (scanLib.slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
+        if (!osname.startsWith("Windows")) {
+            if (ScanLibFactory.getScanLib().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
                 Display.getDefault().asyncExec(new Runnable() {
                     public void run() {
                         BioSampleScanPlugin.openError("TWAIN Driver Error",
