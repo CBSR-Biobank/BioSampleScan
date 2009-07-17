@@ -9,15 +9,22 @@ import edu.ualberta.med.biosamplescan.gui.Main;
 public class View extends ViewPart {
 	public static final String ID = "edu.ualberta.med.biosamplescan.view";
 
-	Composite client;
+	private Main main;
+
+	public View() {
+		BioSampleScanPlugin.getDefault().addView(this);
+	}
 
 	public void createPartControl(Composite parent) {
-		client = new Composite(parent, SWT.NONE);
-		new Main(client, SWT.BORDER);
+		main = new Main(parent, SWT.BORDER);
+	}
+
+	public Main getMain() {
+		return main;
 	}
 
 	public void setFocus() {
-		client.setFocus();
+		main.setFocus();
 	}
 
 }

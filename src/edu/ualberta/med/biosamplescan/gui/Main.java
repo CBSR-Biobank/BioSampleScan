@@ -13,8 +13,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -25,30 +25,10 @@ import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class Main extends org.eclipse.swt.widgets.Composite {
-	private Menu mainmenu;
-	private Menu menu1;
-	private Menu menu5;
-	private MenuItem menuSource;
-	private MenuItem menuScanner;
-	private MenuItem menuQuit;
-	private MenuItem menuSaveCvsAs;
-	private MenuItem menuSaveSelected;
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
-	private MenuItem menuSetMode;
-
-	private Menu menu3;
-	private MenuItem menuNew;
-	private MenuItem menuAutoSaving;
-	private MenuItem menuOptions;
-	private MenuItem menuScanPlateFile;
-	private MenuItem menuScanImageFile;
-	private MenuItem menuSaveSelectd;
-
 	private Button scanPlateBtn;
 	private Button clearPlateBtn;
-	private Menu menu2;
-	private MenuItem menuConfiguration;
 
 	private static int MAXPLATES = 4;
 
@@ -59,18 +39,9 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private TableColumn[][] tableColumns = new TableColumn[MAXPLATES][MAXPLATES * 13];
 	private TableItem[][] tableItems = new TableItem[MAXPLATES][MAXPLATES * 8];
 
-	private Menu menu4;
-	private MenuItem menuSaveBarcode;
-	private MenuItem sep6;
-	private MenuItem filemenu;
-
 	private String lastSaveSelectLocation;
 	private ScanLib scanlib = ScanLibFactory.getScanLib();
-	DebugDialog debugDialog = new DebugDialog(getShell(), SWT.NONE);
 	ConfigDialog configDialog = new ConfigDialog(getShell(), SWT.NONE);
-	ProcessingDialog processingDialog = new ProcessingDialog(getShell(),
-			SWT.NONE);
-
 	{
 		SWTManager.registerResourceUser(this);
 	}
@@ -82,7 +53,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	public void showGUI() {
 	}
 
-	public Main(org.eclipse.swt.widgets.Composite parent, int style) {
+	public Main(Composite parent, int style) {
 		super(parent, style);
 		initGUI();
 	}
@@ -450,7 +421,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	}
 
-	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {// save all
+	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {
 		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
 		dlg.setText(String.format("Save All Barcodes"));
@@ -866,6 +837,10 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			break;
 		}
 
+	}
+
+	public void die() {
+		errorMsg("test", 0);
 	}
 
 	private void saveTablePlate(int platenum) {

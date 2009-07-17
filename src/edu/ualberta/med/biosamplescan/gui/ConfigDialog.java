@@ -82,17 +82,6 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	public int contrast = 0;
 	public double plates[][] = new double[PLATENUM][4];
 
-	public static void main(String[] args) {
-		try {
-			Display display = Display.getDefault();
-			Shell shell = new Shell(display);
-			DebugDialog inst = new DebugDialog(shell, SWT.NULL);
-			inst.open("");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public ConfigDialog(Shell parent, int style) {
 		super(parent, style);
 	}

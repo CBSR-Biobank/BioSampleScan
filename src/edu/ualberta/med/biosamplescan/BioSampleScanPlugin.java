@@ -1,6 +1,7 @@
 package edu.ualberta.med.biosamplescan;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -25,10 +26,13 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static BioSampleScanPlugin plugin;
 
+	private ArrayList<View> viewList;
+
 	/**
 	 * The constructor
 	 */
 	public BioSampleScanPlugin() {
+		viewList = new ArrayList<View>();
 		String osname = System.getProperty("os.name");
 		if (osname.startsWith("Windows")) {
 			System.loadLibrary("libscanlib"); // scanlib
@@ -119,6 +123,14 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 						.getActiveWorkbenchWindow().getShell(), title, message);
 			}
 		});
+	}
+
+	public void addView(View view) {
+		viewList.add(view);
+	}
+
+	public void removeView(View view) {
+		viewList.remove(view);
 	}
 
 }

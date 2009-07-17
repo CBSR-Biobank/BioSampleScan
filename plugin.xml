@@ -32,13 +32,6 @@
             name="View"
             restorable="true">
       </view>
-      <view
-            allowMultiple="true"
-            class="edu.ualberta.med.biosamplescan.Option"
-            id="edu.ualberta.med.biosamplescan.option"
-            name="Option"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
@@ -72,10 +65,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.menus">
-      <widget
-            class="edu.ualberta.med.biosamplescan.Menu"
-            id="edu.ualberta.med.biosamplescan.menu">
-      </widget>
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
@@ -86,26 +75,222 @@
                   label="Save Selected Barcodes"
                   style="push">
             </command>
+            <separator
+                  name="BioSampleScan.separator1"
+                  visible="true">
+            </separator>
+            <menu
+                  id="edu.ualberta.med.biosamplescan.commands.saveallbarcodemenu"
+                  label="Save Barcode...">
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.savefromplate1"
+                     label="From Plate 1"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.savefromplate2"
+                     label="From Plate 2"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.savefromplate3"
+                     label="From Plate 3"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.savefromplate4"
+                     label="From Plate 4"
+                     style="push">
+               </command>
+            </menu>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
+                  label="Save All Barcodes..."
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
+                  label="Save Selected Barcodes..."
+                  style="push">
+            </command>
+            <separator
+                  name="BioSampleScan.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.clearalltables"
+                  label="Clear All Tables"
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.quit"
+                  label="Quit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.options"
+               label="Options">
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.autosaving"
+                  label="Auto Saving"
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.platemode"
+                  label="Plate Mode"
+                  style="push">
+            </command>
+            <separator
+                  name="BioSampleScan.separator3"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.scannersettings"
+                  label="Scanner Settings"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.scanner"
+               label="Scanner">
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.selectsource"
+                  label="Select Source"
+                  style="push">
+            </command>
+            <separator
+                  name="BioSampleScan.separator5"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.scanimagetofile"
+                  label="Scan Image to File..."
+                  style="push">
+            </command>
+            <menu
+                  id="edu.ualberta.med.biosamplescan.commands.scanimagetoplatemenu"
+                  label="Scan Image to Plate...">
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate1"
+                     label="Plate 1"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate2"
+                     label="Plate 2"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate3"
+                     label="Plate 3"
+                     style="push">
+               </command>
+               <command
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate4"
+                     label="Plate 4"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="edu.ualberta.med.biosamplescan.rcp.perspective.ViewCmd"
-            name="View Cmd">
-         <defaultHandler
-               class="edu.ualberta.med.biosamplescan.ViewCmdHanlder">
-            <parameter
-                  name="BioSampleScan.parameter1"
-                  value="BioSampleScan.parameter1">
-            </parameter>
-         </defaultHandler>
-      </command>
-      <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveSelectedBarcodes"
             id="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
             name="Save Selected Barcodes">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveAllBarcodes"
+            id="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
+            name="Save All Barcodes...">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveSelectedBarcodesDialog"
+            id="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
+            name="Save Selected Barcodes...">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.ClearAllTables"
+            id="edu.ualberta.med.biosamplescan.commands.clearalltables"
+            name="Clear All Tables">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.Quit"
+            id="edu.ualberta.med.biosamplescan.commands.quit"
+            name="Quit">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.AutoSaving"
+            id="edu.ualberta.med.biosamplescan.commands.autosaving"
+            name="Auto Saving">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.PlateMode"
+            id="edu.ualberta.med.biosamplescan.commands.platemode"
+            name="Plate Mode">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScannerSettings"
+            id="edu.ualberta.med.biosamplescan.commands.scannersettings"
+            name="Scanner Settings">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SelectSource"
+            id="edu.ualberta.med.biosamplescan.commands.selectsource"
+            name="Select Source">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScanImageToFile"
+            id="edu.ualberta.med.biosamplescan.commands.scanimagetofile"
+            name="Scan Image to File...">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScanImageToPlate"
+            id="edu.ualberta.med.biosamplescan.commands.scanimagetoplate"
+            name="Scan Image to Plate...">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate1"
+            id="edu.ualberta.med.biosamplescan.commands.savefromplate1"
+            name="Save From Plate 1">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate2"
+            id="edu.ualberta.med.biosamplescan.commands.savefromplate2"
+            name="Save From Plate 2">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate4"
+            id="edu.ualberta.med.biosamplescan.commands.savefromplate4"
+            name="Save From Plate 4">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate3"
+            id="edu.ualberta.med.biosamplescan.commands.savefromplate3"
+            name="Save From Plate 3">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate1"
+            id="edu.ualberta.med.biosamplescan.commands.imagetoplate1"
+            name="Save Image to Plate 1">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate2"
+            id="edu.ualberta.med.biosamplescan.commands.imagetoplate2"
+            name="Save Image to Plate 2">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate3"
+            id="edu.ualberta.med.biosamplescan.commands.imagetoplate3"
+            name="Save Image to Plate 3">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate4"
+            id="edu.ualberta.med.biosamplescan.commands.imagetoplate4"
+            name="Save Image to Plate 4">
       </command>
    </extension>
 
