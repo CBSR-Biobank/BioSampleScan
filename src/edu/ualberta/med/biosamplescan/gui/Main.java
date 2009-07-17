@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -14,8 +12,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -25,248 +21,33 @@ import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class Main extends org.eclipse.swt.widgets.Composite {
-	private Button loadFromFile;
-	private Button reScanPlateBtn;
-	private Button scanPlateBtn;
-	private Button clearPlateBtn;
+	public Button loadFromFile;
+	public Button reScanPlateBtn;
+	public Button scanPlateBtn;
+	public Button clearPlateBtn;
+	public Button[] plateBtn = new Button[MAXPLATES];
 
-	private static int MAXPLATES = 4;
+	public static int MAXPLATES = 4;
 
-	private MenuItem[] menuPlates = new MenuItem[MAXPLATES];
-	private Button[] plateBtn = new Button[MAXPLATES];
-	private MenuItem[] menuSaveBarcodes = new MenuItem[MAXPLATES];
-	private Table[] tables = new Table[MAXPLATES];
-	private TableColumn[][] tableColumns = new TableColumn[MAXPLATES][MAXPLATES * 13];
-	private TableItem[][] tableItems = new TableItem[MAXPLATES][MAXPLATES * 8];
+	public Table[] tables = new Table[MAXPLATES];
+	public TableColumn[][] tableColumns = new TableColumn[MAXPLATES][MAXPLATES * 13];
+	public TableItem[][] tableItems = new TableItem[MAXPLATES][MAXPLATES * 8];
 
-	private String lastSaveSelectLocation;
-	private ScanLib scanlib = ScanLibFactory.getScanLib();
-	ConfigDialog configDialog = new ConfigDialog(getShell(), SWT.NONE);
-	{
-		SWTManager.registerResourceUser(this);
-	}
-
-	public void main(String[] args) {
-		showGUI();
-	}
-
-	public void showGUI() {
-	}
+	public String lastSaveSelectLocation;
+	public ConfigDialog configDialog = new ConfigDialog(getShell(), SWT.NONE);
 
 	public Main(Composite parent, int style) {
 		super(parent, style);
+		SWTManager.registerResourceUser(this);
 		initGUI();
 	}
 
-	private void initGUI() {
+	public void initGUI() {
 		try {
 			this.setLayout(null);
-			{
-				// mainmenu = new Menu(getShell(), SWT.BAR);
-				// getShell().setMenuBar(mainmenu);
-				// {
-				// filemenu = new MenuItem(mainmenu, SWT.CASCADE);
-				// filemenu.setText("File");
-				// {
-				// menu1 = new Menu(filemenu);
-				// filemenu.setMenu(menu1);
-				// {
-				// menuSaveSelectd = new MenuItem(menu1, SWT.CASCADE);
-				// menuSaveSelectd.setText("Save Selected Barcodes");
-				// menuSaveSelectd
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSaveSelectdWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				//
-				// sep6 = new MenuItem(menu1, SWT.SEPARATOR);
-				// sep6.setText("sep6");
-				// }
-				// {
-				// menuSaveBarcode = new MenuItem(menu1, SWT.CASCADE);
-				// menuSaveBarcode.setText("Save Barcode...");
-				// {
-				// menu4 = new Menu(menuSaveBarcode);
-				// menuSaveBarcode.setMenu(menu4);
-				//
-				// menuSaveBarcodes = new MenuItem[MAXPLATES];
-				// for (int i = 0; i < MAXPLATES; i++) {
-				// menuSaveBarcodes[i] = new MenuItem(menu4,
-				// SWT.CASCADE);
-				// menuSaveBarcodes[i].setText(String.format(
-				// "From Plate %d", i + 1));
-				// menuSaveBarcodes[i]
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSaveBarcodeWidgetSelected(evt);
-				// }
-				// });
-				// }
-				//
-				// }
-				// }
-				// {
-				// menuSaveCvsAs = new MenuItem(menu1, SWT.CASCADE);
-				// menuSaveCvsAs.setText("Save All Barcodes...");
-				// menuSaveCvsAs
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSaveCvsAsWidgetSelected(evt);
-				// }
-				// });
-				// }
-				//
-				// {
-				//
-				// menuSaveSelected = new MenuItem(menu1, SWT.CASCADE);
-				// menuSaveSelected
-				// .setText("Save Selected Barcodes...");
-				// menuSaveSelected
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSaveSelectedWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// new MenuItem(menu1, SWT.SEPARATOR);
-				// }
-				// {
-				// menuNew = new MenuItem(menu1, SWT.CASCADE);
-				// menuNew.setText("Clear All Tables");
-				// menuNew
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuNewWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// menuQuit = new MenuItem(menu1, SWT.CASCADE);
-				// menuQuit.setText("Quit");
-				// menuQuit
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuQuitWidgetSelected(evt);
-				// }
-				// });
-				//
-				// }
-				// }
-				// }
-				// {
-				// menuOptions = new MenuItem(mainmenu, SWT.CASCADE);
-				// menuOptions.setText("Options");
-				// {
-				// menu2 = new Menu(menuOptions);
-				// menuOptions.setMenu(menu2);
-				// {
-				// menuAutoSaving = new MenuItem(menu2, SWT.CASCADE);
-				// menuAutoSaving.setText("Auto Saving");
-				// menuAutoSaving
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuAutoSavingWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// menuSetMode = new MenuItem(menu2, SWT.CASCADE);
-				// menuSetMode.setText("Plate Mode");
-				// menuSetMode
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSetModeWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// new MenuItem(menu2, SWT.SEPARATOR);
-				// }
-				// {
-				// menuConfiguration = new MenuItem(menu2, SWT.CASCADE);
-				// menuConfiguration.setText("Scanning");
-				// menuConfiguration
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuConfigurationWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// }
-				// }
-				// {
-				// menuScanner = new MenuItem(mainmenu, SWT.CASCADE);
-				// menuScanner.setText("Scanner");
-				// {
-				// menu5 = new Menu(menuScanner);
-				// menuScanner.setMenu(menu5);
-				// {
-				// menuSource = new MenuItem(menu5, SWT.CASCADE);
-				// menuSource.setText("Select Source");
-				// menuSource
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuSourceWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// new MenuItem(menu5, SWT.SEPARATOR);
-				// }
-				// {
-				// menuScanImageFile = new MenuItem(menu5, SWT.CASCADE);
-				// menuScanImageFile.setText("Scan Image to File...");
-				// menuScanImageFile
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuScanImageFileWidgetSelected(evt);
-				// }
-				// });
-				// }
-				// {
-				// menuScanPlateFile = new MenuItem(menu5, SWT.CASCADE);
-				// menuScanPlateFile.setText("Scan Plate to File...");
-				// {
-				// menu3 = new Menu(menuScanPlateFile);
-				// menuScanPlateFile.setMenu(menu3);
-				//
-				// for (int i = 0; i < MAXPLATES; i++) {
-				// menuPlates[i] = new MenuItem(menu3,
-				// SWT.CASCADE);
-				// menuPlates[i].setText(String.format(
-				// "Plate %d", i + 1));
-				// menuPlates[i]
-				// .addSelectionListener(new SelectionAdapter() {
-				// public void widgetSelected(
-				// SelectionEvent evt) {
-				// menuPlateScanToFile(evt);
-				// }
-				// });
-				// }
-				// }
-				// }
-				// }
-				// }
-			}
 			this.layout();
 			pack();
 			{
-
 				for (int table = 0; table < MAXPLATES; table++) {
 
 					tables[table] = new Table(this, SWT.FULL_SELECTION
@@ -366,11 +147,11 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private boolean confirmMsg(String title, String msg) {
+	public boolean confirmMsg(String title, String msg) {
 		return MessageDialog.openConfirm(getShell(), title, msg);
 	}
 
-	private void errorMsg(String Identifier, int code) {
+	public void errorMsg(String Identifier, int code) {
 		if (code != 0) {
 			MessageDialog.openError(getShell(), "Error", String.format(
 					"%s\nReturned Error Code: %d\n", Identifier, code));
@@ -379,8 +160,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void checkTwain() {
-		int scanlibReturn = scanlib.slIsTwainAvailable();
+	public void checkTwain() {
+		int scanlibReturn = ScanLibFactory.getScanLib().slIsTwainAvailable();
 		switch (scanlibReturn) {
 		case (ScanLib.SC_SUCCESS):
 			break;
@@ -391,12 +172,13 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void loadSettings() {
+	public void loadSettings() {
 		configDialog.open("LOAD SETTINGS");
 		int cdReturn = configDialog.loadConfigfromIni();
 		if (cdReturn != 0) {
 			if (cdReturn == -1) { // Did not find scanlib.ini
-				int scanlibReturn = scanlib.slConfigScannerBrightness(0);
+				int scanlibReturn = ScanLibFactory.getScanLib()
+						.slConfigScannerBrightness(0);
 				if (scanlibReturn != ScanLib.SC_SUCCESS) {
 					errorMsg("Error Failure!!\n"
 							+ "Failed to write to scanlib.ini\n"
@@ -421,155 +203,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 	}
 
-	private void menuSaveCvsAsWidgetSelected(SelectionEvent evt) {
-		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
-		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
-		dlg.setText(String.format("Save All Barcodes"));
-		String saveLocation = dlg.open();
-		if (saveLocation == null) {
-			return;
-		}
-		boolean[] tablesCheck = new boolean[MAXPLATES];
-		for (int i = 0; i < MAXPLATES; i++) {
-			tablesCheck[i] = true;
-		}
-
-		saveTables(saveLocation, tablesCheck);
-
-	}
-
-	private void menuQuitWidgetSelected(SelectionEvent evt) {
-		if (confirmMsg("Quit", "Do you want to quit?")) {
-			System.exit(0);
-		}
-	}
-
-	private void menuSourceWidgetSelected(SelectionEvent evt) {
-		int scanlibReturn = scanlib.slSelectSourceAsDefault();
-		switch (scanlibReturn) {
-		case (ScanLib.SC_SUCCESS):
-			break;
-		case (ScanLib.SC_INVALID_VALUE): // user canceled dialog box
-			break;
-		}
-	}
-
-	private void menuConfigurationWidgetSelected(SelectionEvent evt) {
-		if (new File("scanlib.ini").exists()) {
-			// int olddpi = configDialog.dpi; //accessed from here
-			int oldbrightness = configDialog.brightness;
-			int oldcontrast = configDialog.contrast;
-
-			double oldplates[][] = new double[MAXPLATES][4];
-			for (int plate = 0; plate < MAXPLATES; plate++) {
-				for (int i = 0; i < 4; i++) {
-					oldplates[plate][i] = configDialog.plates[plate][i];
-				}
-			}
-			configDialog.open("");
-			if (configDialog.cancledDialog) {
-				return;
-			}
-
-			if (oldbrightness != configDialog.brightness) {
-				int scanlibReturn = scanlib
-						.slConfigScannerBrightness(configDialog.brightness);
-				switch (scanlibReturn) {
-				case (ScanLib.SC_SUCCESS):
-					break;
-				case (ScanLib.SC_INVALID_VALUE):
-					errorMsg("menuConfigurationWidgetSelected, Brightness ",
-							scanlibReturn);
-					return;
-
-				case (ScanLib.SC_INI_FILE_ERROR):
-					errorMsg("menuConfigurationWidgetSelected, Brightness ",
-							scanlibReturn);
-					return;
-				}
-
-			}
-			if (oldcontrast != configDialog.contrast) {
-				int scanlibReturn = scanlib
-						.slConfigScannerContrast(configDialog.contrast);
-				switch (scanlibReturn) {
-				case (ScanLib.SC_SUCCESS):
-					break;
-				case (ScanLib.SC_INVALID_VALUE):
-					errorMsg("menuConfigurationWidgetSelected, contrast ",
-							scanlibReturn);
-					return;
-
-				case (ScanLib.SC_INI_FILE_ERROR):
-					errorMsg("menuConfigurationWidgetSelected, Contrast ",
-							scanlibReturn);
-					return;
-				}
-			}
-
-			boolean platesChanged[] = new boolean[MAXPLATES];
-
-			double sum = 0;
-			for (int plate = 0; plate < MAXPLATES; plate++) {
-				for (int i = 0; i < 4; i++) {
-					if (oldplates[plate][i] != configDialog.plates[plate][i]) {
-						platesChanged[plate] = true;
-					}
-					sum += configDialog.plates[plate][i];
-				}
-			}
-			if (sum == 0) {
-				errorMsg("Must Configure Atleast One Plate", -1);
-				menuConfigurationWidgetSelected(evt);
-			}
-			for (int plate = 0; plate < MAXPLATES; plate++) {
-				if (platesChanged[plate]) {
-					int scanlibReturn = scanlib.slConfigPlateFrame(plate + 1,
-							configDialog.plates[plate][1],
-							configDialog.plates[plate][0],
-							configDialog.plates[plate][3],
-							configDialog.plates[plate][2]);
-					switch (scanlibReturn) {
-					case (ScanLib.SC_SUCCESS):
-						break;
-					case (ScanLib.SC_FAIL):
-						errorMsg(
-								"menuConfigurationWidgetSelected, slConfigPlateFrame",
-								scanlibReturn);
-						return;
-					}
-					if (configDialog.plates[plate][0]
-							+ configDialog.plates[plate][1]
-							+ configDialog.plates[plate][2]
-							+ configDialog.plates[plate][3] > 0) {
-						scanlibReturn = scanlib.slCalibrateToPlate(
-								configDialog.dpi, plate + 1);
-						switch (scanlibReturn) {
-						case (ScanLib.SC_SUCCESS):
-							break;
-						case (ScanLib.SC_INVALID_IMAGE):
-							errorMsg(
-									"menuConfigurationWidgetSelected, Calibratation",
-									scanlibReturn);
-							return;
-
-						case (ScanLib.SC_INI_FILE_ERROR):
-							errorMsg(
-									"menuConfigurationWidgetSelected, tation ",
-									scanlibReturn);
-							return;
-						}
-					}
-				}
-			}
-		} else {
-			MessageDialog.openError(getShell(), "Error Failure!!",
-					"Failed to find scanlib.ini file");
-			System.exit(1);
-		}
-	}
-
-	private String nulltoblankString(String in) {
+	public String nulltoblankString(String in) {
 		if (in == null || in.isEmpty()) {
 			return "";
 		} else {
@@ -577,7 +211,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void tableScanlibData(int table, boolean append) {
+	public void tableScanlibData(int table, boolean append) {
 		try {
 			ScanCell[][] sc = ScanCell.getScanLibResults();
 			String[] row = new String[13];
@@ -606,7 +240,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void saveTables(String fileLocation, boolean[] tables) {
+	public void saveTables(String fileLocation, boolean[] tables) {
 		if (tables.length < MAXPLATES) {
 			System.out.print("Bad Design Error");
 			System.exit(-666);
@@ -637,7 +271,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void clearPlateBtnWidgetSelected(SelectionEvent evt) {
+	public void clearPlateBtnWidgetSelected(SelectionEvent evt) {
 		if (confirmMsg("Clear Table(s)",
 				"Do you want to clear the selected tables?")) {
 			for (int p = 0; p < MAXPLATES; p++) {
@@ -653,8 +287,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean append) {
-
+	public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean append) {
 		boolean pass = false;
 		for (int i = 0; i < MAXPLATES; i++) {
 			if (plateBtn[i].getSelection()) {
@@ -672,14 +305,8 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					+ configDialog.plates[plate][2]
 					+ configDialog.plates[plate][3] > 0
 					&& plateBtn[plate].getSelection()) {
-				int scanlibReturn = scanlib.slDecodePlate(configDialog.dpi,
-						plate + 1);
-
-				/*
-				 * TODO fix - scanlib exits the program with a return code of 1
-				 * when platenum > 3
-				 */
-
+				int scanlibReturn = ScanLibFactory.getScanLib().slDecodePlate(
+						configDialog.dpi, plate + 1);
 				switch (scanlibReturn) {
 				case (ScanLib.SC_SUCCESS):
 					break;
@@ -693,215 +320,9 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void menuSaveSelectdWidgetSelected(SelectionEvent evt) {
-		if (lastSaveSelectLocation == null || lastSaveSelectLocation.isEmpty()) {
-			menuSaveSelectedWidgetSelected(evt);
-		} else {
-
-			boolean[] tablesCheck = new boolean[MAXPLATES];
-			for (int i = 0; i < MAXPLATES; i++) {
-				tablesCheck[i] = plateBtn[i].getSelection();
-			}
-			saveTables(lastSaveSelectLocation, tablesCheck);
-		}
-	}
-
-	private void menuNewWidgetSelected(SelectionEvent evt) {
-		if (confirmMsg("Clear Table(s)", "Do you want to clear all the tables?")) {
-			for (int p = 0; p < MAXPLATES; p++) {
-				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
-						tableItems[p][r].setText(c + 1, "");
-					}
-				}
-			}
-		}
-	}
-
-	/* NOTE: Adjust the text if when change MAXPLATES */
-	private void menuSetModeWidgetSelected(SelectionEvent evt) {// TODO
-		InputDialog dlg = new InputDialog(getShell(), "Plate Mode",
-				"Please enter the plate mode:\nNote: The range is (1,4)", "4",
-				new IInputValidator() {
-					public String isValid(String newText) {
-						int len = newText.length();
-						if (len < 0 || len > 1)
-							return "(1 <= digit <= 4)";
-						int val = 0;
-						try {
-							val = Integer.valueOf(newText);
-						} catch (NumberFormatException e) {
-						}
-						if (val < 1 || val > MAXPLATES) {
-							return "(1 <= digit <= 4)";
-						}
-						return null;
-					}
-				});
-
-		dlg.open();
-		String ret = dlg.getValue();
-		if (ret == null || ret.isEmpty()) {
-			return;
-		}
-		boolean set = false;
-		for (int table = 0; table < MAXPLATES; table++) {
-			set = (table < Integer.valueOf(ret));
-			tables[table].setEnabled(set);
-			plateBtn[table].setEnabled(set);
-			menuSaveBarcodes[table].setEnabled(set);
-			menuPlates[table].setEnabled(set);
-			plateBtn[table].setEnabled(set);
-			if (!set) {
-				plateBtn[table].setSelection(false);
-				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
-						tableItems[table][r].setText(c + 1, "");
-					}
-				}
-			}
-		}
-	}
-
-	private void menuAutoSavingWidgetSelected(SelectionEvent evt) {
-		System.out.println("menuAutoSaving.widgetSelected, event=" + evt);
-		// TODO add your code for menuAutoSaving.widgetSelected
-	}
-
-	private void menuScanImageFileWidgetSelected(SelectionEvent evt) {
-		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
-		dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
-		dlg.setText("Scan and Save Image");
-		String saveLocation = dlg.open();
-		if (saveLocation == null) {
-			return;
-		}
-		int scanlibReturn = scanlib.slScanImage(configDialog.dpi, 0, 0, 0, 0,
-				saveLocation);
-		switch (scanlibReturn) {
-		case (ScanLib.SC_SUCCESS):
-			break;
-		case (ScanLib.SC_INVALID_DPI):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_INVALID_PLATE_NUM):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_FAIL):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_FILE_SAVE_ERROR):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		}
-	}
-
-	private void menuPlateScanToFile(SelectionEvent evt) {
-		int platenum = 0;
-		if (evt.toString().indexOf("Plate ") > -1) {
-			platenum = Integer.parseInt(evt.toString().substring(
-					evt.toString().indexOf("Plate ") + 6,
-					evt.toString().indexOf("Plate ") + 7)); /* h3x */
-		}
-		if (platenum == 0) {
-			return;
-		}
-
-		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
-		dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
-		dlg.setText(String.format("Scan and Save Plate %d", platenum));
-		String saveLocation = dlg.open();
-		if (saveLocation == null) {
-			return;
-		}
-
-		int scanlibReturn = scanlib.slScanPlate(configDialog.dpi, platenum,
-				saveLocation);
-		switch (scanlibReturn) {
-		case (ScanLib.SC_SUCCESS):
-			break;
-		case (ScanLib.SC_INVALID_DPI):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_INVALID_PLATE_NUM):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_FAIL):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		case (ScanLib.SC_FILE_SAVE_ERROR):
-			errorMsg("Scanlib ScanImage", scanlibReturn);
-			break;
-		}
-
-	}
-
-	public void die() {
-		errorMsg("test", 0);
-	}
-
-	private void saveTablePlate(int platenum) {
-		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
-		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
-		dlg.setText(String.format("Save Barcodes For Plate %d", platenum));
-		String saveLocation = dlg.open();
-
-		if (saveLocation != null) {
-			boolean[] tablesCheck = new boolean[MAXPLATES];
-			for (int i = 0; i < MAXPLATES; i++) {
-				tablesCheck[i] = false;
-			}
-			tablesCheck[platenum - 1] = true;
-
-			saveTables(saveLocation, tablesCheck);
-
-		}
-	}
-
-	private void menuSaveBarcodeWidgetSelected(SelectionEvent evt) {
-		if (evt.toString().indexOf("From Plate ") > -1) {
-			int platenum = Integer.parseInt(evt.toString().substring(
-					evt.toString().indexOf("From Plate ") + 11,
-					evt.toString().indexOf("From Plate ") + 12)); /* h3x */
-			saveTablePlate(platenum);
-		}
-
-	}
-
-	private void loadFromFileWidgetSelected(SelectionEvent evt) {// TODO remove
+	public void loadFromFileWidgetSelected(SelectionEvent evt) {// TODO remove
 		for (int i = 0; i < MAXPLATES; i++) {
 			tableScanlibData(i + 1, false);
 		}
-	}
-
-	private void menuSaveSelectedWidgetSelected(SelectionEvent evt) {
-		boolean pass = false;
-		for (int i = 0; i < MAXPLATES; i++) {
-			if (plateBtn[i].getSelection()) {
-				pass = true;
-				break;
-			}
-		}
-		if (!pass) {
-			errorMsg("No Plates Selected", 0);
-			return;
-		}
-
-		FileDialog dlg = new FileDialog(getShell(), SWT.SAVE);
-		dlg.setFilterExtensions(new String[] { "*.cvs", "*.*" });
-		dlg.setText(String.format("Save Barcodes for the Selected Plates"));
-		String saveLocation = dlg.open();
-		if (saveLocation != null) {
-			boolean[] tablesCheck = new boolean[MAXPLATES];
-			for (int i = 0; i < MAXPLATES; i++) {
-				tablesCheck[i] = plateBtn[i].getSelection();
-			}
-			saveTables(saveLocation, tablesCheck);
-			lastSaveSelectLocation = saveLocation;
-		}
-
 	}
 }

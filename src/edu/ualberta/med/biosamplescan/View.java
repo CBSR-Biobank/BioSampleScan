@@ -15,6 +15,12 @@ public class View extends ViewPart {
 		BioSampleScanPlugin.getDefault().addView(this);
 	}
 
+	@Override
+	public void dispose() {
+		BioSampleScanPlugin.getDefault().removeView(this);
+
+	}
+
 	public void createPartControl(Composite parent) {
 		main = new Main(parent, SWT.BORDER);
 	}
@@ -23,6 +29,7 @@ public class View extends ViewPart {
 		return main;
 	}
 
+	@Override
 	public void setFocus() {
 		main.setFocus();
 	}

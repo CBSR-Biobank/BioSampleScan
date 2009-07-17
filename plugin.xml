@@ -170,24 +170,24 @@
             </command>
             <menu
                   id="edu.ualberta.med.biosamplescan.commands.scanimagetoplatemenu"
-                  label="Scan Image to Plate...">
+                  label="Scan Plate to File...">
                <command
-                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate1"
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
                      label="Plate 1"
                      style="push">
                </command>
                <command
-                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate2"
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
                      label="Plate 2"
                      style="push">
                </command>
                <command
-                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate3"
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
                      label="Plate 3"
                      style="push">
                </command>
                <command
-                     commandId="edu.ualberta.med.biosamplescan.commands.imagetoplate4"
+                     commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
                      label="Plate 4"
                      style="push">
                </command>
@@ -248,48 +248,43 @@
             name="Scan Image to File...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScanImageToPlate"
-            id="edu.ualberta.med.biosamplescan.commands.scanimagetoplate"
-            name="Scan Image to Plate...">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate1"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable1"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate1"
             name="Save From Plate 1">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate2"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable2"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate2"
             name="Save From Plate 2">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate4"
-            id="edu.ualberta.med.biosamplescan.commands.savefromplate4"
-            name="Save From Plate 4">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveFromPlate3"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable3"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate3"
             name="Save From Plate 3">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate1"
-            id="edu.ualberta.med.biosamplescan.commands.imagetoplate1"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable4"
+            id="edu.ualberta.med.biosamplescan.commands.savefromplate4"
+            name="Save From Plate 4">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate1"
+            id="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
             name="Save Image to Plate 1">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate2"
-            id="edu.ualberta.med.biosamplescan.commands.imagetoplate2"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate2"
+            id="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
             name="Save Image to Plate 2">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate3"
-            id="edu.ualberta.med.biosamplescan.commands.imagetoplate3"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate3"
+            id="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
             name="Save Image to Plate 3">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImageToPlate4"
-            id="edu.ualberta.med.biosamplescan.commands.imagetoplate4"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate4"
+            id="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
             name="Save Image to Plate 4">
       </command>
    </extension>
