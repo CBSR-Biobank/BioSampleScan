@@ -1,6 +1,7 @@
 package edu.ualberta.med.biosamplescan.gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -495,13 +496,16 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 			contrast = Integer.parseInt(textContrast.getText());
 			readPlatesIntoArray(plates);
 
+		} catch (FileNotFoundException e) {
+			return -1;
 		} catch (InvalidFileFormatException e) {
 			e.printStackTrace();
-			return -50;
+			return -2;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return -51;
+			return -3;
 		}
+
 		return 0;
 	}
 

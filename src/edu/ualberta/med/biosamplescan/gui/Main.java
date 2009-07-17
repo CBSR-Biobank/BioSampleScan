@@ -2,8 +2,8 @@ package edu.ualberta.med.biosamplescan.gui;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -91,206 +91,206 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		try {
 			this.setLayout(null);
 			{
-				mainmenu = new Menu(getShell(), SWT.BAR);
-				getShell().setMenuBar(mainmenu);
-				{
-					filemenu = new MenuItem(mainmenu, SWT.CASCADE);
-					filemenu.setText("File");
-					{
-						menu1 = new Menu(filemenu);
-						filemenu.setMenu(menu1);
-						{
-							menuSaveSelectd = new MenuItem(menu1, SWT.CASCADE);
-							menuSaveSelectd.setText("Save Selected Barcodes");
-							menuSaveSelectd
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuSaveSelectdWidgetSelected(evt);
-										}
-									});
-						}
-						{
-
-							sep6 = new MenuItem(menu1, SWT.SEPARATOR);
-							sep6.setText("sep6");
-						}
-						{
-							menuSaveBarcode = new MenuItem(menu1, SWT.CASCADE);
-							menuSaveBarcode.setText("Save Barcode...");
-							{
-								menu4 = new Menu(menuSaveBarcode);
-								menuSaveBarcode.setMenu(menu4);
-
-								menuSaveBarcodes = new MenuItem[MAXPLATES];
-								for (int i = 0; i < MAXPLATES; i++) {
-									menuSaveBarcodes[i] = new MenuItem(menu4,
-											SWT.CASCADE);
-									menuSaveBarcodes[i].setText(String.format(
-											"From Plate %d", i + 1));
-									menuSaveBarcodes[i]
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuSaveBarcodeWidgetSelected(evt);
-												}
-											});
-								}
-
-							}
-						}
-						{
-							menuSaveCvsAs = new MenuItem(menu1, SWT.CASCADE);
-							menuSaveCvsAs.setText("Save All Barcodes...");
-							menuSaveCvsAs
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuSaveCvsAsWidgetSelected(evt);
-										}
-									});
-						}
-
-						{
-
-							menuSaveSelected = new MenuItem(menu1, SWT.CASCADE);
-							menuSaveSelected
-									.setText("Save Selected Barcodes...");
-							menuSaveSelected
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuSaveSelectedWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							new MenuItem(menu1, SWT.SEPARATOR);
-						}
-						{
-							menuNew = new MenuItem(menu1, SWT.CASCADE);
-							menuNew.setText("Clear All Tables");
-							menuNew
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuNewWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							menuQuit = new MenuItem(menu1, SWT.CASCADE);
-							menuQuit.setText("Quit");
-							menuQuit
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuQuitWidgetSelected(evt);
-										}
-									});
-
-						}
-					}
-				}
-				{
-					menuOptions = new MenuItem(mainmenu, SWT.CASCADE);
-					menuOptions.setText("Options");
-					{
-						menu2 = new Menu(menuOptions);
-						menuOptions.setMenu(menu2);
-						{
-							menuAutoSaving = new MenuItem(menu2, SWT.CASCADE);
-							menuAutoSaving.setText("Auto Saving");
-							menuAutoSaving
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuAutoSavingWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							menuSetMode = new MenuItem(menu2, SWT.CASCADE);
-							menuSetMode.setText("Plate Mode");
-							menuSetMode
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuSetModeWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							new MenuItem(menu2, SWT.SEPARATOR);
-						}
-						{
-							menuConfiguration = new MenuItem(menu2, SWT.CASCADE);
-							menuConfiguration.setText("Scanning");
-							menuConfiguration
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuConfigurationWidgetSelected(evt);
-										}
-									});
-						}
-					}
-				}
-				{
-					menuScanner = new MenuItem(mainmenu, SWT.CASCADE);
-					menuScanner.setText("Scanner");
-					{
-						menu5 = new Menu(menuScanner);
-						menuScanner.setMenu(menu5);
-						{
-							menuSource = new MenuItem(menu5, SWT.CASCADE);
-							menuSource.setText("Select Source");
-							menuSource
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuSourceWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							new MenuItem(menu5, SWT.SEPARATOR);
-						}
-						{
-							menuScanImageFile = new MenuItem(menu5, SWT.CASCADE);
-							menuScanImageFile.setText("Scan Image to File...");
-							menuScanImageFile
-									.addSelectionListener(new SelectionAdapter() {
-										public void widgetSelected(
-												SelectionEvent evt) {
-											menuScanImageFileWidgetSelected(evt);
-										}
-									});
-						}
-						{
-							menuScanPlateFile = new MenuItem(menu5, SWT.CASCADE);
-							menuScanPlateFile.setText("Scan Plate to File...");
-							{
-								menu3 = new Menu(menuScanPlateFile);
-								menuScanPlateFile.setMenu(menu3);
-
-								for (int i = 0; i < MAXPLATES; i++) {
-									menuPlates[i] = new MenuItem(menu3,
-											SWT.CASCADE);
-									menuPlates[i].setText(String.format(
-											"Plate %d", i + 1));
-									menuPlates[i]
-											.addSelectionListener(new SelectionAdapter() {
-												public void widgetSelected(
-														SelectionEvent evt) {
-													menuPlateScanToFile(evt);
-												}
-											});
-								}
-							}
-						}
-					}
-				}
+				// mainmenu = new Menu(getShell(), SWT.BAR);
+				// getShell().setMenuBar(mainmenu);
+				// {
+				// filemenu = new MenuItem(mainmenu, SWT.CASCADE);
+				// filemenu.setText("File");
+				// {
+				// menu1 = new Menu(filemenu);
+				// filemenu.setMenu(menu1);
+				// {
+				// menuSaveSelectd = new MenuItem(menu1, SWT.CASCADE);
+				// menuSaveSelectd.setText("Save Selected Barcodes");
+				// menuSaveSelectd
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSaveSelectdWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				//
+				// sep6 = new MenuItem(menu1, SWT.SEPARATOR);
+				// sep6.setText("sep6");
+				// }
+				// {
+				// menuSaveBarcode = new MenuItem(menu1, SWT.CASCADE);
+				// menuSaveBarcode.setText("Save Barcode...");
+				// {
+				// menu4 = new Menu(menuSaveBarcode);
+				// menuSaveBarcode.setMenu(menu4);
+				//
+				// menuSaveBarcodes = new MenuItem[MAXPLATES];
+				// for (int i = 0; i < MAXPLATES; i++) {
+				// menuSaveBarcodes[i] = new MenuItem(menu4,
+				// SWT.CASCADE);
+				// menuSaveBarcodes[i].setText(String.format(
+				// "From Plate %d", i + 1));
+				// menuSaveBarcodes[i]
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSaveBarcodeWidgetSelected(evt);
+				// }
+				// });
+				// }
+				//
+				// }
+				// }
+				// {
+				// menuSaveCvsAs = new MenuItem(menu1, SWT.CASCADE);
+				// menuSaveCvsAs.setText("Save All Barcodes...");
+				// menuSaveCvsAs
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSaveCvsAsWidgetSelected(evt);
+				// }
+				// });
+				// }
+				//
+				// {
+				//
+				// menuSaveSelected = new MenuItem(menu1, SWT.CASCADE);
+				// menuSaveSelected
+				// .setText("Save Selected Barcodes...");
+				// menuSaveSelected
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSaveSelectedWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// new MenuItem(menu1, SWT.SEPARATOR);
+				// }
+				// {
+				// menuNew = new MenuItem(menu1, SWT.CASCADE);
+				// menuNew.setText("Clear All Tables");
+				// menuNew
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuNewWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// menuQuit = new MenuItem(menu1, SWT.CASCADE);
+				// menuQuit.setText("Quit");
+				// menuQuit
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuQuitWidgetSelected(evt);
+				// }
+				// });
+				//
+				// }
+				// }
+				// }
+				// {
+				// menuOptions = new MenuItem(mainmenu, SWT.CASCADE);
+				// menuOptions.setText("Options");
+				// {
+				// menu2 = new Menu(menuOptions);
+				// menuOptions.setMenu(menu2);
+				// {
+				// menuAutoSaving = new MenuItem(menu2, SWT.CASCADE);
+				// menuAutoSaving.setText("Auto Saving");
+				// menuAutoSaving
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuAutoSavingWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// menuSetMode = new MenuItem(menu2, SWT.CASCADE);
+				// menuSetMode.setText("Plate Mode");
+				// menuSetMode
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSetModeWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// new MenuItem(menu2, SWT.SEPARATOR);
+				// }
+				// {
+				// menuConfiguration = new MenuItem(menu2, SWT.CASCADE);
+				// menuConfiguration.setText("Scanning");
+				// menuConfiguration
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuConfigurationWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// }
+				// }
+				// {
+				// menuScanner = new MenuItem(mainmenu, SWT.CASCADE);
+				// menuScanner.setText("Scanner");
+				// {
+				// menu5 = new Menu(menuScanner);
+				// menuScanner.setMenu(menu5);
+				// {
+				// menuSource = new MenuItem(menu5, SWT.CASCADE);
+				// menuSource.setText("Select Source");
+				// menuSource
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuSourceWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// new MenuItem(menu5, SWT.SEPARATOR);
+				// }
+				// {
+				// menuScanImageFile = new MenuItem(menu5, SWT.CASCADE);
+				// menuScanImageFile.setText("Scan Image to File...");
+				// menuScanImageFile
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuScanImageFileWidgetSelected(evt);
+				// }
+				// });
+				// }
+				// {
+				// menuScanPlateFile = new MenuItem(menu5, SWT.CASCADE);
+				// menuScanPlateFile.setText("Scan Plate to File...");
+				// {
+				// menu3 = new Menu(menuScanPlateFile);
+				// menuScanPlateFile.setMenu(menu3);
+				//
+				// for (int i = 0; i < MAXPLATES; i++) {
+				// menuPlates[i] = new MenuItem(menu3,
+				// SWT.CASCADE);
+				// menuPlates[i].setText(String.format(
+				// "Plate %d", i + 1));
+				// menuPlates[i]
+				// .addSelectionListener(new SelectionAdapter() {
+				// public void widgetSelected(
+				// SelectionEvent evt) {
+				// menuPlateScanToFile(evt);
+				// }
+				// });
+				// }
+				// }
+				// }
+				// }
+				// }
 			}
 			this.layout();
 			pack();
@@ -424,7 +424,28 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		configDialog.open("LOAD SETTINGS");
 		int cdReturn = configDialog.loadConfigfromIni();
 		if (cdReturn != 0) {
-			errorMsg("Config Settings", cdReturn);
+			if (cdReturn == -1) { // Did not find scanlib.ini
+				int scanlibReturn = scanlib.slConfigScannerBrightness(0);
+				if (scanlibReturn != ScanLib.SC_SUCCESS) {
+					errorMsg("Error Failure!!\n"
+							+ "Failed to write to scanlib.ini\n"
+							+ "Application Failure: ", scanlibReturn);
+				} else {
+					if (new File("scanlib.ini").exists()) {
+						this.loadSettings();
+					} else {
+						MessageDialog.openError(getShell(), "Error Failure!!",
+								"slConfigScannerBrightness failed to create"
+										+ " scanlib.ini");
+						System.exit(1);
+					}
+				}
+
+				this.loadSettings();
+			} else {
+				errorMsg("Error Loading Settings Through Config Dialog",
+						cdReturn);
+			}
 		}
 
 	}
@@ -462,16 +483,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	private void FIXSCANLIBINIWRITINGBUG() {
-		try {
-			Runtime.getRuntime().exec("fixscanlibini.exe");
-		} catch (IOException e) {
-			errorMsg("FIXSCANLIBINIWRITINGBUG", -1);
-			System.out.println("fixscanlibini.exe Error");
-			System.exit(-1);
-		}
-	}
-
 	private void menuConfigurationWidgetSelected(SelectionEvent evt) {
 		if (new File("scanlib.ini").exists()) {
 			// int olddpi = configDialog.dpi; //accessed from here
@@ -492,7 +503,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			if (oldbrightness != configDialog.brightness) {
 				int scanlibReturn = scanlib
 						.slConfigScannerBrightness(configDialog.brightness);
-				FIXSCANLIBINIWRITINGBUG();
 				switch (scanlibReturn) {
 				case (ScanLib.SC_SUCCESS):
 					break;
@@ -511,7 +521,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			if (oldcontrast != configDialog.contrast) {
 				int scanlibReturn = scanlib
 						.slConfigScannerContrast(configDialog.contrast);
-				FIXSCANLIBINIWRITINGBUG();
 				switch (scanlibReturn) {
 				case (ScanLib.SC_SUCCESS):
 					break;
@@ -549,7 +558,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 							configDialog.plates[plate][0],
 							configDialog.plates[plate][3],
 							configDialog.plates[plate][2]);
-					FIXSCANLIBINIWRITINGBUG();
 					switch (scanlibReturn) {
 					case (ScanLib.SC_SUCCESS):
 						break;
@@ -565,7 +573,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 							+ configDialog.plates[plate][3] > 0) {
 						scanlibReturn = scanlib.slCalibrateToPlate(
 								configDialog.dpi, plate + 1);
-						FIXSCANLIBINIWRITINGBUG();
 						switch (scanlibReturn) {
 						case (ScanLib.SC_SUCCESS):
 							break;
@@ -584,25 +591,11 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					}
 				}
 			}
-		} else { // first time running
-			int scanlibReturn = scanlib.slConfigScannerBrightness(0);
-
-			if (scanlibReturn != ScanLib.SC_SUCCESS) {
-				errorMsg("Error Failure!!\n"
-						+ "Failed to write to scanlib.ini\n"
-						+ "Application Failure: ", scanlibReturn);
-			} else {
-				if (new File("scanlib.ini").exists()) {
-					FIXSCANLIBINIWRITINGBUG();
-					menuConfigurationWidgetSelected(evt);
-				} else {
-					MessageDialog.openError(getShell(), "Error Failure!!",
-							"UNKNOWN\n" + "Application Failure");
-					System.exit(1);
-				}
-			}
+		} else {
+			MessageDialog.openError(getShell(), "Error Failure!!",
+					"Failed to find scanlib.ini file");
+			System.exit(1);
 		}
-
 	}
 
 	private String nulltoblankString(String in) {
@@ -634,6 +627,9 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 				}
 				tableItems[table - 1][r].setText(row);
 			}
+		} catch (FileNotFoundException e) {
+			MessageDialog.openError(getShell(), "DLL Error",
+					"File scanlib.txt was not found.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -706,12 +702,13 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 					+ configDialog.plates[plate][3] > 0
 					&& plateBtn[plate].getSelection()) {
 				int scanlibReturn = scanlib.slDecodePlate(configDialog.dpi,
-						plate + 1); /*
-									 * TODO fix - scanlib exits the program with
-									 * a return code of 1 when platenum > 3
-									 */
+						plate + 1);
 
-				FIXSCANLIBINIWRITINGBUG();
+				/*
+				 * TODO fix - scanlib exits the program with a return code of 1
+				 * when platenum > 3
+				 */
+
 				switch (scanlibReturn) {
 				case (ScanLib.SC_SUCCESS):
 					break;
@@ -810,7 +807,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 		int scanlibReturn = scanlib.slScanImage(configDialog.dpi, 0, 0, 0, 0,
 				saveLocation);
-		FIXSCANLIBINIWRITINGBUG();
 		switch (scanlibReturn) {
 		case (ScanLib.SC_SUCCESS):
 			break;
@@ -850,7 +846,6 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 
 		int scanlibReturn = scanlib.slScanPlate(configDialog.dpi, platenum,
 				saveLocation);
-		FIXSCANLIBINIWRITINGBUG();
 		switch (scanlibReturn) {
 		case (ScanLib.SC_SUCCESS):
 			break;
@@ -934,5 +929,4 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 
 	}
-
 }
