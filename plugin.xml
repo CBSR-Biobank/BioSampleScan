@@ -76,6 +76,18 @@
             class="edu.ualberta.med.biosamplescan.Menu"
             id="edu.ualberta.med.biosamplescan.menu">
       </widget>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.file"
+               label="File">
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
+                  label="Save Selected Barcodes"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -89,6 +101,11 @@
                   value="BioSampleScan.parameter1">
             </parameter>
          </defaultHandler>
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveSelectedBarcodes"
+            id="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
+            name="Save Selected Barcodes">
       </command>
    </extension>
 
