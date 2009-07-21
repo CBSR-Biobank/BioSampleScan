@@ -1,9 +1,5 @@
 package edu.ualberta.med.biosamplescan.gui;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -19,82 +15,70 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.ini4j.InvalidFileFormatException;
-import org.ini4j.Wini;
+import org.eclipse.ui.PlatformUI;
 
+import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.Main;
 import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private Shell dialogShell;
 	private Label label11;
-	private Text textRight4;
 	private Label label20;
-	private Text textBottom4;
 	private Label label13;
-	private Text textLeft4;
 	private Label label8;
-	private Text textTop4;
 	private Label label3;
 	private Group group6;
 	private Label label1;
-	private Text textDpi;
 	private Label label19;
 	private Group group5;
-	private Button buttonCancle;
-	private Button buttonConfig;
-	private Text textContrast;
 	private Label label18;
-	private Text textBrightness;
 	private Label label2;
 	private Group group1;
 	private Label label5;
-	private Text textRight3;
 	private Label label17;
-	private Text textBottom3;
 	private Label label16;
-	private Text textLeft3;
 	private Label label15;
-	private Text textTop3;
 	private Label label14;
 	private Group group4;
-	private Text textRight2;
 	private Label label12;
-	private Text textBottom2;
-	private Text textLeft2;
 	private Label label10;
-	private Text textTop2;
 	private Label label9;
 	private Group group3;
-	private Text textRight1;
 	private Label label7;
-	private Text textBottom1;
 	private Label label6;
-	private Text textLeft1;
 	private Label label4;
-	private Text textTop1;
 	private Group group2;
-
-	public boolean cancledDialog = false;
-	public int PLATENUM = 4;
-	public int dpi = ScanLib.DPI_300;
-	public int brightness = 0;
-	public int contrast = 0;
-	public double plates[][] = new double[PLATENUM][4];
+	private Button buttonCancle;
+	private Button buttonConfig;
+	private Text textDpi;
+	private Text textBrightness;
+	private Text textContrast;
+	private Text textTop1;
+	private Text textBottom1;
+	private Text textLeft1;
+	private Text textRight1;
+	private Text textTop2;
+	private Text textBottom2;
+	private Text textLeft2;
+	private Text textRight2;
+	private Text textTop3;
+	private Text textBottom3;
+	private Text textLeft3;
+	private Text textRight3;
+	private Text textRight4;
+	private Text textTop4;
+	private Text textBottom4;
+	private Text textLeft4;
 
 	public ConfigDialog(Shell parent, int style) {
 		super(parent, style);
 	}
 
-	private String sfix(String in) {
-		if (in == null || in.isEmpty()) {
-			return "0";
-		} else {
-			return in;
-		}
-	}
-
-	public void open(String ConfigMessage) {
+	public void open() {
 		try {
 			Shell parent = getParent();
 			dialogShell = new Shell(parent, SWT.DIALOG_TRIM
@@ -405,34 +389,19 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					label1LData.width = 263;
 					label1LData.height = 19;
 					label1.setLayoutData(label1LData);
-					label1.setText("\tNote: Twain_bottom= Wia_top+Wia_bottom");
+					label1.setText("\tNote: Wia: bottom=height, right=width");
 				}
 			}
-			try {
-				int iniConfigReturn = this.loadConfigfromIni();
-				if (iniConfigReturn != 0) {
-					System.out.println("iniConfigReturn Error");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.exit(-30);
-			}
-			cancledDialog = false;
+			this.loadConfigSettings();
+			dialogShell.layout();
+			dialogShell.pack();
+			dialogShell.setLocation(getParent().toDisplay(100, 100));
+			dialogShell.open();
+			Display display = dialogShell.getDisplay();
 
-			if (ConfigMessage.equals("LOAD SETTINGS")) {
-				return;
-
-			} else {
-				dialogShell.layout();
-				dialogShell.pack();
-				dialogShell.setLocation(getParent().toDisplay(100, 100));
-				dialogShell.open();
-				Display display = dialogShell.getDisplay();
-
-				while (!dialogShell.isDisposed()) {
-					if (!display.readAndDispatch())
-						display.sleep();
-				}
+			while (!dialogShell.isDisposed()) {
+				if (!display.readAndDispatch())
+					display.sleep();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -440,137 +409,186 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	}
 
 	void readPlatesIntoArray(double plateArray[][]) {
-		plateArray[0][0] = Double.valueOf(textTop1.getText());
-		plateArray[0][1] = Double.valueOf(textLeft1.getText());
-		plateArray[0][2] = Double.valueOf(textBottom1.getText());
-		plateArray[0][3] = Double.valueOf(textRight1.getText());
-		plateArray[1][0] = Double.valueOf(textTop2.getText());
-		plateArray[1][1] = Double.valueOf(textLeft2.getText());
-		plateArray[1][2] = Double.valueOf(textBottom2.getText());
-		plateArray[1][3] = Double.valueOf(textRight2.getText());
-		plateArray[2][0] = Double.valueOf(textTop3.getText());
-		plateArray[2][1] = Double.valueOf(textLeft3.getText());
-		plateArray[2][2] = Double.valueOf(textBottom3.getText());
-		plateArray[2][3] = Double.valueOf(textRight3.getText());
-		plateArray[3][0] = Double.valueOf(textTop4.getText());
-		plateArray[3][1] = Double.valueOf(textLeft4.getText());
-		plateArray[3][2] = Double.valueOf(textBottom4.getText());
-		plateArray[3][3] = Double.valueOf(textRight4.getText());
+		plateArray[0][0] = Double.valueOf(textLeft1.getText());
+		plateArray[0][1] = Double.valueOf(textTop1.getText());
+		plateArray[0][2] = Double.valueOf(textRight1.getText());
+		plateArray[0][3] = Double.valueOf(textBottom1.getText());
+		plateArray[1][0] = Double.valueOf(textLeft2.getText());
+		plateArray[1][1] = Double.valueOf(textTop2.getText());
+		plateArray[1][2] = Double.valueOf(textRight2.getText());
+		plateArray[1][3] = Double.valueOf(textBottom2.getText());
+		plateArray[2][0] = Double.valueOf(textLeft3.getText());
+		plateArray[2][1] = Double.valueOf(textTop3.getText());
+		plateArray[2][2] = Double.valueOf(textRight3.getText());
+		plateArray[2][3] = Double.valueOf(textBottom3.getText());
+		plateArray[3][0] = Double.valueOf(textLeft4.getText());
+		plateArray[3][1] = Double.valueOf(textTop4.getText());
+		plateArray[3][2] = Double.valueOf(textRight4.getText());
+		plateArray[3][3] = Double.valueOf(textBottom4.getText());
 	}
 
-	public int loadConfigfromIni() {
-		try {
-			Wini ini = new Wini(new File("scanlib.ini"));
-			textBrightness.setText(sfix(ini.get("scanner", "brightness")));
-			textContrast.setText(sfix(ini.get("scanner", "contrast")));
-			textLeft1.setText(sfix(ini.get("plate-1", "left")));
-			textTop1.setText(sfix(ini.get("plate-1", "top")));
-			textBottom1.setText(sfix(ini.get("plate-1", "bottom")));
-			textRight1.setText(sfix(ini.get("plate-1", "right")));
-			textLeft2.setText(sfix(ini.get("plate-2", "left")));
-			textTop2.setText(sfix(ini.get("plate-2", "top")));
-			textBottom2.setText(sfix(ini.get("plate-2", "bottom")));
-			textRight2.setText(sfix(ini.get("plate-2", "right")));
-			textLeft3.setText(sfix(ini.get("plate-3", "left")));
-			textTop3.setText(sfix(ini.get("plate-3", "top")));
-			textBottom3.setText(sfix(ini.get("plate-3", "bottom")));
-			textRight3.setText(sfix(ini.get("plate-3", "right")));
-			textLeft4.setText(sfix(ini.get("plate-4", "left")));
-			textTop4.setText(sfix(ini.get("plate-4", "top")));
-			textBottom4.setText(sfix(ini.get("plate-4", "bottom")));
-			textRight4.setText(sfix(ini.get("plate-4", "right")));
+	public int loadConfigSettings() {
+		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getConfigSettings();
 
-			dpi = ScanLib.DPI_300;
-			brightness = Integer.parseInt(textBrightness.getText());
-			contrast = Integer.parseInt(textContrast.getText());
-			readPlatesIntoArray(plates);
+		configSettings.loadFromFile();
 
-		} catch (FileNotFoundException e) {
-			return -1;
-		} catch (InvalidFileFormatException e) {
-			e.printStackTrace();
-			return -2;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return -3;
-		}
+		textDpi.setText(String.valueOf(configSettings.getDpi()));
+		textBrightness.setText(String.valueOf(configSettings.getBrightness()));
+		textContrast.setText(String.valueOf(configSettings.getContrast()));
+
+		textLeft1.setText(String.valueOf(configSettings.getPlates(1)[0]));
+		textTop1.setText(String.valueOf(configSettings.getPlates(1)[1]));
+		textRight1.setText(String.valueOf(configSettings.getPlates(1)[2]));
+		textBottom1.setText(String.valueOf(configSettings.getPlates(1)[3]));
+
+		textLeft2.setText(String.valueOf(configSettings.getPlates(2)[0]));
+		textTop2.setText(String.valueOf(configSettings.getPlates(2)[1]));
+		textRight2.setText(String.valueOf(configSettings.getPlates(2)[2]));
+		textBottom2.setText(String.valueOf(configSettings.getPlates(2)[3]));
+
+		textLeft3.setText(String.valueOf(configSettings.getPlates(3)[0]));
+		textTop3.setText(String.valueOf(configSettings.getPlates(3)[1]));
+		textRight3.setText(String.valueOf(configSettings.getPlates(3)[2]));
+		textBottom3.setText(String.valueOf(configSettings.getPlates(3)[3]));
+
+		textLeft4.setText(String.valueOf(configSettings.getPlates(4)[0]));
+		textTop4.setText(String.valueOf(configSettings.getPlates(4)[1]));
+		textRight4.setText(String.valueOf(configSettings.getPlates(4)[2]));
+		textBottom4.setText(String.valueOf(configSettings.getPlates(4)[3]));
 
 		return 0;
 	}
 
 	private void buttonCancleMouseUp(MouseEvent evt) {
-		cancledDialog = true;
 		dialogShell.dispose();
-	}
-
-	private int concatInt(int in, int lower, int upper) {// inclusive
-		return (in < lower) ? lower : ((in > upper) ? upper : in);
 	}
 
 	private void buttonConfigMouseUp(MouseEvent evt) {
 		try {
+			ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getActivePart())
+					.getConfigSettings();
 
-			double nplates[][] = new double[PLATENUM][4];
+			ScanLib scanlib = ((View) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getActivePart())
+					.getScanLib();
+
+			Main main = ((View) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getActivePart())
+					.getMain();
+
+			int configSettingsReturn = configSettings.setDpi(textDpi.getText());
+			if (configSettingsReturn == ConfigSettings.CS_SUCCESS) {
+			} else {
+				if (configSettingsReturn != ConfigSettings.CS_NOCHANGE) {
+					MessageDialog.openError(dialogShell,
+							"configSettings.setDpi", "Invalid input");
+					dialogShell.dispose();
+				}
+			}
+			configSettingsReturn = configSettings.setBrightness(textBrightness
+					.getText());
+			if (configSettingsReturn == ConfigSettings.CS_SUCCESS) {
+				int scanlibReturn = scanlib
+						.slConfigScannerBrightness(configSettings
+								.getBrightness());
+				switch (scanlibReturn) {
+				case (ScanLib.SC_SUCCESS):
+					break;
+				case (ScanLib.SC_INVALID_VALUE):
+					main.errorMsg(
+							"menuConfigurationWidgetSelected, Brightness ",
+							scanlibReturn);
+
+				case (ScanLib.SC_INI_FILE_ERROR):
+					main.errorMsg(
+							"menuConfigurationWidgetSelected, Brightness ",
+							scanlibReturn);
+				}
+			} else {
+				if (configSettingsReturn != ConfigSettings.CS_NOCHANGE) {
+					MessageDialog.openError(dialogShell,
+							"configSettings.setBrightness", "Invalid input");
+					dialogShell.dispose();
+				}
+			}
+
+			configSettingsReturn = configSettings.setContrast(textContrast
+					.getText());
+			if (configSettingsReturn == ConfigSettings.CS_SUCCESS) {
+				int scanlibReturn = scanlib
+						.slConfigScannerContrast(configSettings.getContrast());
+				switch (scanlibReturn) {
+				case (ScanLib.SC_SUCCESS):
+					break;
+				case (ScanLib.SC_INVALID_VALUE):
+					main.errorMsg("menuConfigurationWidgetSelected, Contrast ",
+							scanlibReturn);
+
+				case (ScanLib.SC_INI_FILE_ERROR):
+					main.errorMsg("menuConfigurationWidgetSelected, Contrast ",
+							scanlibReturn);
+				}
+			} else {
+				if (configSettingsReturn != ConfigSettings.CS_NOCHANGE) {
+					MessageDialog.openError(dialogShell,
+							"configSettings.setContrast", "Invalid input");
+					dialogShell.dispose();
+				}
+			}
+
+			double nplates[][] = new double[ConfigSettings.PLATENUM][4];
 			readPlatesIntoArray(nplates);
 
-			if ((int) Integer.parseInt(textDpi.getText()) != ScanLib.DPI_300
-					&& (int) Integer.parseInt(textDpi.getText()) != ScanLib.DPI_600) {
-				MessageDialog.openError(dialogShell, "Error",
-						"DPI:\nMust be 300 or 600\n");
-				System.out.printf("%d\n", Integer.parseInt(textDpi.getText()));
-				return;
-			} else {
-				dpi = Integer.parseInt(textDpi.getText());
-			}
-
-			if ((int) Integer.parseInt(textBrightness.getText()) != concatInt(
-					(int) Integer.parseInt(textBrightness.getText()), -1000,
-					1000)) {
-				MessageDialog.openError(dialogShell, "Error",
-						"Brightness:\nRanges from -1000 to 1000\n");
-				return;
-			} else {
-				brightness = Integer.parseInt(textBrightness.getText());
-			}
-
-			if ((int) Integer.parseInt(textContrast.getText()) != concatInt(
-					(int) Integer.parseInt(textContrast.getText()), -1000, 1000)) {
-				MessageDialog.openError(dialogShell, "Error",
-						"Contrast:\nRanges from -1000 to 1000\n");
-				return;
-			} else {
-				contrast = Integer.parseInt(textContrast.getText());
-			}
-
-			for (int plate = 0; plate < PLATENUM; plate++) {
-				/*
-				 * if (nplates[plate][0] > nplates[plate][2]) {// top > bottom
-				 * MessageDialog.openError(dialogShell, "Error",
-				 * String.format("Plate %d:\n" + "Top > Bottom\n", plate + 1));
-				 * return; }
-				 */// Wia driver adds bottom to top.
-				if (nplates[plate][1] > nplates[plate][3]) {// left > right
-					MessageDialog.openError(dialogShell, "Error",
-							String.format("Plate %d:\n" + "Left > Right\n",
-									plate + 1));
-					return;
-				}
-				for (int i = 0; i < 4; i++) {
-					if (nplates[plate][i] < 0) {
-						MessageDialog.openError(dialogShell, "Error", String
-								.format("Plate %d:\n" + "Negative Value\n",
-										plate + 1));
+			for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
+				int setPlateReturn = configSettings.setPlate(plate + 1,
+						nplates[plate][0], nplates[plate][1],
+						nplates[plate][2], nplates[plate][3]);
+				if (setPlateReturn == ConfigSettings.CS_SUCCESS
+						|| setPlateReturn == ConfigSettings.CS_CLEARDATA) {
+					int scanlibReturn = ScanLibFactory.getScanLib()
+							.slConfigPlateFrame(plate + 1,
+									configSettings.getPlates(plate + 1)[0],
+									configSettings.getPlates(plate + 1)[1],
+									configSettings.getPlates(plate + 1)[2],
+									configSettings.getPlates(plate + 1)[3]);
+					switch (scanlibReturn) {
+					case (ScanLib.SC_SUCCESS):
+						break;
+					case (ScanLib.SC_FAIL):
+						main
+								.errorMsg(
+										"menuConfigurationWidgetSelected, slConfigPlateFrame",
+										scanlibReturn);
 						return;
 					}
-				}
+
+					if (setPlateReturn == ConfigSettings.CS_SUCCESS) {
+						scanlibReturn = scanlib.slCalibrateToPlate(
+								ScanLib.DPI_300, plate + 1);
+						switch (scanlibReturn) {
+						case (ScanLib.SC_SUCCESS):
+							break;
+						case (ScanLib.SC_INVALID_IMAGE):
+							main
+									.errorMsg(
+											"menuConfigurationWidgetSelected, Calibratation",
+											scanlibReturn);
+						}
+					}
+				} 
+//				else { //TODO left off here
+//					MessageDialog.openError(dialogShell,
+//							"configSettings.setPlate", "Invalid Input");
+//					dialogShell.dispose();
+//					return;
+//				}
 
 			}
-			for (int plate = 0; plate < PLATENUM; plate++) {
-				for (int i = 0; i < 4; i++) {
-					plates[plate][i] = nplates[plate][i];
-				}
-			}
 			dialogShell.dispose();
+
 		} catch (Exception e) {
 			MessageDialog.openError(dialogShell, "Error", e.getMessage());
 		}

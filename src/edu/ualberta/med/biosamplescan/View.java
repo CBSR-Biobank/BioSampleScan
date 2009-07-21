@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
@@ -14,6 +15,8 @@ public class View extends ViewPart {
 	public static final String ID = "edu.ualberta.med.biosamplescan.view";
 
 	private Main main = null;
+	private ConfigSettings configSettings = null;
+	private ScanLib scanlib = null;
 
 	public View() {
 		BioSampleScanPlugin.getDefault().addView(this);
@@ -44,16 +47,27 @@ public class View extends ViewPart {
 		}
 		// MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
+		scanlib = ScanLibFactory.getScanLib();
+		configSettings = new ConfigSettings(); // parses scanlib.ini file
 		main = new Main(parent, SWT.BORDER);
+
 	}
 
 	public Main getMain() {
 		return main;
 	}
 
+	public ConfigSettings getConfigSettings() {
+		return configSettings;
+	}
+
+	public ScanLib getScanLib() {
+		return scanlib;
+	}
+
 	@Override
 	public void setFocus() {
-		if (main == null)
+		if (main == null || configSettings == null || scanlib == null)
 			return;
 		main.setFocus();
 	}

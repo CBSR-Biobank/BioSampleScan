@@ -9,6 +9,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
 
 public class PlateMode extends AbstractHandler implements IHandler {
@@ -41,7 +42,7 @@ public class PlateMode extends AbstractHandler implements IHandler {
 			return null;
 		}
 		boolean set = false;
-		for (int table = 0; table < main.MAXPLATES; table++) {
+		for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 			set = (table < Integer.valueOf(ret));
 			main.tables[table].setEnabled(set);
 			main.plateBtn[table].setEnabled(set);

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
 
 public class SaveSelectedBarcodesDialog extends AbstractHandler implements
@@ -18,7 +19,7 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
 		boolean pass = false;
-		for (int i = 0; i < main.MAXPLATES; i++) {
+		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			if (main.plateBtn[i].getSelection()) {
 				pass = true;
 				break;
@@ -34,8 +35,8 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 		dlg.setText(String.format("Save Barcodes for the Selected Plates"));
 		String saveLocation = dlg.open();
 		if (saveLocation != null) {
-			boolean[] tablesCheck = new boolean[main.MAXPLATES];
-			for (int i = 0; i < main.MAXPLATES; i++) {
+			boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
+			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 				tablesCheck[i] = main.plateBtn[i].getSelection();
 			}
 			main.saveTables(saveLocation, tablesCheck);

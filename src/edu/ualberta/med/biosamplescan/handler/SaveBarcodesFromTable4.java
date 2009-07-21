@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
 
 public class SaveBarcodesFromTable4 extends AbstractHandler implements IHandler {
@@ -23,8 +24,8 @@ public class SaveBarcodesFromTable4 extends AbstractHandler implements IHandler 
 		String saveLocation = dlg.open();
 
 		if (saveLocation != null) {
-			boolean[] tablesCheck = new boolean[main.MAXPLATES];
-			for (int i = 0; i < main.MAXPLATES; i++) {
+			boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
+			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 				tablesCheck[i] = false;
 			}
 			tablesCheck[platenum - 1] = true;

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
@@ -20,6 +21,9 @@ public class SaveImagePlate2 extends AbstractHandler implements IHandler {
 		Main main = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
+		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getConfigSettings();
 
 		int platenum = 2;
 		FileDialog dlg = new FileDialog(main.getShell(), SWT.SAVE);
@@ -30,7 +34,7 @@ public class SaveImagePlate2 extends AbstractHandler implements IHandler {
 			return null;
 		}
 		int scanlibReturn = ScanLibFactory.getScanLib().slScanPlate(
-				main.configDialog.dpi, platenum, saveLocation);
+				configSettings.getDpi(), platenum, saveLocation);
 		System.out.println(scanlibReturn);
 		switch (scanlibReturn) {
 		case (ScanLib.SC_SUCCESS):
