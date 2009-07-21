@@ -458,7 +458,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		plateArray[3][3] = Double.valueOf(textRight4.getText());
 	}
 
-	int loadConfigfromIni() {
+	public int loadConfigfromIni() {
 		try {
 			Wini ini = new Wini(new File("scanlib.ini"));
 			textBrightness.setText(sfix(ini.get("scanner", "brightness")));

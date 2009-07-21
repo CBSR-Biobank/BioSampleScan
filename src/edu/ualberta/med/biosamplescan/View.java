@@ -4,7 +4,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-import edu.ualberta.med.biosamplescan.gui.Main;
+import edu.ualberta.med.biosamplescan.model.Main;
 
 public class View extends ViewPart {
 	public static final String ID = "edu.ualberta.med.biosamplescan.view";

@@ -9,7 +9,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
-import edu.ualberta.med.biosamplescan.gui.Main;
+import edu.ualberta.med.biosamplescan.model.Main;
 
 public class PlateMode extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
