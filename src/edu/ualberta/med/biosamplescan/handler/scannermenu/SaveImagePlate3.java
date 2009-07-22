@@ -7,7 +7,6 @@ import org.eclipse.core.commands.IHandler;
 
 public class SaveImagePlate3 extends AbstractHandler implements IHandler {
 
-	// TODO bring up a dialog if all the settings for plate is 0,0,0,0;
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		SaveImagePlateX.execute(event, 3);
 		return null;

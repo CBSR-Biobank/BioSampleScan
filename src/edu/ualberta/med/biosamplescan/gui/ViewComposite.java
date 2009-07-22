@@ -132,7 +132,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 					}
 				});
 			}
-			{//TODO remove this
+			{//TODO this button is only for debugging purposes
 				loadFromFile = new Button(this, SWT.PUSH | SWT.CENTER);
 				loadFromFile.setText("Load From File");
 				loadFromFile.setBounds(380, 6, 90, 40);
@@ -227,7 +227,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 					+ configSettings.getPlate(plate + 1)[3] > 0
 					&& plateBtn[plate].getSelection()) {
 				int scanlibReturn = ScanLibFactory.getScanLib().slDecodePlate(
-						300, plate + 1); // TODO 300 dpi
+						configSettings.getDpi(), plate + 1);
 				switch (scanlibReturn) {
 					case (ScanLib.SC_SUCCESS):
 						break;

@@ -30,8 +30,6 @@ public class View extends ViewPart {
 	}
 
 	public void createPartControl(Composite parent) {
-		// TODO: MOVE FOLLOWING CODE TO TREE VIEWER VIEW WHEN READY
-		//
 		String osname = System.getProperty("os.name");
 		if (!osname.startsWith("Windows")) {
 			if (ScanLibFactory.getScanLib().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
@@ -46,10 +44,10 @@ public class View extends ViewPart {
 				return;
 			}
 		}
-		// MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
+		//TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
 		plateSet = new PlateSet();
-		plateSet.initPlate("Plate 1", 13, 8); //TODO Bizzarre
+		plateSet.initPlate("Plate 1", 13, 8);
 		plateSet.initPlate("Plate 2", 13, 8);
 		plateSet.initPlate("Plate 3", 13, 8);
 		plateSet.initPlate("Plate 4", 13, 8);

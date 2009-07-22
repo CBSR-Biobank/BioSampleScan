@@ -32,7 +32,7 @@ public class PlateSet {
 		}
 	}
 
-	public boolean setPlate(String id, int x, int y, String barcode) {
+	public boolean setPlate(String id, int x, int y, String barcode) {//TODO untested
 		if (plates.containsKey(id)) {
 			plates.get(id).setBarcode(x, y, barcode);
 			return true;
@@ -51,7 +51,7 @@ public class PlateSet {
 		}
 	}
 
-	public String getPlate(String id, int x, int y) {
+	public String getPlate(String id, int x, int y) {//TODO untested
 		if (plates.containsKey(id)) {
 			return plates.get(id).getBarcode(x, y);
 		}
@@ -151,7 +151,6 @@ public class PlateSet {
 					}
 				}
 			}
-
 		}
 		try {
 			out.close();

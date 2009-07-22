@@ -86,6 +86,12 @@ public class ConfigSettings {
 		return dpi;
 	}
 
+	public boolean plateIsSet(int plate) {
+		for (int i = 0; i < 4; i++)
+			if (this.plates[plate - 1][i] != 0) return true;
+		return false;
+	}
+
 	public int setPlate(int plate, double left, double top, double right,
 			double bottom) {
 		if (plate - 1 >= PLATENUM) {
@@ -147,7 +153,6 @@ public class ConfigSettings {
 			e.printStackTrace();
 			return CS_FILE_ERROR;
 		}
-		this.setDpi(String.valueOf(ScanLib.DPI_300));
 		this.setBrightness(sfix(ini.get("scanner", "brightness")));
 		this.setContrast(sfix(ini.get("scanner", "contrast")));
 

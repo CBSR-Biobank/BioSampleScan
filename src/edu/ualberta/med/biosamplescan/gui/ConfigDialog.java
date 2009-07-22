@@ -365,7 +365,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 					if (setPlateReturn == ConfigSettings.CS_SUCCESS) {
 						scanlibReturn = ScanLibFactory.getScanLib()
-								.slCalibrateToPlate(ScanLib.DPI_300, plate + 1);
+								.slCalibrateToPlate(configSettings.getDpi(),
+										plate + 1);
 						switch (scanlibReturn) {
 							case (ScanLib.SC_SUCCESS):
 								MessageDialog
