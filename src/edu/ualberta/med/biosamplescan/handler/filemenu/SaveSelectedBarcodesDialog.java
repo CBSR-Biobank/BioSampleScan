@@ -12,6 +12,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 
 public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 		IHandler
@@ -20,6 +21,9 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
 		boolean pass = false;
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			if (viewComposite.getPlateBtnSelection(i)) {
@@ -42,7 +46,7 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 				tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
 			}
-			viewComposite.saveTables(saveLocation, tablesCheck);
+			plateSet.saveTables(saveLocation, tablesCheck);
 			viewComposite.setLastSaveSelectLocation(saveLocation);
 		}
 		return null;

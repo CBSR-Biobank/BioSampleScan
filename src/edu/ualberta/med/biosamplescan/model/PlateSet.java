@@ -107,6 +107,16 @@ public class PlateSet {
 		return dateFormat.format(date);
 	}
 
+	public void saveTables(String fileLocation, boolean[] tables) {
+		String[] plateids = new String[tables.length]; //wrapper
+		for (int i = 0; i < plateids.length; i++) {
+			if (tables[i]) {
+				plateids[i] = String.format("Plate %d", i + 1);
+			}
+		}
+		this.savePlates(fileLocation, plateids);
+	}
+
 	public void savePlates(String fileLocation, String[] plateids) {
 		BufferedWriter out = null;
 		try {

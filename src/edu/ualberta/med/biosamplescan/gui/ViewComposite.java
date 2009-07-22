@@ -143,7 +143,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 								.getActivePart()).getPlateSet();
 						for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 							plateSet.loadFromScanlibFile(i + 1, false);
-							loadPlateSetToTables(i + 1);
+							fillTablesFromPlateSet(i + 1);
 						}
 					}
 				});
@@ -171,7 +171,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	public void loadPlateSetToTables(int plate) {
+	public void fillTablesFromPlateSet(int plate) {
 		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
@@ -181,20 +181,6 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 					"Plate %d", plate))[r]);
 		}
 
-	}
-
-	public void saveTables(String fileLocation, boolean[] tables) {
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getPlateSet();
-		String[] plateids = new String[tables.length];
-		for (int i = 0; i < plateids.length; i++) {
-			if (tables[i]) {
-				plateids[i] = String.format("Plate %d", i + 1);
-			}
-		}
-
-		plateSet.savePlates(fileLocation, plateids);
 	}
 
 	public void clearPlateBtnWidgetSelected(SelectionEvent evt) {
@@ -251,25 +237,19 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 						return;
 				}
 				plateSet.loadFromScanlibFile(plate + 1, append);
-				this.loadPlateSetToTables(plate + 1);
+				this.fillTablesFromPlateSet(plate + 1);
 
 			}
 		}
 	}
 
 	public void clearTables() {
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getPlateSet();
-
 		for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
 			for (int r = 0; r < 8; r++) {
 				for (int c = 0; c < 12; c++) {
 					tableItems[p][r].setText(c + 1, "");
 				}
 			}
-			plateSet.initPlate(String.format("Plate %d", p + 1), 13, 8);
-			//clear plate data
 		}
 	}
 

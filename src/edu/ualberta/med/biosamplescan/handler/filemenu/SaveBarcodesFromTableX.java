@@ -9,6 +9,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 
 public class SaveBarcodesFromTableX {
 	public static final Object execute(ExecutionEvent event, int platenum)
@@ -16,6 +17,9 @@ public class SaveBarcodesFromTableX {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
 		dlg.setText(String.format("Save Barcodes For Plate %d", platenum));
@@ -28,7 +32,7 @@ public class SaveBarcodesFromTableX {
 			}
 			tablesCheck[platenum - 1] = true;
 
-			viewComposite.saveTables(saveLocation, tablesCheck);
+			plateSet.saveTables(saveLocation, tablesCheck);
 		}
 		return null;
 	}

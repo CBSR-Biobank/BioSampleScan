@@ -9,15 +9,23 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 
 public class ClearAllTables extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
-		if (MessageDialog.openConfirm(viewComposite.getActiveShell(), "Clear Table(s)",
-				"Do you want to clear all the tables?")) {
+		if (MessageDialog.openConfirm(viewComposite.getActiveShell(),
+				"Clear Table(s)", "Do you want to clear all the tables?")) {
 			viewComposite.clearTables();
+			PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getActivePart())
+					.getPlateSet();
+			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
+				plateSet.initPlate(String.format("Plate %d", p + 1), 13, 8);
+			}
 		}
 		return null;
 	}

@@ -11,12 +11,16 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 
 public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
 		dlg.setText(String.format("Save All Barcodes"));
@@ -29,7 +33,7 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 			tablesCheck[i] = true;
 		}
 
-		viewComposite.saveTables(saveLocation, tablesCheck);
+		plateSet.saveTables(saveLocation, tablesCheck);
 		return null;
 	}
 
