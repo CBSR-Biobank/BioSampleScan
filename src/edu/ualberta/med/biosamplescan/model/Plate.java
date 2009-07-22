@@ -1,50 +1,43 @@
 package edu.ualberta.med.biosamplescan.model;
 
 public class Plate {
-	private String Id;
 	private int Width;
 	private int Height;
-	private double[][] BarcodeTable;
+	private String[][] BarcodeTable;
 
 	public Plate() {
-		this.init("", 0, 0);
+		this.init(-1, -1);
 	}
 
-	public Plate(String id, int widthTestTubes, int heightTestTubes) {
-		this.init(id, heightTestTubes, heightTestTubes);
+	public Plate(int widthTestTubes, int heightTestTubes) {
+		this.init(heightTestTubes, heightTestTubes);
 	}
 
-	public boolean CheckId(String searchId) {
-		if (searchId != null && this.Id != null && !searchId.isEmpty()
-				&& !this.Id.isEmpty() && this.Id.equals(searchId)) {
-			return true;
-		}
-		return false;
-
+	public void init(int widthTestTubes, int heightTestTubes) {
+		Width = widthTestTubes;
+		Height = heightTestTubes;
+		BarcodeTable = new String[Width][Height];
 	}
 
-	public void init(String id, int widthTestTubes, int heightTestTubes) {
-		if (id == null || id.isEmpty()) {
-			Id = "";
-		} else {
-			Id = id;
-			Width = widthTestTubes;
-			Height = heightTestTubes;
-			BarcodeTable = new double[Width][Height];
+	public String getBarcode(int x, int y) {
+		if (x < Width && x >= 0 && y < Height && y >= 0) return BarcodeTable[x][y];
+		else {
+			return "";
 		}
 	}
 
-	public double getBarcode(int x, int y) {
-		if (x < Width && y < Height) {
-			return BarcodeTable[x][y];
-		}
-		return 0;
+	public String[][] getBarcode() {
+		return BarcodeTable;
 	}
 
-	public void setBarcode(int x, int y, double value) {
-		if (x < Width && y < Height) {
-			BarcodeTable[x][y] = value;
+	public void setBarcode(int x, int y, String barcode) {
+		if (x < Width && x >= 0 && y < Height && y >= 0) {
+			BarcodeTable[x][y] = barcode;
 		}
+	}
+
+	public void setBarcode(String[][] barcodes) {
+		BarcodeTable = barcodes;
 	}
 
 }

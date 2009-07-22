@@ -198,92 +198,92 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveSelectedBarcodes"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveSelectedBarcodes"
             id="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
             name="Save Selected Barcodes">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveAllBarcodes"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveAllBarcodes"
             id="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
             name="Save All Barcodes...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveSelectedBarcodesDialog"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveSelectedBarcodesDialog"
             id="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
             name="Save Selected Barcodes...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.ClearAllTables"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.ClearAllTables"
             id="edu.ualberta.med.biosamplescan.commands.clearalltables"
             name="Clear All Tables">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.Quit"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"
             id="edu.ualberta.med.biosamplescan.commands.quit"
             name="Quit">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.AutoSaving"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.AutoSaving"
             id="edu.ualberta.med.biosamplescan.commands.autosaving"
             name="Auto Saving">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.PlateMode"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.PlateMode"
             id="edu.ualberta.med.biosamplescan.commands.platemode"
             name="Plate Mode">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScannerSettings"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.ScannerSettings"
             id="edu.ualberta.med.biosamplescan.commands.scannersettings"
             name="Scanner Settings">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SelectSource"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SelectSource"
             id="edu.ualberta.med.biosamplescan.commands.selectsource"
             name="Select Source">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.ScanImageToFile"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScanImageToFile"
             id="edu.ualberta.med.biosamplescan.commands.scanimagetofile"
             name="Scan Image to File...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable1"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable1"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate1"
             name="Save From Plate 1">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable2"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable2"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate2"
             name="Save From Plate 2">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable3"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable3"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate3"
             name="Save From Plate 3">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveBarcodesFromTable4"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable4"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate4"
             name="Save From Plate 4">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate1"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate1"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
             name="Save Image to Plate 1">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate2"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate2"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
             name="Save Image to Plate 2">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate3"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate3"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
             name="Save Image to Plate 3">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.SaveImagePlate4"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate4"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
             name="Save Image to Plate 4">
       </command>

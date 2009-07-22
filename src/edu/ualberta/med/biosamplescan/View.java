@@ -8,6 +8,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Main;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -16,7 +17,7 @@ public class View extends ViewPart {
 
 	private Main main = null;
 	private ConfigSettings configSettings = null;
-	private ScanLib scanlib = null;
+	private PlateSet plateSet = null;
 
 	public View() {
 		BioSampleScanPlugin.getDefault().addView(this);
@@ -47,7 +48,12 @@ public class View extends ViewPart {
 		}
 		// MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
-		scanlib = ScanLibFactory.getScanLib();
+		plateSet = new PlateSet();
+		plateSet.initPlate("Plate 1", 0, 13); //TODO Bizzarre
+		plateSet.initPlate("Plate 2", 8, 13);
+		plateSet.initPlate("Plate 3", 8, 13);
+		plateSet.initPlate("Plate 4", 8, 13);
+
 		configSettings = new ConfigSettings(); // parses scanlib.ini file
 		main = new Main(parent, SWT.BORDER);
 
@@ -61,14 +67,14 @@ public class View extends ViewPart {
 		return configSettings;
 	}
 
-	public ScanLib getScanLib() {
-		return scanlib;
+	public PlateSet getPlateSet() {
+		return plateSet;
 	}
 
-	@Override
 	public void setFocus() {
-		if (main == null || configSettings == null || scanlib == null)
+		if (main == null || configSettings == null || plateSet == null) {
 			return;
+		}
 		main.setFocus();
 	}
 

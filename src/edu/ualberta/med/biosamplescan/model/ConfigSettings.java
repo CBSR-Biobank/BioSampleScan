@@ -16,25 +16,26 @@ public class ConfigSettings {
 
 	public static int PLATENUM = 4;
 
-	public static int CS_SUCCESS = 0;
-	public static int CS_NOCHANGE = 1;
-	public static int CS_CLEARDATA = 2;
-	public static int CS_INVALID_INPUT = -1;
-	public static int CS_FILE_ERROR = -2;
+	public static final int CS_SUCCESS = 0;
+	public static final int CS_NOCHANGE = 1;
+	public static final int CS_CLEARDATA = 2;
+	public static final int CS_INVALID_INPUT = -1;
+	public static final int CS_FILE_ERROR = -2;
 
 	public ConfigSettings() {
 		this.loadFromFile();
 	}
 
 	public int setBrightness(String strBrightness) {
-		if (strBrightness == null || strBrightness.isEmpty())
-			return CS_INVALID_INPUT;
+		if (strBrightness == null || strBrightness.isEmpty()) return CS_INVALID_INPUT;
 		int intBrightness = Integer.parseInt(strBrightness);
 		if (intBrightness > 1000 || intBrightness < -1000) {
 			return CS_INVALID_INPUT;
-		} else if (intBrightness == this.brightness) {
+		}
+		else if (intBrightness == this.brightness) {
 			return CS_NOCHANGE;
-		} else {
+		}
+		else {
 			this.brightness = intBrightness;
 			return CS_SUCCESS;
 		}
@@ -45,14 +46,15 @@ public class ConfigSettings {
 	}
 
 	public int setContrast(String strContrast) {
-		if (strContrast == null || strContrast.isEmpty())
-			return CS_INVALID_INPUT;
+		if (strContrast == null || strContrast.isEmpty()) return CS_INVALID_INPUT;
 		int intContrast = Integer.parseInt(strContrast);
 		if (intContrast > 1000 || intContrast < -1000) {
 			return CS_INVALID_INPUT;
-		} else if (intContrast == this.contrast) {
+		}
+		else if (intContrast == this.contrast) {
 			return CS_NOCHANGE;
-		} else {
+		}
+		else {
 			this.contrast = intContrast;
 			return CS_SUCCESS;
 		}
@@ -63,14 +65,19 @@ public class ConfigSettings {
 	}
 
 	public int setDpi(String strDpi) {
-		if (strDpi == null || strDpi.isEmpty())
-			return CS_INVALID_INPUT;
+		if (strDpi == null || strDpi.isEmpty()) return CS_INVALID_INPUT;
 		int intDpi = Integer.parseInt(strDpi);
 
 		if (intDpi == ScanLib.DPI_300 || intDpi == ScanLib.DPI_600) {
-			this.dpi = intDpi;
-			return CS_SUCCESS;
-		} else {
+			if (intDpi == this.dpi) {
+				return CS_NOCHANGE;
+			}
+			else {
+				this.dpi = intDpi;
+				return CS_SUCCESS;
+			}
+		}
+		else {
 			return CS_INVALID_INPUT;
 		}
 	}
@@ -103,15 +110,17 @@ public class ConfigSettings {
 
 		if (left == top && top == right && right == bottom && bottom == 0) {
 			return CS_CLEARDATA;
-		} else {
+		}
+		else {
 			return CS_SUCCESS;
 		}
 	}
 
-	public double[] getPlates(int plate) {
+	public double[] getPlate(int plate) {
 		if (plate - 1 < PLATENUM) {
 			return this.plates[plate - 1];
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -119,7 +128,8 @@ public class ConfigSettings {
 	private String sfix(String in) {
 		if (in == null || in.isEmpty()) {
 			return "0";
-		} else {
+		}
+		else {
 			return in;
 		}
 	}
@@ -128,10 +138,12 @@ public class ConfigSettings {
 		Wini ini;
 		try {
 			ini = new Wini(new File("scanlib.ini"));
-		} catch (InvalidFileFormatException e) {
+		}
+		catch (InvalidFileFormatException e) {
 			e.printStackTrace();
 			return CS_FILE_ERROR;
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 			return CS_FILE_ERROR;
 		}

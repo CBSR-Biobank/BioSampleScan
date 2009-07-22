@@ -1,74 +1,55 @@
 package edu.ualberta.med.biosamplescan.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlateSet {
-	private ArrayList<Plate> Plates;
+	private HashMap<String, Plate> plates;
 
-	private int PlateNotFound(String id) { // returns the plate number
-		int lastEmptyPlate = -2;
-		for (int i = 0; i < Plates.size(); i++) {
-			if (Plates.get(i).CheckId(id)) { // found plate
-				return 0;
-			} else {
-				lastEmptyPlate = i + 1;
-			}
-		}
-		return lastEmptyPlate; // return n+1
+	public PlateSet() {
+		plates = new HashMap<String, Plate>();
 	}
 
-	public PlateSet(String[] plateids, int width, int height) {
-		Plates = new ArrayList<Plate>();
-		this.init(plateids, width, height);
+	public void initPlate(String id, int w, int h) {
+		Plate dummyPlate = new Plate(w, h);
+		plates.put(id, dummyPlate);
 	}
 
-	public void init(String[] plateids, int width, int height) {
-		for (int i = 0; i < plateids.length; i++) {
-			int pnf = PlateNotFound(plateids[i]);
-			switch (pnf) {
-			case (-1):
-				System.out.println("Fatal: PlateNotFound return -1");
-				System.exit(-1);
-				break;
-
-			case (0):
-				break;
-
-			default:
-				Plates.get(pnf - 1).init(plateids[i], width, height);
-				break;
-			}
+	public boolean setPlate(String id, String barcodes[][]) {
+		if (plates.containsKey(id)) {
+			plates.get(id).setBarcode(barcodes);
+			return true;
 		}
-		for (int plate = 0; plate < Plates.size(); plate++) {
-			boolean foundplate = false;
-			for (int idi = 0; idi < plateids.length; idi++) {
-				if (Plates.get(plate).CheckId(plateids[idi])) {
-					foundplate = true;
-				}
-			}
-			if (!foundplate) {
-				Plates.get(plate).init("", 0, 0);
-			}
+		else {
+			return false;
 		}
 	}
 
-	public double getBarcode(String plateid, int x, int y) {
-		for (int i = 0; i < Plates.size(); i++) {
-			if (Plates.get(i).CheckId(plateid)) { // found plate
-				return Plates.get(i).getBarcode(x, y);
-			}
+	public boolean setPlate(String id, int x, int y, String barcode) {
+		if (plates.containsKey(id)) {
+			plates.get(id).setBarcode(x, y, barcode);
+			return true;
 		}
-		return -1;
+		else {
+			return false;
+		}
 	}
 
-	public boolean setBarcode(String plateid, int x, int y, double value) {
-		for (int i = 0; i < Plates.size(); i++) {
-			if (Plates.get(i).CheckId(plateid)) { // found plate
-				Plates.get(i).setBarcode(x, y, value);
-				return true;
-			}
+	public String[][] getPlate(String id) {
+		if (plates.containsKey(id)) {
+			return plates.get(id).getBarcode();
 		}
-		return false;
+		else {
+			return null;
+		}
+	}
+
+	public String getPlate(String id, int x, int y) {
+		if (plates.containsKey(id)) {
+			return plates.get(id).getBarcode(x, y);
+		}
+		else {
+			return "";
+		}
 	}
 
 }
