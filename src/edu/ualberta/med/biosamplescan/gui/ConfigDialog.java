@@ -195,7 +195,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 							.setText("\tNote: Wia: bottom=height, right=width");
 				}
 			}
-			this.loadConfigSettings();
+			this.loadFromConfigSettings();
 			dialogShell.layout();
 			dialogShell.pack();
 			dialogShell.setLocation(getParent().toDisplay(100, 100));
@@ -220,7 +220,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		}
 	}
 
-	public int loadConfigSettings() {
+	private int loadFromConfigSettings() {
 		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getConfigSettings();

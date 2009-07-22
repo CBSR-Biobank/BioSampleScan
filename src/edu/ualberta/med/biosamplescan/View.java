@@ -6,8 +6,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
+import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.model.Main;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
@@ -15,7 +15,7 @@ import edu.ualberta.med.scanlib.ScanLibFactory;
 public class View extends ViewPart {
 	public static final String ID = "edu.ualberta.med.biosamplescan.view";
 
-	private Main main = null;
+	private ViewComposite viewComposite = null;
 	private ConfigSettings configSettings = null;
 	private PlateSet plateSet = null;
 
@@ -49,18 +49,18 @@ public class View extends ViewPart {
 		// MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
 		plateSet = new PlateSet();
-		plateSet.initPlate("Plate 1", 0, 13); //TODO Bizzarre
-		plateSet.initPlate("Plate 2", 8, 13);
-		plateSet.initPlate("Plate 3", 8, 13);
-		plateSet.initPlate("Plate 4", 8, 13);
+		plateSet.initPlate("Plate 1", 13, 8); //TODO Bizzarre
+		plateSet.initPlate("Plate 2", 13, 8);
+		plateSet.initPlate("Plate 3", 13, 8);
+		plateSet.initPlate("Plate 4", 13, 8);
 
 		configSettings = new ConfigSettings(); // parses scanlib.ini file
-		main = new Main(parent, SWT.BORDER);
+		viewComposite = new ViewComposite(parent, SWT.BORDER);
 
 	}
 
-	public Main getMain() {
-		return main;
+	public ViewComposite getMain() {
+		return viewComposite;
 	}
 
 	public ConfigSettings getConfigSettings() {
@@ -72,10 +72,10 @@ public class View extends ViewPart {
 	}
 
 	public void setFocus() {
-		if (main == null || configSettings == null || plateSet == null) {
+		if (viewComposite == null || configSettings == null || plateSet == null) {
 			return;
 		}
-		main.setFocus();
+		viewComposite.setFocus();
 	}
 
 }

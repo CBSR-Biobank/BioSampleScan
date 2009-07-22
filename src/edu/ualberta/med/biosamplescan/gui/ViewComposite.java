@@ -1,11 +1,4 @@
-package edu.ualberta.med.biosamplescan.model;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package edu.ualberta.med.biosamplescan.gui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -21,12 +14,12 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
-import edu.ualberta.med.biosamplescan.gui.SWTManager;
-import edu.ualberta.med.scanlib.ScanCell;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
-public class Main extends org.eclipse.swt.widgets.Composite {
+public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
 	private Button scanPlateBtn;
@@ -37,7 +30,7 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 	private String lastSaveSelectLocation;
 	private TableItem[][] tableItems;
 
-	public Main(Composite parent, int style) {
+	public ViewComposite(Composite parent, int style) {
 		super(parent, style);
 		SWTManager.registerResourceUser(this);
 		initGUI();
@@ -145,8 +138,12 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 				loadFromFile.setBounds(380, 6, 90, 40);
 				loadFromFile.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
+						PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage()
+								.getActivePart()).getPlateSet();
 						for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-							tableScanlibData(i + 1, false);
+							plateSet.loadFromScanlibFile(i + 1, false);
+							loadPlateSetToTables(i + 1);
 						}
 					}
 				});
@@ -174,115 +171,30 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 		}
 	}
 
-	public String nulltoblankString(String in) {
-		if (in == null || in.isEmpty()) {
-			return "";
-		}
-		else {
-			return in;
-		}
-	}
-
-	private void loadPlateSet(int plate) {
+	public void loadPlateSetToTables(int plate) {
 		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
 
-		String[] row = new String[13];
 		for (int r = 0; r < 8; r++) {
-			for (int c = 0; c < 13; c++) {
-				row[c] = plateSet.getPlate(String.format("Plate %d", plate), c,
-						r);
-			}
-			tableItems[plate - 1][r].setText(row);
+			tableItems[plate - 1][r].setText(plateSet.getPlate(String.format(
+					"Plate %d", plate))[r]);
 		}
-	}
 
-	private void tableScanlibData(int table, boolean append) {
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getPlateSet();
-
-		try {
-			ScanCell[][] sc = ScanCell.getScanLibResults();
-			String[] row = new String[13];
-			for (int r = 0; r < 8; r++) {
-				row[0] = Character.toString((char) (65 + r));
-				for (int c = 0; c < 12; c++) {
-
-					if (append) {
-						if (plateSet.getPlate(String.format("Plate %d", table),
-								c + 1, r).isEmpty()) {
-							row[c + 1] = nulltoblankString(sc[r][c].getValue());
-						}
-						else {
-							row[c + 1] = plateSet.getPlate(String.format(
-									"Plate %d", table), c + 1, r);
-						}
-					}
-					else {
-						row[c + 1] = nulltoblankString(sc[r][c].getValue());
-					}
-				}
-
-				for (int c = 0; c < 13; c++) {
-					plateSet.setPlate(String.format("Plate %d", table), c, r,
-							row[c]);//TODO make this work properly
-				}
-				System.out.print("\n");
-			}
-			loadPlateSet(table);
-		}
-		catch (FileNotFoundException e) {
-			MessageDialog.openError(getShell(), "DLL Error",
-					"File scanlib.txt was not found.");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private String getDateTime() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		return dateFormat.format(date);
 	}
 
 	public void saveTables(String fileLocation, boolean[] tables) {
-		/*
-		 'boolean[] tables' is an array of the tables that is to be saved,
-		 if true: save, otherwise do not.
-		 */
-		if (tables.length < ConfigSettings.PLATENUM) {
-			System.out.print("Bad Design Error");
-			System.exit(-666);
-		}
-
-		try {
-			BufferedWriter out = new BufferedWriter(
-					new FileWriter(fileLocation));
-			out.write("#Plate,Row,Col,Barcode,Date\r\n");
-			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
-				if (!tables[p]) {
-					continue;
-				}
-				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
-						if (!tableItems[p][r].getText(c + 1).isEmpty()) {
-							out.write(String.format("%d,%s,%d,%s,%s\r\n",
-									p + 1, Character.toString((char) (65 + r)),
-									c + 1, tableItems[p][r].getText(c + 1),
-									getDateTime()));
-						}
-					}
-				}
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
+		String[] plateids = new String[tables.length];
+		for (int i = 0; i < plateids.length; i++) {
+			if (tables[i]) {
+				plateids[i] = String.format("Plate %d", i + 1);
 			}
+		}
 
-			out.close();
-		}
-		catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-		}
+		plateSet.savePlates(fileLocation, plateids);
 	}
 
 	public void clearPlateBtnWidgetSelected(SelectionEvent evt) {
@@ -314,6 +226,10 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 			return;
 		}
 
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
+
 		for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
 			ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage().getActivePart())
@@ -334,18 +250,26 @@ public class Main extends org.eclipse.swt.widgets.Composite {
 								scanlibReturn);
 						return;
 				}
-				tableScanlibData(plate + 1, append);
+				plateSet.loadFromScanlibFile(plate + 1, append);
+				this.loadPlateSetToTables(plate + 1);
+
 			}
 		}
 	}
 
 	public void clearTables() {
+		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
+
 		for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
 			for (int r = 0; r < 8; r++) {
 				for (int c = 0; c < 12; c++) {
 					tableItems[p][r].setText(c + 1, "");
 				}
 			}
+			plateSet.initPlate(String.format("Plate %d", p + 1), 13, 8);
+			//clear plate data
 		}
 	}
 
