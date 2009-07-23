@@ -41,6 +41,9 @@ public class PlateSetEditor extends EditorPart {
 			throws PartInitException {
 		setSite(site);
 		setInput(input);
+		site.getWorkbenchWindow().getActivePage().openEditor(
+				new PlateSetInput(), PlateSetEditor.ID, true);
+
 	}
 
 	@Override
