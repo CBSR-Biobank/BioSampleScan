@@ -13,6 +13,7 @@ public class ConfigSettings {
 	private int contrast = 0;
 	private int dpi = ScanLib.DPI_300;
 	private double plates[][] = new double[PLATENUM][4];
+	private int platemode = PLATENUM;
 
 	public static int PLATENUM = 4;
 
@@ -169,5 +170,13 @@ public class ConfigSettings {
 			/* curse eclipse auto-formatting */
 		}
 		return CS_SUCCESS;
+	}
+
+	public void setPlatemode(int platemode) {
+		this.platemode = platemode;
+	}
+
+	public int getPlatemode() {
+		return platemode;
 	}
 }

@@ -1,10 +1,15 @@
 package edu.ualberta.med.biosamplescan;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.ini4j.InvalidFileFormatException;
+import org.ini4j.Wini;
 
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
@@ -55,6 +60,29 @@ public class View extends ViewPart {
 		configSettings = new ConfigSettings(); // parses scanlib.ini file
 		viewComposite = new ViewComposite(parent, SWT.BORDER);
 
+		if (viewComposite != null && configSettings != null && plateSet != null) {
+			try {
+				File f = new File("scanlibGUI.ini");
+				if (!f.exists()) {
+					f.createNewFile();
+				}
+				Wini ini = new Wini(f);
+				configSettings.setDpi(ini.get("settings", "dpi"));
+				if (ini.get("settings", "platemode") != null
+						&& !ini.get("settings", "platemode").isEmpty()) {
+					configSettings.setPlatemode(Integer.parseInt(ini.get(
+							"settings", "platemode")));
+				}
+			}
+			catch (InvalidFileFormatException e) {
+				e.printStackTrace();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 	public ViewComposite getMain() {
@@ -73,6 +101,7 @@ public class View extends ViewPart {
 		if (viewComposite == null || configSettings == null || plateSet == null) {
 			return;
 		}
+
 		viewComposite.setFocus();
 	}
 
