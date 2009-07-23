@@ -19,7 +19,7 @@ import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
-public class ViewComposite extends org.eclipse.swt.widgets.Composite {
+public class ViewComposite extends Composite {
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
 	private Button scanPlateBtn;
@@ -37,6 +37,11 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 
 	public Shell getActiveShell() {
 		return this.getShell();
+	}
+
+	public boolean setFocus() { /*reload global ui states*/
+		setPlateMode();
+		return true;
 	}
 
 	private void initGUI() {

@@ -295,5 +295,10 @@
             name="PlateSet">
       </editor>
    </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="edu.ualberta.med.biosamplescan.startup.Startup"></startup>
+   </extension>
 
 </plugin>

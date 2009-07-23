@@ -1,9 +1,6 @@
 package edu.ualberta.med.biosamplescan;
 
 import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.text.View;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -15,8 +12,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -30,18 +25,11 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static BioSampleScanPlugin plugin;
 
-	private ArrayList<View> viewList;
-
-	/**
-	 * The constructor
-	 */
 	public BioSampleScanPlugin() {
-		viewList = new ArrayList<View>();
 		String osname = System.getProperty("os.name");
 		if (osname.startsWith("Windows")) {
 			System.loadLibrary("scanlib");
 		}
-		ConfigSettings.getInstance();
 	}
 
 	@Override

@@ -1,20 +1,18 @@
 package edu.ualberta.med.biosamplescan.editors;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
-import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
-import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class PlateSetEditor extends EditorPart {
 
@@ -41,8 +39,8 @@ public class PlateSetEditor extends EditorPart {
 			throws PartInitException {
 		setSite(site);
 		setInput(input);
-		site.getWorkbenchWindow().getActivePage().openEditor(
-				new PlateSetInput(), PlateSetEditor.ID, true);
+		this.setPartName(new SimpleDateFormat("E dd/MM/yyyy HH:mm:ss")
+				.format(new Date()));
 
 	}
 
@@ -60,20 +58,6 @@ public class PlateSetEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		String osname = System.getProperty("os.name");
-		if (!osname.startsWith("Windows")) {
-			if (ScanLibFactory.getScanLib().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						BioSampleScanPlugin.openError("TWAIN Driver Error",
-								"TWAIN driver not installed on this computer.");
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-								.close();
-					}
-				});
-				return;
-			}
-		}
 		//TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
 		plateSet = new PlateSet();
@@ -85,9 +69,6 @@ public class PlateSetEditor extends EditorPart {
 	}
 
 	public ViewComposite getViewComposite() {
-		if (viewComposite == null) {
-			System.out.printf("FAIL!");
-		}
 		return viewComposite;
 	}
 
@@ -97,8 +78,7 @@ public class PlateSetEditor extends EditorPart {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		viewComposite.setFocus();
 	}
 
 }
