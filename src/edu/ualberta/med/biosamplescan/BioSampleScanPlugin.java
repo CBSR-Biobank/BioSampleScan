@@ -39,7 +39,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 		viewList = new ArrayList<View>();
 		String osname = System.getProperty("os.name");
 		if (osname.startsWith("Windows")) {
-			System.loadLibrary("libscanlib"); // scanlib
+			System.loadLibrary("scanlib");
 		}
 		ConfigSettings.getInstance();
 	}
