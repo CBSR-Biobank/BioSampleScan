@@ -10,16 +10,14 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
 public class PlateMode extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
-		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getConfigSettings();
+		ConfigSettings configSettings = ConfigSettings.getInstance();
 		InputDialog dlg = new InputDialog(viewComposite.getShell(),
 				"Plate Mode",
 				"Please enter the plate mode:\nNote: The range is (1,4)", "4",
@@ -45,10 +43,8 @@ public class PlateMode extends AbstractHandler implements IHandler {
 		if (ret == null || ret.isEmpty()) {
 			return null;
 		}
-		//setPlatemode
-		configSettings.setPlatemode(Integer.valueOf(ret));
+		configSettings.setPlatemode(ret);
 		viewComposite.setPlateMode();
-
 		//TODO disable some menu items (eg: save from plate #)
 		return null;
 	}

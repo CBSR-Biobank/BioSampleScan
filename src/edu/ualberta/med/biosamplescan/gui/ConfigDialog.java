@@ -15,10 +15,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -221,10 +219,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	}
 
 	private int loadFromConfigSettings() {
-		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getConfigSettings();
-
+		ConfigSettings configSettings = ConfigSettings.getInstance();
 		configSettings.loadFromFile();
 
 		textDpi.setText(String.valueOf(configSettings.getDpi()));
@@ -251,13 +246,17 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private void buttonConfigMouseUp(MouseEvent evt) {
 		try {
-			ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage().getActivePart())
-					.getConfigSettings();
+			ConfigSettings configSettings = ConfigSettings.getInstance();
 			int configSettingsReturn = configSettings.setDpi(textDpi.getText());
 			switch (configSettingsReturn) {
 				case (ConfigSettings.CS_SUCCESS):
 					break;
+				case (ConfigSettings.CS_FILE_ERROR):
+					MessageDialog.openError(dialogShell,
+							"configSettings.setDpi",
+							"Could not find scanlib.ini file");
+					dialogShell.dispose();
+					return;
 				case (ConfigSettings.CS_INVALID_INPUT):
 					MessageDialog.openError(dialogShell,
 							"configSettings.setDpi", "Dpi must be 300 or 600");
