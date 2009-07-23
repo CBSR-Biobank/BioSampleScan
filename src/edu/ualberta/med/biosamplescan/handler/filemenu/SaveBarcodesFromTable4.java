@@ -13,12 +13,7 @@ public class SaveBarcodesFromTable4 extends AbstractHandler {
 	}
 
 	public boolean isEnabled() {
-		ConfigSettings configSettings = ConfigSettings.getInstance();
-		System.out.println((configSettings.getPlatemode() >= 4));
-		return (configSettings.getPlatemode() >= 4);
-	}
-
-	public void setEnabled(Object o) {
-		isEnabled();
+		System.out.println(ConfigSettings.getInstance().getPlatemode());
+		return (ConfigSettings.getInstance().getPlatemode() >= 4);
 	}
 }

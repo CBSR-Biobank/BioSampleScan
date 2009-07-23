@@ -253,8 +253,8 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	public void setPlateMode() {
-		ConfigSettings configSettings = ConfigSettings.getInstance();
-		int platecount = configSettings.getPlatemode();
+		int platecount = ConfigSettings.getInstance().getPlatemode();
+		System.out.println("setPlateMode: plateCount: " + platecount);
 		boolean set = false;
 		for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 			set = (table < platecount);
