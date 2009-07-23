@@ -3,6 +3,8 @@ package edu.ualberta.med.biosamplescan;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.text.View;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -127,14 +129,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 						.getActiveWorkbenchWindow().getShell(), title, message);
 			}
 		});
-	}
-
-	public void addView(View view) {
-		viewList.add(view);
-	}
-
-	public void removeView(View view) {
-		viewList.remove(view);
 	}
 
 }

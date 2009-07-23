@@ -7,20 +7,20 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
 public class ClearAllTables extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getMain();
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
 		if (MessageDialog.openConfirm(viewComposite.getActiveShell(),
 				"Clear Table(s)", "Do you want to clear all the tables?")) {
 			viewComposite.clearTables();
-			PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+			PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage().getActivePart())
 					.getPlateSet();
 			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {

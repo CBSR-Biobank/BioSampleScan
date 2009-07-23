@@ -6,7 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
@@ -14,10 +14,10 @@ import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 public class SaveBarcodesFromTableX {
 	public static final Object execute(ExecutionEvent event, int platenum)
 			throws ExecutionException {
-		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getMain();
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);

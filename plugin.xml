@@ -22,45 +22,9 @@
       </perspective>
    </extension>
    <extension
-         id="edu.ualberta.med.biosamplescan.View"
-         name="Views"
-         point="org.eclipse.ui.views">
-      <view
-            allowMultiple="true"
-            class="edu.ualberta.med.biosamplescan.View"
-            id="edu.ualberta.med.biosamplescan.view"
-            name="View"
-            restorable="true">
-      </view>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="edu.ualberta.med.biosamplescan.rcp.perspective">
-         <view
-               closeable="true"
-               id="edu.ualberta.med.biosamplescan.view"
-               minimized="false"
-               moveable="true"
-               ratio="1f"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="true"
-               standalone="false"
-               visible="true">
-         </view>
-         <view
-               closeable="true"
-               id="edu.ualberta.med.biosamplescan.option"
-               minimized="false"
-               moveable="true"
-               ratio="1f"
-               relationship="stack"
-               relative="edu.ualberta.med.biosamplescan.view"
-               showTitle="true"
-               standalone="false"
-               visible="false">
-         </view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -71,14 +35,24 @@
                id="edu.ualberta.med.biosamplescan.menu.file"
                label="File">
             <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.newview"
+                  label="New View"
+                  style="push">
+            </command>
+             <separator
+                  name="BioSampleScan.separator1"
+                  visible="true">
+            </separator>
+            <command
                   commandId="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
                   label="Save Selected Barcodes"
                   style="push">
             </command>
-            <separator
-                  name="BioSampleScan.separator1"
+             <separator
+                  name="BioSampleScan.separator8"
                   visible="true">
             </separator>
+
             <menu
                   id="edu.ualberta.med.biosamplescan.commands.saveallbarcodemenu"
                   label="Save Barcode...">
@@ -127,6 +101,10 @@
                   label="Quit"
                   style="push">
             </command>
+            <separator
+                  name="BioSampleScan.separator6"
+                  visible="true">
+            </separator>
          </menu>
          <menu
                id="edu.ualberta.med.biosamplescan.menu.options"
@@ -192,6 +170,15 @@
                      style="push">
                </command>
             </menu>
+         </menu>
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.about"
+               label="About">
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.menu.credits"
+                  label="Credits..."
+                  style="push">
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -287,6 +274,26 @@
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
             name="Save Image to Plate 4">
       </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.aboutmenu.Credits"
+            id="edu.ualberta.med.biosamplescan.menu.credits"
+            name="Credits...">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewView"
+            id="edu.ualberta.med.biosamplescan.commands.newview"
+            name="New View">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="edu.ualberta.med.biosamplescan.editors.PlateSetEditor"
+            default="true"
+            icon="icons/burst.gif"
+            id="edu.ualberta.med.biosamplescan.editors.plateset"
+            name="PlateSet">
+      </editor>
    </extension>
 
 </plugin>

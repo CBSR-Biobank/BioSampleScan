@@ -7,17 +7,18 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ConfigDialog;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 
 public class ScannerSettings extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getMain();
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
 
-		ConfigDialog configDialog = new ConfigDialog(viewComposite.getShell(), SWT.NONE);
+		ConfigDialog configDialog = new ConfigDialog(viewComposite.getShell(),
+				SWT.NONE);
 		configDialog.open();
 		return null;
 	}

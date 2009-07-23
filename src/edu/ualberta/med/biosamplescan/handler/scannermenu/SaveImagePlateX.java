@@ -7,7 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
@@ -17,9 +17,9 @@ public class SaveImagePlateX {
 	// TODO bring up a dialog if all the settings for plate is 0,0,0,0;
 	public static final Object execute(ExecutionEvent event, int platenum)
 			throws ExecutionException {
-		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getMain();
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
 		ConfigSettings configSettings = ConfigSettings.getInstance();
 
 		if (!configSettings.plateIsSet(platenum)) { //TODO apply this code to all applicable routines

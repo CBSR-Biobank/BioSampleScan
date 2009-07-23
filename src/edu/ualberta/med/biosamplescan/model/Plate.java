@@ -19,21 +19,8 @@ public class Plate {
 		BarcodeTable = new String[Width][Height];
 	}
 
-	public String getBarcode(int x, int y) { //TODO untested
-		if (x < Width && x >= 0 && y < Height && y >= 0) return BarcodeTable[x][y];
-		else {
-			return "";
-		}
-	}
-
 	public String[][] getBarcode() {
 		return BarcodeTable;
-	}
-
-	public void setBarcode(int x, int y, String barcode) {//TODO untested
-		if (x < Width && x >= 0 && y < Height && y >= 0) {
-			BarcodeTable[x][y] = barcode;
-		}
 	}
 
 	public void setBarcode(String[][] barcodes) {

@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
@@ -27,7 +27,6 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 	private Button[] plateBtn;
 	private Table[] tables;
 	private TableColumn[][] tableColumns;
-	private String lastSaveSelectLocation;
 	private TableItem[][] tableItems;
 
 	public ViewComposite(Composite parent, int style) {
@@ -138,9 +137,9 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 				loadFromFile.setBounds(380, 6, 90, 40);
 				loadFromFile.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
-						PlateSet plateSet = ((View) PlatformUI.getWorkbench()
-								.getActiveWorkbenchWindow().getActivePage()
-								.getActivePart()).getPlateSet();
+						PlateSet plateSet = ((PlateSetEditor) PlatformUI
+								.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().getActivePart()).getPlateSet();
 						for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 							plateSet.loadFromScanlibFile(i + 1, false);
 							fillTablesFromPlateSet(i + 1);
@@ -150,7 +149,6 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 			}
 			pack();
 			this.setPlateMode();
-			this.setSize(900, 700);
 
 		}
 		catch (Exception e) {
@@ -173,7 +171,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	public void fillTablesFromPlateSet(int plate) {
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
 
@@ -213,7 +211,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 			return;
 		}
 
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
 
@@ -273,13 +271,5 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 
 	public boolean getPlateBtnSelection(int platenum) {
 		return plateBtn[platenum].getSelection();
-	}
-
-	public void setLastSaveSelectLocation(String lastSaveSelectLocation) {
-		this.lastSaveSelectLocation = lastSaveSelectLocation;
-	}
-
-	public String getLastSaveSelectLocation() {
-		return lastSaveSelectLocation;
 	}
 }

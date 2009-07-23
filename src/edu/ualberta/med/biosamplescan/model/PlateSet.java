@@ -32,31 +32,12 @@ public class PlateSet {
 		}
 	}
 
-	public boolean setPlate(String id, int x, int y, String barcode) {//TODO untested
-		if (plates.containsKey(id)) {
-			plates.get(id).setBarcode(x, y, barcode);
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
 	public String[][] getPlate(String id) {
 		if (plates.containsKey(id)) {
 			return plates.get(id).getBarcode();
 		}
 		else {
 			return null;
-		}
-	}
-
-	public String getPlate(String id, int x, int y) {//TODO untested
-		if (plates.containsKey(id)) {
-			return plates.get(id).getBarcode(x, y);
-		}
-		else {
-			return "";
 		}
 	}
 
@@ -77,22 +58,19 @@ public class PlateSet {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		String[][] data = new String[8][13];
+
+		String[][] data = null;
+		if (append) {
+			data = this.getPlate(String.format("Plate %d", table));
+		}
+		else {
+			data = new String[8][13];
+		}
+
 		for (int r = 0; r < 8; r++) {
 			data[r][0] = Character.toString((char) (65 + r));
 			for (int c = 0; c < 12; c++) {
-
-				if (append) {
-					if (this.getPlate(String.format("Plate %d", table), c + 1,
-							r).isEmpty()) {
-						data[r][c + 1] = nulltoblankString(sc[r][c].getValue());
-					}
-					else {
-						data[r][c + 1] = this.getPlate(String.format(
-								"Plate %d", table), c + 1, r);
-					}
-				}
-				else {
+				if (data[r][c + 1] == null || data[r][c + 1].isEmpty()) {
 					data[r][c + 1] = nulltoblankString(sc[r][c].getValue());
 				}
 			}
@@ -134,15 +112,18 @@ public class PlateSet {
 		for (int pi = 0; pi < plateids.length; pi++) {
 			if (plates.containsKey(plateids[pi])) {
 				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
+					for (int c = 1; c < 12; c++) {
+						if (plates.get(plateids[pi]).getBarcode() == null) {
+							return;
+						}
 						String barcode = plates.get(plateids[pi]).getBarcode()[r][c];
-						if (!barcode.isEmpty()) {
+						if (barcode != null && !barcode.isEmpty()) {
 							try {
 								out.write(String.format("%d,%s,%d,%s,%s\r\n",
 										pi + 1,
 										//TODO platenumber depends on position in string[] 
-										Character.toString((char) (65 + r)),
-										c + 1, barcode, getDateTime()));
+										Character.toString((char) (65 + r)), c,
+										barcode, getDateTime()));
 							}
 							catch (IOException e) {
 								e.printStackTrace();

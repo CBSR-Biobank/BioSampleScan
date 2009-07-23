@@ -8,38 +8,42 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.View;
+import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
 public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getMain();
-		PlateSet plateSet = ((View) PlatformUI.getWorkbench()
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
-		if (viewComposite.getLastSaveSelectLocation() == null
-				|| viewComposite.getLastSaveSelectLocation().isEmpty()) {
+		if (ConfigSettings.getInstance().getLastSaveLocation() == null
+				|| ConfigSettings.getInstance().getLastSaveLocation().isEmpty()) {
 			FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 			dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
 			dlg.setText(String.format("Save Barcodes for the Selected Plates"));
 			String saveLocation = dlg.open();
 			if (saveLocation != null) {
-				viewComposite.setLastSaveSelectLocation(saveLocation);
+				ConfigSettings.getInstance().setLastSaveLocation(saveLocation);
 			}
 			else {
 				return null;
 			}
 
 		}
+		if (ConfigSettings.getInstance().getLastSaveLocation() == null) {
+			System.out.printf("WTF\n");
+		}
+
 		boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
 		}
-		plateSet.saveTables(viewComposite.getLastSaveSelectLocation(),
+		plateSet.saveTables(ConfigSettings.getInstance().getLastSaveLocation(),
 				tablesCheck);
 		return null;
 	}
