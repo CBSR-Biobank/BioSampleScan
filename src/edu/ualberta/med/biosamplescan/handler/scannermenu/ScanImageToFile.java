@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -20,9 +20,7 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
-		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getConfigSettings();
+		ConfigSettings configSettings = ConfigSettings.getInstance();
 
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
@@ -37,28 +35,28 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
 			case (ScanLib.SC_SUCCESS):
 				break;
 			case (ScanLib.SC_INVALID_DPI):
-				MessageDialog.openError(viewComposite.getActiveShell(), "Error", String
-						.format("%s\nReturned Error Code: %d\n",
+				MessageDialog.openError(viewComposite.getActiveShell(),
+						"Error", String.format("%s\nReturned Error Code: %d\n",
 								"Scanlib ScanImage", "Invalid Dpi"));
 				break;
 			case (ScanLib.SC_INVALID_PLATE_NUM):
-				MessageDialog.openError(viewComposite.getActiveShell(), "Error", String
-						.format("%s\nReturned Error Code: %d\n",
+				MessageDialog.openError(viewComposite.getActiveShell(),
+						"Error", String.format("%s\nReturned Error Code: %d\n",
 								"Scanlib ScanImagen", "Ivalid Plate Number"));
 				break;
 			case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
-				MessageDialog.openError(viewComposite.getActiveShell(), "Error", String
-						.format("%s\nReturned Error Code: %d\n",
+				MessageDialog.openError(viewComposite.getActiveShell(),
+						"Error", String.format("%s\nReturned Error Code: %d\n",
 								"Scanlib ScanImage", "Calibrator Error"));
 				break;
 			case (ScanLib.SC_FAIL):
-				MessageDialog.openError(viewComposite.getActiveShell(), "Error", String
-						.format("%s\nReturned Error Code: %d\n",
+				MessageDialog.openError(viewComposite.getActiveShell(),
+						"Error", String.format("%s\nReturned Error Code: %d\n",
 								"Scanlib ScanImage", "Failure"));
 				break;
 			case (ScanLib.SC_FILE_SAVE_ERROR):
-				MessageDialog.openError(viewComposite.getActiveShell(), "Error", String
-						.format("%s\nReturned Error Code: %d\n",
+				MessageDialog.openError(viewComposite.getActiveShell(),
+						"Error", String.format("%s\nReturned Error Code: %d\n",
 								"Scanlib ScanImage", "Failed to save to file"));
 				break;
 		}

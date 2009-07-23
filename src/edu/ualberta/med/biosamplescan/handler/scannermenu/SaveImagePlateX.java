@@ -9,7 +9,7 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -20,9 +20,7 @@ public class SaveImagePlateX {
 		ViewComposite viewComposite = ((View) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getMain();
-		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getConfigSettings();
+		ConfigSettings configSettings = ConfigSettings.getInstance();
 
 		if (!configSettings.plateIsSet(platenum)) { //TODO apply this code to all applicable routines
 			MessageDialog.openError(viewComposite.getActiveShell(), "Error",

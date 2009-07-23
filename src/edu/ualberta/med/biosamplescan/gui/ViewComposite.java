@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.View;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -149,6 +149,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 				});
 			}
 			pack();
+			this.setPlateMode();
 			this.setSize(900, 700);
 
 		}
@@ -217,9 +218,7 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 				.getPlateSet();
 
 		for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
-			ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage().getActivePart())
-					.getConfigSettings();
+			ConfigSettings configSettings = ConfigSettings.getInstance();
 
 			if (configSettings.getPlate(plate + 1)[0]
 					+ configSettings.getPlate(plate + 1)[1]
@@ -254,10 +253,8 @@ public class ViewComposite extends org.eclipse.swt.widgets.Composite {
 	}
 
 	public void setPlateMode() {
-		ConfigSettings configSettings = ((View) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActivePart())
-				.getConfigSettings();
-		int platecount = configSettings.getPlatemode();
+		int platecount = ConfigSettings.getInstance().getPlatemode();
+		System.out.println("setPlateMode: plateCount: " + platecount);
 		boolean set = false;
 		for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 			set = (table < platecount);

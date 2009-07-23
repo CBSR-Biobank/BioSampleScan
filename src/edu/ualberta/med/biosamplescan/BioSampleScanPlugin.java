@@ -14,6 +14,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -37,6 +39,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 		if (osname.startsWith("Windows")) {
 			System.loadLibrary("scanlib");
 		}
+		ConfigSettings.getInstance();
 	}
 
 	@Override
