@@ -16,10 +16,6 @@ public class Credits extends AbstractHandler implements IHandler {
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart()).getViewComposite();
-		/*MessageDialog.openInformation(viewComposite.getActiveShell(),
-				"Credits", "Interface:\n\tThomas Polasek\n"
-						+ "\nScanlib/Design:\n\tNelson Loyola\n"
-						+ "\nVersion:\t1.00\n");*///TODO set version
 		CreditsDialog cd = new CreditsDialog(viewComposite.getActiveShell(),
 				SWT.NONE);
 		cd.open();

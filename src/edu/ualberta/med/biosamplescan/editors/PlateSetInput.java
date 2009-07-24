@@ -34,6 +34,7 @@ public class PlateSetInput implements IEditorInput {
 		return "Plate Set";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub

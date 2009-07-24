@@ -1,13 +1,19 @@
 package edu.ualberta.med.biosamplescan.gui;
 
+import java.util.Random;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.program.Program;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -41,14 +47,42 @@ public class CreditsDialog extends Dialog {
 					| SWT.APPLICATION_MODAL);
 
 			GridLayout dialogShellLayout = new GridLayout();
-			dialogShellLayout.makeColumnsEqualWidth = true;
+			dialogShellLayout.makeColumnsEqualWidth = false;
 			dialogShell.setLayout(dialogShellLayout);
 			dialogShell.setText("Credits");
-			dialogShell.setSize(400, 300);
 			dialogShell.setBackground(new Color(Display.getDefault(), 0, 0, 0));
 			dialogShell.setAlpha(220);
 			dialogShell.setCursor(new Cursor(Display.getDefault(),
 					SWT.CURSOR_CROSS));
+
+			final Canvas canvas = new Canvas(dialogShell, SWT.NONE);
+			canvas.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+			canvas.setSize(500, 301);
+			final Thread t = new Thread() {
+				public void run() {
+					for (int i = 0; i < 40; i++) {
+						GC gc = new GC(canvas);
+						gc.setBackground(new Color(Display.getDefault(), 0, 0,
+								0));
+						gc.setForeground(new Color(Display.getDefault(), 0xFF,
+								0, 0));
+						Random r = new Random();
+						gc.drawRectangle(0, 0, (int) i * 3, 40);
+						gc.dispose();
+						try {
+							Thread.sleep(10);
+						}
+						catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+			canvas.addPaintListener(new PaintListener() {
+				public void paintControl(PaintEvent e) {
+					t.run();
+				}
+			});
 
 			Label thomas = new Label(dialogShell, SWT.LEFT);
 			thomas.setText("Gui: Thomas Polasek");
@@ -82,7 +116,7 @@ public class CreditsDialog extends Dialog {
 			Link website = new Link(dialogShell, SWT.LEFT);
 			website.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
 					| GridData.FILL_HORIZONTAL));
-			website.setText("<a>Icons: Mark James</a>"); //$NON-NLS-1$
+			website.setText("Icons: Mark James [Hyperlink]");
 			website.setForeground(new Color(Display.getDefault(), 0x00, 0xFF,
 					0xFF));
 			website.setBackground(new Color(Display.getDefault(), 0, 0, 0));

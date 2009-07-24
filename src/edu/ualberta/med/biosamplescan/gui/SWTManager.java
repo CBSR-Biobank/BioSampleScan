@@ -49,6 +49,7 @@ public class SWTManager {
 		return getFont(name, size, style, false, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Font getFont(String name, int size, int style,
 			boolean strikeout, boolean underline) {
 		String fontName = name + "|" + size + "|" + style + "|" + strikeout

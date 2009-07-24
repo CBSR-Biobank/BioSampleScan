@@ -19,10 +19,9 @@ public class AppendSetting extends AbstractHandler implements IHandler {
 
 		if (ConfigSettings.getInstance().getAppendSetting() == false) {
 			if (MessageDialog
-					.openConfirm(
-							viewComposite.getActiveShell(),
+					.openConfirm(viewComposite.getActiveShell(),
 							"Append to File",
-							"Do you want to automatically append each time you save via 'Save Selected Barcodes'?")) {
+							"Do you want to ENABLE appending for 'Save Selected Barcodes'?")) {
 				ConfigSettings.getInstance().setAppendSetting("TRUE");
 			}
 		}
@@ -30,7 +29,7 @@ public class AppendSetting extends AbstractHandler implements IHandler {
 			if (MessageDialog
 					.openConfirm(viewComposite.getActiveShell(),
 							"Append to File",
-							"Do you want to DISABLE appending to file via 'Save Selected Barcodes'?")) {
+							"Do you want to DISABLE appending to file for 'Save Selected Barcodes'?")) {
 				ConfigSettings.getInstance().setAppendSetting("FALSE");
 			}
 		}

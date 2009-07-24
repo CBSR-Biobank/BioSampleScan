@@ -107,7 +107,7 @@ public class ConfigSettings {
 		if (strDpi == null || strDpi.isEmpty()) return CS_INVALID_INPUT;
 		int intDpi = Integer.parseInt(strDpi);
 
-		if (intDpi == ScanLib.DPI_300 || intDpi == ScanLib.DPI_600) {
+		if (intDpi > 0 && intDpi <= 600) {
 			if (intDpi == this.dpi) {
 				return CS_NOCHANGE;
 			}

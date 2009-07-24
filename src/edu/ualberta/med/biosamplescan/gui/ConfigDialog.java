@@ -1,5 +1,7 @@
 package edu.ualberta.med.biosamplescan.gui;
 
+import java.io.File;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
@@ -25,6 +27,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	private Shell dialogShell;
 	private Button buttonCancle;
 	private Button buttonConfig;
+	private Button buttonPreview;
 	private Text textDpi;
 	private Text textBrightness;
 	private Text textContrast;
@@ -219,6 +222,22 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					});
 				}
 				{
+					buttonPreview = new Button(groups[groups_it], SWT.PUSH
+							| SWT.CENTER);
+					buttonPreview.setText("Preview Plate Positions");
+					RowData button1LData = new RowData();
+					buttonPreview.setSize(250, 70);
+					buttonPreview.setLayoutData(button1LData);
+					buttonPreview.setFont(SWTManager.getFont("Tahoma", 10, 0,
+							false, false));
+					buttonPreview.addMouseListener(new MouseAdapter() {
+						public void mouseUp(MouseEvent evt) {
+							buttonPlateImageDialog(evt);
+						}
+					});
+
+				}
+				{
 					buttonCancle = new Button(groups[groups_it], SWT.PUSH
 							| SWT.CENTER);
 					buttonCancle.setText(" Cancle ");
@@ -295,6 +314,20 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		dialogShell.dispose();
 	}
 
+	private void buttonPlateImageDialog(MouseEvent evt) {
+		double nplates[][] = new double[ConfigSettings.PLATENUM][4];
+		readPlatesIntoArray(nplates);
+		if (!(new File("scanned.bmp").exists())
+				|| !MessageDialog.openConfirm(dialogShell, "Scan?",
+						"Don't scan the image for alignment?")) {
+			ScanLibFactory.getScanLib().slScanImage(100, 0, 0, 0, 0,
+					"scanned.bmp");
+		}
+
+		PlateImageDialog pid = new PlateImageDialog(dialogShell, SWT.NONE);
+		pid.open(nplates);
+	}
+
 	private void errorMsg(String Identifier, int code) {
 		MessageDialog.openError(dialogShell, "Error", String.format(
 				"%s\nReturned Error Code: %d\n", Identifier, code));
@@ -320,8 +353,9 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					dialogShell.dispose();
 					return;
 				case (ConfigSettings.CS_INVALID_INPUT):
-					MessageDialog.openError(dialogShell,
-							"configSettings.setDpi", "Dpi must be 300 or 600");
+					MessageDialog
+							.openError(dialogShell, "configSettings.setDpi",
+									"Dpi must be greater than 0 and no greater than 600");
 					dialogShell.dispose();
 					return;
 				case (ConfigSettings.CS_NOCHANGE):
