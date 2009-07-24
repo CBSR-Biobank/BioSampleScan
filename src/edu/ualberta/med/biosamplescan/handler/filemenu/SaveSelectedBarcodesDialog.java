@@ -39,17 +39,20 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
-		dlg.setText(String.format("Save Barcodes for the Selected Plates"));
+		dlg.setText(String.format(
+				"Save Barcodes for the Selected Plates, Append:%s",
+				ConfigSettings.getInstance().getAppendSetting()));
 		String saveLocation = dlg.open();
 		if (saveLocation != null) {
 			boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
 			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 				tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
 			}
-			plateSet.saveTables(saveLocation, tablesCheck);
+			plateSet.saveTables(saveLocation, tablesCheck, ConfigSettings
+					.getInstance().getAppendSetting());
 			ConfigSettings.getInstance().setLastSaveLocation(saveLocation);
 		}
-		return null;
+		return saveLocation;
 	}
 
 }

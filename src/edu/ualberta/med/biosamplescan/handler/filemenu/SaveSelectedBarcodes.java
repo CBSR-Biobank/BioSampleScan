@@ -25,7 +25,9 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 				|| ConfigSettings.getInstance().getLastSaveLocation().isEmpty()) {
 			FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 			dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
-			dlg.setText(String.format("Save Barcodes for the Selected Plates"));
+			dlg.setText(String.format(
+					"Save Barcodes for the Selected Plates, Append:%s",
+					ConfigSettings.getInstance().getAppendSetting()));
 			String saveLocation = dlg.open();
 			if (saveLocation != null) {
 				ConfigSettings.getInstance().setLastSaveLocation(saveLocation);
@@ -35,8 +37,8 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 			}
 
 		}
-		if (ConfigSettings.getInstance().getLastSaveLocation() == null) {
-			System.out.printf("WTF\n");
+		if (ConfigSettings.getInstance().getLastSaveLocation() == null) {//TODO remove later
+			return null;
 		}
 
 		boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
@@ -44,7 +46,7 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 			tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
 		}
 		plateSet.saveTables(ConfigSettings.getInstance().getLastSaveLocation(),
-				tablesCheck);
+				tablesCheck, ConfigSettings.getInstance().getAppendSetting());
 		return null;
 	}
 

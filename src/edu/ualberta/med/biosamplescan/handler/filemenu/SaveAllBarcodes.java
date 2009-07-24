@@ -33,7 +33,7 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 			tablesCheck[i] = true;
 		}
 
-		plateSet.saveTables(saveLocation, tablesCheck);
+		plateSet.saveTables(saveLocation, tablesCheck, false);
 		return null;
 	}
 

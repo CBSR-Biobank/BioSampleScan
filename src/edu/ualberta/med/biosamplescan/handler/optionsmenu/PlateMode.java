@@ -4,11 +4,11 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
+import edu.ualberta.med.biosamplescan.gui.PlateModeDialog;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
@@ -17,7 +17,7 @@ public class PlateMode extends AbstractHandler implements IHandler {
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart()).getViewComposite();
-		InputDialog dlg = new InputDialog(viewComposite.getShell(),
+		/*InputDialog dlg = new InputDialog(viewComposite.getShell(),
 				"Plate Mode",
 				"Please enter the plate mode:\nNote: The range is (1,4)", "4",
 				new IInputValidator() {
@@ -35,16 +35,18 @@ public class PlateMode extends AbstractHandler implements IHandler {
 						}
 						return null;
 					}
-				});
+				});*/
 
-		dlg.open();
-		String ret = dlg.getValue();
-		if (ret == null || ret.isEmpty()) {
-			return null;
+		PlateModeDialog pmd = new PlateModeDialog(viewComposite
+				.getActiveShell(), SWT.NONE);
+		int plateMode = pmd.open();
+
+		if (plateMode > 0 && plateMode <= ConfigSettings.PLATENUM) {
+			ConfigSettings.getInstance()
+					.setPlatemode(String.valueOf(plateMode));
+			viewComposite.setPlateMode();
+			//TODO disable some menu items (eg: save from plate #)
 		}
-		ConfigSettings.getInstance().setPlatemode(ret);
-		viewComposite.setPlateMode();
-		//TODO disable some menu items (eg: save from plate #)
 		return null;
 	}
 }

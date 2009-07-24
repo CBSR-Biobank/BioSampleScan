@@ -257,7 +257,6 @@ public class ViewComposite extends Composite {
 
 	public void setPlateMode() {
 		int platecount = ConfigSettings.getInstance().getPlatemode();
-		System.out.println("setPlateMode: plateCount: " + platecount);
 		boolean set = false;
 		for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 			set = (table < platecount);

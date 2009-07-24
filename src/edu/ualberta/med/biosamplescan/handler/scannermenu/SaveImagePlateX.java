@@ -39,7 +39,6 @@ public class SaveImagePlateX {
 
 		int scanlibReturn = ScanLibFactory.getScanLib().slScanPlate(
 				configSettings.getDpi(), platenum, saveLocation);
-		System.out.println(scanlibReturn);
 		switch (scanlibReturn) {
 			case (ScanLib.SC_SUCCESS):
 				break;

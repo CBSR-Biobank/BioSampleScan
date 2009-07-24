@@ -14,6 +14,10 @@ import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 public class SaveBarcodesFromTableX {
 	public static final Object execute(ExecutionEvent event, int platenum)
 			throws ExecutionException {
+		if (ConfigSettings.getInstance().getPlatemode() < platenum) {
+			return null;
+		}
+
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart()).getViewComposite();
@@ -32,7 +36,7 @@ public class SaveBarcodesFromTableX {
 			}
 			tablesCheck[platenum - 1] = true;
 
-			plateSet.saveTables(saveLocation, tablesCheck);
+			plateSet.saveTables(saveLocation, tablesCheck, false);
 		}
 		return null;
 	}

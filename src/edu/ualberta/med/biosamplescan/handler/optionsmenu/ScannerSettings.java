@@ -16,7 +16,6 @@ public class ScannerSettings extends AbstractHandler implements IHandler {
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart()).getViewComposite();
-
 		ConfigDialog configDialog = new ConfigDialog(viewComposite.getShell(),
 				SWT.NONE);
 		configDialog.open();

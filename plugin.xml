@@ -36,7 +36,8 @@
                label="File">
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.newview"
-                  label="New View"
+                  icon="icons/application_add.png"
+                  label="New Scan"
                   style="push">
             </command>
              <separator
@@ -45,6 +46,7 @@
             </separator>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
+                  icon="icons/disk.png"
                   label="Save Selected Barcodes"
                   style="push">
             </command>
@@ -54,36 +56,43 @@
             </separator>
 
             <menu
+                  icon="icons/page_save.png"
                   id="edu.ualberta.med.biosamplescan.commands.saveallbarcodemenu"
                   label="Save Barcode...">
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate1"
+                     icon="icons/tab.png"
                      label="From Plate 1"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate2"
+                     icon="icons/tab.png"
                      label="From Plate 2"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate3"
+                     icon="icons/tab.png"
                      label="From Plate 3"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate4"
+                     icon="icons/tab.png"
                      label="From Plate 4"
                      style="push">
                </command>
             </menu>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
+                  icon="icons/database_table.png"
                   label="Save All Barcodes..."
                   style="push">
             </command>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
+                  icon="icons/disk_multiple.png"
                   label="Save Selected Barcodes..."
                   style="push">
             </command>
@@ -93,11 +102,13 @@
             </separator>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.clearalltables"
+                  icon="icons/table_lightning.png"
                   label="Clear All Tables"
                   style="push">
             </command>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.quit"
+                  icon="icons/stop.png"
                   label="Quit"
                   style="push">
             </command>
@@ -110,12 +121,8 @@
                id="edu.ualberta.med.biosamplescan.menu.options"
                label="Options">
             <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.autosaving"
-                  label="Auto Saving"
-                  style="push">
-            </command>
-            <command
                   commandId="edu.ualberta.med.biosamplescan.commands.platemode"
+                  icon="icons/application_view_tile.png"
                   label="Plate Mode"
                   style="push">
             </command>
@@ -124,8 +131,15 @@
                   visible="true">
             </separator>
             <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.appendsetting"
+                  icon="icons/building_add.png"
+                  label="Append Setting"
+                  style="push">
+            </command>
+            <command
                   commandId="edu.ualberta.med.biosamplescan.commands.scannersettings"
-                  label="Scanner Settings"
+                  icon="icons/image.png"
+                  label="Scanner Settings..."
                   style="push">
             </command>
          </menu>
@@ -134,6 +148,7 @@
                label="Scanner">
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.selectsource"
+                  icon="icons/image.png"
                   label="Select Source"
                   style="push">
             </command>
@@ -143,29 +158,35 @@
             </separator>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.scanimagetofile"
+                  icon="icons/picture_save.png"
                   label="Scan Image to File..."
                   style="push">
             </command>
             <menu
+                  icon="icons/picture_go.png"
                   id="edu.ualberta.med.biosamplescan.commands.scanimagetoplatemenu"
                   label="Scan Plate to File...">
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
+                     icon="icons/tab.png"
                      label="Plate 1"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
+                     icon="icons/tab.png"
                      label="Plate 2"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
+                     icon="icons/tab.png"
                      label="Plate 3"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
+                     icon="icons/tab.png"
                      label="Plate 4"
                      style="push">
                </command>
@@ -176,6 +197,7 @@
                label="About">
             <command
                   commandId="edu.ualberta.med.biosamplescan.menu.credits"
+                  icon="icons/ruby.png"
                   label="Credits..."
                   style="push">
             </command>
@@ -210,9 +232,9 @@
             name="Quit">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.AutoSaving"
-            id="edu.ualberta.med.biosamplescan.commands.autosaving"
-            name="Auto Saving">
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.AppendSetting"
+            id="edu.ualberta.med.biosamplescan.commands.appendsetting"
+            name="Append Setting">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.PlateMode"
@@ -280,7 +302,7 @@
             name="Credits...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewView"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewScan"
             id="edu.ualberta.med.biosamplescan.commands.newview"
             name="New View">
       </command>
@@ -290,7 +312,7 @@
       <editor
             class="edu.ualberta.med.biosamplescan.editors.PlateSetEditor"
             default="true"
-            icon="icons/burst.gif"
+            icon="icons/star.png"
             id="edu.ualberta.med.biosamplescan.editors.plateset"
             name="PlateSet">
       </editor>

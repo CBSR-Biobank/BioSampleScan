@@ -85,20 +85,22 @@ public class PlateSet {
 		return dateFormat.format(date);
 	}
 
-	public void saveTables(String fileLocation, boolean[] tables) {
+	public void saveTables(String fileLocation, boolean[] tables,
+			boolean appendFile) {
 		String[] plateids = new String[tables.length]; //wrapper
 		for (int i = 0; i < plateids.length; i++) {
 			if (tables[i]) {
 				plateids[i] = String.format("Plate %d", i + 1);
 			}
 		}
-		this.savePlates(fileLocation, plateids);
+		this.savePlates(fileLocation, plateids, appendFile);
 	}
 
-	public void savePlates(String fileLocation, String[] plateids) {
+	public void savePlates(String fileLocation, String[] plateids,
+			boolean appendFile) {
 		BufferedWriter out = null;
 		try {
-			out = new BufferedWriter(new FileWriter(fileLocation));
+			out = new BufferedWriter(new FileWriter(fileLocation, appendFile));
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();

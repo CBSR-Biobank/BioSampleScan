@@ -13,7 +13,9 @@ public class ConfigSettings {
 	private int contrast = 0;
 	private int dpi = ScanLib.DPI_300;
 	private double plates[][] = new double[PLATENUM][4];
-	private int platemode = PLATENUM;
+	private int plateMode = PLATENUM;
+	private String driverType = "TWAIN";
+	private String appendSetting = "FALSE";
 	private String lastSaveLocation = null;
 
 	public static int PLATENUM = 4;
@@ -28,6 +30,33 @@ public class ConfigSettings {
 
 	private ConfigSettings() {
 		this.loadFromFile();
+	}
+
+	private int saveToIni(String group, String key, int value) {
+		return this.saveToIni(group, key, String.valueOf(value));
+	}
+
+	private int saveToIni(String group, String key, String value) {
+		try {
+			File f = new File("scanlib.ini");
+			if (!f.exists()) {
+				f.createNewFile();
+			}
+			else {
+				Wini ini = new Wini(f);
+				ini.put(group, key, value);
+				ini.store();
+			}
+		}
+		catch (InvalidFileFormatException e) {
+			e.printStackTrace();
+			return CS_FILE_ERROR;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return CS_FILE_ERROR;
+		}
+		return CS_SUCCESS;
 	}
 
 	public static ConfigSettings getInstance() {
@@ -84,26 +113,7 @@ public class ConfigSettings {
 			}
 			else {
 				this.dpi = intDpi;
-				try {
-					File f = new File("scanlib.ini");
-					if (!f.exists()) {
-						f.createNewFile();
-					}
-					else {
-						Wini ini = new Wini(f);
-						ini.put("settings", "dpi", intDpi);
-						ini.store();
-					}
-				}
-				catch (InvalidFileFormatException e) {
-					e.printStackTrace();
-					return CS_FILE_ERROR;
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-					return CS_FILE_ERROR;
-				}
-				return CS_SUCCESS;
+				return saveToIni("settings", "dpi", intDpi);
 			}
 		}
 		else {
@@ -204,62 +214,62 @@ public class ConfigSettings {
 		this.setDpi(ini.get("settings", "dpi"));
 		this.setPlatemode(ini.get("settings", "platemode"));
 		this.setLastSaveLocation(ini.get("settings", "lastsavelocation"));
+		this.setDriverType(ini.get("settings", "drivertype"));
+		this.setAppendSetting(ini.get("settings", "appendsetting"));
 		return CS_SUCCESS;
 	}
 
 	public int setPlatemode(String platemode) { //TODO handle return values
-		if (platemode == null || platemode.isEmpty()) return CS_INVALID_INPUT;
-
-		this.platemode = Integer.parseInt(platemode);
-		try {
-			File f = new File("scanlib.ini");
-			if (!f.exists()) {
-				f.createNewFile();
-			}
-			else {
-				Wini ini = new Wini(f);
-				ini.put("settings", "platemode", Integer.parseInt(platemode));
-				ini.store();
-			}
+		if (platemode == null || platemode.isEmpty()
+				|| Integer.parseInt(platemode) < 1
+				|| Integer.parseInt(platemode) > ConfigSettings.PLATENUM) {
+			return CS_INVALID_INPUT;
 		}
-		catch (InvalidFileFormatException e) {
-			e.printStackTrace();
-			return CS_FILE_ERROR;
+		else {
+			this.plateMode = Integer.parseInt(platemode);
+			return saveToIni("settings", "platemode", platemode);
 		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return CS_FILE_ERROR;
-		}
-		return CS_SUCCESS;
 	}
 
 	public int getPlatemode() {
-		return platemode;
+		return plateMode;
 	}
 
 	public int setLastSaveLocation(String lastSaveLocation) {
 		this.lastSaveLocation = lastSaveLocation;
-		try {
-			File f = new File("scanlib.ini");
-			if (!f.exists()) {
-				f.createNewFile();
-			}
-			Wini ini = new Wini(f);
-			ini.put("settings", "lastsavelocation", lastSaveLocation);
-			ini.store();
-		}
-		catch (InvalidFileFormatException e) {
-			e.printStackTrace();
-			return CS_FILE_ERROR;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			return CS_FILE_ERROR;
-		}
-		return CS_SUCCESS;
+		return saveToIni("settings", "lastSaveLocation", lastSaveLocation);
 	}
 
 	public String getLastSaveLocation() {
 		return lastSaveLocation;
 	}
+
+	public int setDriverType(String driverType) {
+		if (driverType.equals("TWAIN") || driverType.equals("WIA")) {
+			this.driverType = driverType;
+			return saveToIni("settings", "drivertype", driverType);
+		}
+		else {
+			return CS_INVALID_INPUT;
+		}
+	}
+
+	public String getDriverType() {
+		return driverType;
+	}
+
+	public int setAppendSetting(String appendSetting) {
+		if (appendSetting.equals("TRUE") || appendSetting.equals("FALSE")) {
+			this.appendSetting = appendSetting;
+			return saveToIni("settings", "appendsetting", appendSetting);
+		}
+		else {
+			return CS_INVALID_INPUT;
+		}
+	}
+
+	public boolean getAppendSetting() {
+		return appendSetting.equals("TRUE");
+	}
+
 }
