@@ -61,14 +61,14 @@ public class PlateImageDialog extends Dialog {
 						if (isFirst) {
 							isFirst = false;
 							double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-							double y1 = ((double) e.y / 100.0 / (425.0 / bounds.width));
+							double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
 							plate[0] = x1;
 							plate[1] = y1;
 
 						}
 						else {
 							double x2 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-							double y2 = ((double) e.y / 100.0 / (425.0 / bounds.width));
+							double y2 = ((double) e.y / 100.0 / (585.0 / bounds.height));
 							if (isTwain) {
 								if (x2 > plate[0] && y2 > plate[0]) {
 									plate[2] = x2;
@@ -79,7 +79,7 @@ public class PlateImageDialog extends Dialog {
 									isFirst = false;
 
 									double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-									double y1 = ((double) e.y / 100.0 / (425.0 / bounds.width));
+									double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
 									plate[0] = x1;
 									plate[1] = y1;
 								}
@@ -94,7 +94,7 @@ public class PlateImageDialog extends Dialog {
 									isFirst = false;
 
 									double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-									double y1 = ((double) e.y / 100.0 / (425.0 / bounds.width));
+									double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
 									plate[0] = x1;
 									plate[1] = y1;
 								}
