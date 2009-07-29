@@ -245,6 +245,7 @@ public class ConfigSettings {
 	}
 
 	public int setDriverType(String driverType) {
+		if (driverType == null) driverType = "";
 		if (driverType.equals("TWAIN") || driverType.equals("WIA")) {
 			this.driverType = driverType;
 			return saveToIni("settings", "drivertype", driverType);
@@ -259,6 +260,7 @@ public class ConfigSettings {
 	}
 
 	public int setAppendSetting(String appendSetting) {
+		if (appendSetting == null) appendSetting = "";
 		if (appendSetting.equals("TRUE") || appendSetting.equals("FALSE")) {
 			this.appendSetting = appendSetting;
 			return saveToIni("settings", "appendsetting", appendSetting);

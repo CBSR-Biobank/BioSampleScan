@@ -322,5 +322,17 @@
       <startup
             class="edu.ualberta.med.biosamplescan.startup.Startup"></startup>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="BioSampleScan.application"
+            name="BioSampleScan2">
+         <property
+               name="appName"
+               value="BioSampleScan2">
+         </property>
+      </product>
+   </extension>
 
 </plugin>

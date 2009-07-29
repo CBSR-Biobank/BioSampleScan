@@ -14,7 +14,6 @@ import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class SaveImagePlateX {
-	// TODO bring up a dialog if all the settings for plate is 0,0,0,0;
 	public static final Object execute(ExecutionEvent event, int platenum)
 			throws ExecutionException {
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
@@ -22,9 +21,13 @@ public class SaveImagePlateX {
 				.getActivePart()).getViewComposite();
 		ConfigSettings configSettings = ConfigSettings.getInstance();
 
+		if (configSettings.getPlatemode() < platenum) {
+			return null;
+		} //TODO actually disable menu items
+
 		if (!configSettings.plateIsSet(platenum)) { //TODO apply this code to all applicable routines
 			MessageDialog.openError(viewComposite.getActiveShell(), "Error",
-					String.format("Plate %d:\n%s", platenum,
+					String.format("plate %d:\n%s", platenum,
 							"Has no dimensions set"));
 			return null;
 		}
@@ -50,7 +53,7 @@ public class SaveImagePlateX {
 			case (ScanLib.SC_INVALID_PLATE_NUM):
 				MessageDialog.openError(viewComposite.getActiveShell(),
 						"Error", String.format("%s\nReturned Error Code: %d\n",
-								"Scanlib ScanPlaten", "Ivalid Plate Number"));
+								"Scanlib ScanPlaten", "Invalid Plate Number"));
 				break;
 			case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
 				MessageDialog.openError(viewComposite.getActiveShell(),

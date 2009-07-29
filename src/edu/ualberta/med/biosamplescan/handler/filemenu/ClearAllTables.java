@@ -24,7 +24,7 @@ public class ClearAllTables extends AbstractHandler implements IHandler {
 					.getActiveWorkbenchWindow().getActivePage().getActivePart())
 					.getPlateSet();
 			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
-				plateSet.initPlate(String.format("Plate %d", p + 1), 13, 8);
+				plateSet.initPlate(p + 1, 13, 8);
 			}
 		}
 		return null;

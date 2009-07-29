@@ -1,7 +1,5 @@
 package edu.ualberta.med.biosamplescan.gui;
 
-import java.util.Random;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -66,7 +64,6 @@ public class CreditsDialog extends Dialog {
 								0));
 						gc.setForeground(new Color(Display.getDefault(), 0xFF,
 								0, 0));
-						Random r = new Random();
 						gc.drawRectangle(0, 0, (int) i * 3, 40);
 						gc.dispose();
 						try {

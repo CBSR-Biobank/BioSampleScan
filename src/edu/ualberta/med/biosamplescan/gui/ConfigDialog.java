@@ -71,7 +71,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				group1LData.widthHint = 140;
 				group1LData.heightHint = 21;
 				groups[groups_it].setLayoutData(group1LData);
-				groups[groups_it].setText("Mode:");
+				groups[groups_it].setText("Driver Type:");
 				RowData rd = new RowData();
 				{
 					twainBtn = new Button(groups[groups_it], SWT.RADIO
@@ -156,6 +156,9 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				groups[groups_it].setLayoutData(group2LData);
 				groups[groups_it].setText(String.format("Plate %d Position",
 						plate + 1));
+
+				Color c = new Color(Display.getDefault(), 165, 252, 163);
+
 				{
 					platelabels[4 * plate + 0] = new Label(groups[groups_it],
 							SWT.NONE);
@@ -167,6 +170,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					platesText[plate][1].setTextLimit(6);
 					platesText[plate][1].setOrientation(SWT.HORIZONTAL);
 					platesText[plate][1].setDoubleClickEnabled(false);
+
 				}
 				{
 					platelabels[4 * plate + 1] = new Label(groups[groups_it],
@@ -317,15 +321,15 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	private void buttonPlateImageDialog(MouseEvent evt) {
 		double nplates[][] = new double[ConfigSettings.PLATENUM][4];
 		readPlatesIntoArray(nplates);
-		if (!(new File("scanned.bmp").exists())
-				|| !MessageDialog.openConfirm(dialogShell, "Scan?",
-						"Don't scan the image for alignment?")) {
+		if (!(new File("align100.bmp").exists())
+				|| MessageDialog.openConfirm(dialogShell, "Re-scan?",
+						"Re-scan the image for alignment?")) {
 			ScanLibFactory.getScanLib().slScanImage(100, 0, 0, 0, 0,
-					"scanned.bmp");
+					"align100.bmp");
 		}
 
 		PlateImageDialog pid = new PlateImageDialog(dialogShell, SWT.NONE);
-		pid.open(nplates);
+		pid.open(nplates, twainBtn.getSelection());
 	}
 
 	private void errorMsg(String Identifier, int code) {

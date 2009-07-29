@@ -9,4 +9,5 @@ public class SaveBarcodesFromTable4 extends AbstractHandler {
 		SaveBarcodesFromTableX.execute(event, 4);
 		return null;
 	}
+
 }

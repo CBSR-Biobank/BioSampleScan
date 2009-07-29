@@ -42,7 +42,7 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
 			case (ScanLib.SC_INVALID_PLATE_NUM):
 				MessageDialog.openError(viewComposite.getActiveShell(),
 						"Error", String.format("%s\nReturned Error Code: %d\n",
-								"Scanlib ScanImagen", "Ivalid Plate Number"));
+								"Scanlib ScanImagen", "Invalid plate Number"));
 				break;
 			case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
 				MessageDialog.openError(viewComposite.getActiveShell(),

@@ -16,7 +16,7 @@ public class SaveBarcodesFromTableX {
 			throws ExecutionException {
 		if (ConfigSettings.getInstance().getPlatemode() < platenum) {
 			return null;
-		}
+		}//TODO actually disable menu items
 
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()

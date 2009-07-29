@@ -30,7 +30,8 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 		}
 		boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-			tablesCheck[i] = true;
+			if (i < ConfigSettings.getInstance().getPlatemode()) tablesCheck[i] = true;
+
 		}
 
 		plateSet.saveTables(saveLocation, tablesCheck, false);

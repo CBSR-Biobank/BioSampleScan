@@ -61,11 +61,11 @@ public class ViewComposite extends Composite {
 							| SWT.EMBEDDED | SWT.V_SCROLL | SWT.BORDER);
 					tables[table].setLinesVisible(true);
 					tables[table].setHeaderVisible(true);
+
 					tables[table].setBounds(5, 63 + table * 140,
 							5 + 20 + 68 * 12, 140);
 					tables[table].setFont(SWTManager.getFont("Calibri", 7, 0,
 							false, false));
-
 					tableColumns[table][0] = new TableColumn(tables[table],
 							SWT.NONE);
 					tableColumns[table][0].setWidth(20);
@@ -140,12 +140,14 @@ public class ViewComposite extends Composite {
 				loadFromFile = new Button(this, SWT.PUSH | SWT.CENTER);
 				loadFromFile.setText("Load From File");
 				loadFromFile.setBounds(380, 6, 90, 40);
+				loadFromFile.setVisible(false); //TODO REMOVE
 				loadFromFile.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						PlateSet plateSet = ((PlateSetEditor) PlatformUI
 								.getWorkbench().getActiveWorkbenchWindow()
 								.getActivePage().getActivePart()).getPlateSet();
-						for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+						for (int i = 0; i < ConfigSettings.getInstance()
+								.getPlatemode(); i++) {
 							plateSet.loadFromScanlibFile(i + 1, false);
 							fillTablesFromPlateSet(i + 1);
 						}
@@ -181,8 +183,7 @@ public class ViewComposite extends Composite {
 				.getPlateSet();
 
 		for (int r = 0; r < 8; r++) {
-			tableItems[plate - 1][r].setText(plateSet.getPlate(String.format(
-					"Plate %d", plate))[r]);
+			tableItems[plate - 1][r].setText(plateSet.getPlate(plate)[r]);
 		}
 
 	}

@@ -1,6 +1,7 @@
 package edu.ualberta.med.biosamplescan.model;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -11,18 +12,18 @@ import java.util.HashMap;
 import edu.ualberta.med.scanlib.ScanCell;
 
 public class PlateSet {
-	private HashMap<String, Plate> plates;
+	private HashMap<Integer, Plate> plates;
 
 	public PlateSet() {
-		plates = new HashMap<String, Plate>();
+		plates = new HashMap<Integer, Plate>();
 	}
 
-	public void initPlate(String id, int w, int h) {
+	public void initPlate(Integer id, int w, int h) {
 		Plate dummyPlate = new Plate(w, h);
 		plates.put(id, dummyPlate);
 	}
 
-	public boolean setPlate(String id, String barcodes[][]) {
+	public boolean setPlate(Integer id, String barcodes[][]) {
 		if (plates.containsKey(id)) {
 			plates.get(id).setBarcode(barcodes);
 			return true;
@@ -32,7 +33,7 @@ public class PlateSet {
 		}
 	}
 
-	public String[][] getPlate(String id) {
+	public String[][] getPlate(Integer id) {
 		if (plates.containsKey(id)) {
 			return plates.get(id).getBarcode();
 		}
@@ -61,7 +62,7 @@ public class PlateSet {
 
 		String[][] data = null;
 		if (append) {
-			data = this.getPlate(String.format("Plate %d", table));
+			data = this.getPlate(table);
 		}
 		else {
 			data = new String[8][13];
@@ -75,7 +76,7 @@ public class PlateSet {
 				}
 			}
 		}
-		this.setPlate(String.format("Plate %d", table), data);
+		this.setPlate(table, data);
 		return 0;
 	}
 
@@ -87,17 +88,18 @@ public class PlateSet {
 
 	public void saveTables(String fileLocation, boolean[] tables,
 			boolean appendFile) {
-		String[] plateids = new String[tables.length]; //wrapper
+		Integer[] plateids = new Integer[tables.length]; //wrapper
 		for (int i = 0; i < plateids.length; i++) {
 			if (tables[i]) {
-				plateids[i] = String.format("Plate %d", i + 1);
+				plateids[i] = i + 1;
 			}
 		}
 		this.savePlates(fileLocation, plateids, appendFile);
 	}
 
-	public void savePlates(String fileLocation, String[] plateids,
+	public void savePlates(String fileLocation, Integer[] plateids,
 			boolean appendFile) {
+
 		BufferedWriter out = null;
 		try {
 			out = new BufferedWriter(new FileWriter(fileLocation, appendFile));
@@ -106,7 +108,14 @@ public class PlateSet {
 			e1.printStackTrace();
 		}
 		try {
-			out.write("#Plate,Row,Col,Barcode,Date\r\n");
+			if (appendFile) {
+				if (new File(fileLocation).length() <= 0) {
+					out.write("#plate,Row,Col,Barcode,Date\r\n");
+				}
+			}
+			else {
+				out.write("#plate,Row,Col,Barcode,Date\r\n");
+			}
 		}
 		catch (IOException e1) {
 			e1.printStackTrace();
@@ -118,18 +127,29 @@ public class PlateSet {
 						if (plates.get(plateids[pi]).getBarcode() == null) {
 							return;
 						}
-						String barcode = plates.get(plateids[pi]).getBarcode()[r][c];
-						if (barcode != null && !barcode.isEmpty()) {
-							try {
-								out.write(String.format("%d,%s,%d,%s,%s\r\n",
-										pi + 1,
-										//TODO platenumber depends on position in string[] 
-										Character.toString((char) (65 + r)), c,
-										barcode, getDateTime()));
+						try {
+							String barcode = plates.get(plateids[pi])
+									.getBarcode()[r][c];
+							if (barcode != null && !barcode.isEmpty()) {
+								try {
+									out
+											.write(String
+													.format(
+															"%d,%s,%d,%s,%s\r\n",
+															pi + 1,
+															//TODO platenumber depends on position in string[] 
+															Character
+																	.toString((char) (65 + r)),
+															c, barcode,
+															getDateTime()));
+								}
+								catch (IOException e) {
+									e.printStackTrace();
+								}
 							}
-							catch (IOException e) {
-								e.printStackTrace();
-							}
+						}
+						catch (ArrayIndexOutOfBoundsException e1) {
+							e1.printStackTrace();
 						}
 					}
 				}

@@ -4,9 +4,13 @@ Bundle-Name: BioSampleScan
 Bundle-SymbolicName: BioSampleScan; singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: edu.ualberta.med.biosamplescan.BioSampleScanPlugin
-Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.ui.workbench
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: lib/ini4j-0.5.1.jar,
