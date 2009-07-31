@@ -29,6 +29,8 @@ import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ViewComposite extends ScrolledComposite {
 
+	private Composite top;
+
 	private static final int fontSize = 7;
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
@@ -51,7 +53,7 @@ public class ViewComposite extends ScrolledComposite {
 
 	public boolean setFocus() { /*reload global ui states*/
 		setPlateMode();
-		return true;
+		return top.setFocus();
 	}
 
 	private void initGUI() {
@@ -62,7 +64,7 @@ public class ViewComposite extends ScrolledComposite {
 			setExpandHorizontal(true);
 			setExpandVertical(true);
 
-			Composite top = new Composite(this, SWT.NONE);
+			top = new Composite(this, SWT.NONE);
 			top.setLayout(new GridLayout(1, false));
 
 			Composite section = new Composite(top, SWT.NONE);
