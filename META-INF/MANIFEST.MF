@@ -18,7 +18,4 @@ Bundle-ClassPath: lib/ini4j-0.5.1.jar,
  .
 Export-Package: edu.ualberta.med.biosamplescan,
  edu.ualberta.med.biosamplescan.gui,
- edu.ualberta.med.biosamplescan.rcp,
- edu.ualberta.med.scanlib,
- org.ini4j,
- org.ini4j.spi
+ edu.ualberta.med.biosamplescan.rcp

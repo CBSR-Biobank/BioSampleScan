@@ -8,7 +8,6 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -22,7 +21,16 @@ public class PlateImageDialog extends Dialog {
 
 	private Shell dialogShell;
 	private Canvas canvas;
-	private boolean isFirst;
+
+	public static final String alignFile = "align100.bmp";
+	public static final double alignDpi = 100;
+	private static final double imgW = 425;
+	private static final double imgH = 585;
+
+	private boolean pointTopLeft;
+
+	// pointTopLeft: Used to determine which point the user is currently
+	// adjusting.The point is either top-left or bottom-right.
 
 	public PlateImageDialog(Shell parent, int style) {
 		super(parent, style);
@@ -36,13 +44,13 @@ public class PlateImageDialog extends Dialog {
 			dialogShell = new Shell(parent, SWT.DIALOG_TRIM
 					| SWT.APPLICATION_MODAL);
 			dialogShell.setLayout(new FormLayout());
-			dialogShell.setLocation(new Point(0, 0));
-			dialogShell.setText("Set Plate Coordinates");
-			isFirst = true;
+			dialogShell
+					.setText("Plate Setup Coordinates     Click the top-left and bottom-right offsets");
+			pointTopLeft = true;
 			{
 				FormData canvasLData = new FormData();
-				canvasLData.width = 425;
-				canvasLData.height = 585;
+				canvasLData.width = (int) imgW;
+				canvasLData.height = (int) imgH;
 				canvasLData.top = new FormAttachment(0, 1000, 0);
 				canvasLData.left = new FormAttachment(0, 1000, 0);
 				canvas = new Canvas(dialogShell, SWT.NONE);
@@ -55,46 +63,44 @@ public class PlateImageDialog extends Dialog {
 
 					@Override
 					public void mouseDown(MouseEvent e) {
-						Image img = new Image(Display.getDefault(),
-								"align100.bmp");
+						Image img = new Image(Display.getDefault(), alignFile);
 						Rectangle bounds = img.getBounds();
-						if (isFirst) {
-							isFirst = false;
-							double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-							double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
+						if (pointTopLeft) {
+							pointTopLeft = false;
+							double x1 = (e.x / alignDpi / (imgW / bounds.width));
+							double y1 = (e.y / alignDpi / (imgH / bounds.height));
 							plate[0] = x1;
 							plate[1] = y1;
 
 						}
 						else {
-							double x2 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-							double y2 = ((double) e.y / 100.0 / (585.0 / bounds.height));
+							double x2 = (e.x / alignDpi / (imgW / bounds.width));
+							double y2 = (e.y / alignDpi / (imgH / bounds.height));
 							if (isTwain) {
 								if (x2 > plate[0] && y2 > plate[0]) {
 									plate[2] = x2;
 									plate[3] = y2;
-									isFirst = true;
+									pointTopLeft = true;
 								}
 								else {
-									isFirst = false;
-
-									double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-									double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
+									pointTopLeft = false;
+									double x1 = (e.x / alignDpi / (imgW / bounds.width));
+									double y1 = (e.y / alignDpi / (imgH / bounds.height));
 									plate[0] = x1;
 									plate[1] = y1;
 								}
 							}
-							else {//WIA
+							else {// WIA
 								if (x2 - plate[0] > 0 && y2 - plate[1] > 0) {
 									plate[2] = x2 - plate[0];
 									plate[3] = y2 - plate[1];
-									isFirst = true;
+									pointTopLeft = true;
 								}
 								else {
-									isFirst = false;
+									pointTopLeft = false;
 
-									double x1 = ((double) e.x / 100.0 / (425.0 / bounds.width));
-									double y1 = ((double) e.y / 100.0 / (585.0 / bounds.height));
+									double x1 = (e.x / alignDpi / (imgW / bounds.width));
+									double y1 = (e.y / alignDpi / (imgH / bounds.height));
 									plate[0] = x1;
 									plate[1] = y1;
 								}
@@ -102,35 +108,34 @@ public class PlateImageDialog extends Dialog {
 
 						}
 						canvas.redraw();
+						canvas.update();
 					}
 
 					@Override
 					public void mouseUp(MouseEvent e) {
 					}
-
 				});
 
 				canvas.addPaintListener(new PaintListener() {
 					public void paintControl(PaintEvent e) {
-						Image img = new Image(Display.getDefault(),
-								"align100.bmp");
+						Image img = new Image(Display.getDefault(), alignFile);
 						Rectangle bounds = img.getBounds();
 						GC gc = new GC(canvas);
 						gc.drawImage(img, 0, 0, bounds.width, bounds.height, 0,
-								0, 425, 585);
+								0, (int) imgW, (int) imgH);
 						gc.setForeground(mycolor);
-						double x1 = plate[0] * 100 /*at 100 dpi*/
-								* (425.0 / bounds.width);
-						double y1 = plate[1] * 100 * (585.0 / bounds.height);
-						double x2 = plate[2] * 100 * (425.0 / bounds.width);
-						double y2 = plate[3] * 100 * (585.0 / bounds.height);
+						double x1 = plate[0] * alignDpi * (imgW / bounds.width);
+						double y1 = plate[1] * alignDpi
+								* (imgH / bounds.height);
+						double x2 = plate[2] * alignDpi * (imgW / bounds.width);
+						double y2 = plate[3] * alignDpi
+								* (imgH / bounds.height);
 
 						if (isTwain) {
-							/*perform sanity checks*/
 							gc.drawRectangle((int) x1, (int) y1,
 									(int) (x2 - x1), (int) (y2 - y1));
 						}
-						else {//WIA x,y,w,h
+						else {// WIA x,y,w,h
 							gc.drawRectangle((int) x1, (int) y1, (int) x2,
 									(int) y2);
 						}
@@ -144,7 +149,7 @@ public class PlateImageDialog extends Dialog {
 			canvas.update();
 			dialogShell.layout();
 			dialogShell.pack();
-			dialogShell.setLocation(getParent().toDisplay(100, 100));
+			dialogShell.setLocation(getParent().toDisplay(0, 0));
 			dialogShell.open();
 			Display display = dialogShell.getDisplay();
 			while (!dialogShell.isDisposed()) {

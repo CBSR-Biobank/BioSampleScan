@@ -5,6 +5,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -14,8 +15,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
@@ -31,7 +32,6 @@ public class ViewComposite extends Composite {
 
 	public ViewComposite(Composite parent, int style) {
 		super(parent, style);
-		SWTManager.registerResourceUser(this);
 		initGUI();
 	}
 
@@ -62,10 +62,14 @@ public class ViewComposite extends Composite {
 					tables[table].setLinesVisible(true);
 					tables[table].setHeaderVisible(true);
 
-					tables[table].setBounds(5, 63 + table * 140,
-							5 + 20 + 68 * 12, 140);
-					tables[table].setFont(SWTManager.getFont("Calibri", 7, 0,
-							false, false));
+					tables[table].setBounds(5, 63 + table
+							* (this.getShell().getBounds().height - 63)
+							/ ConfigSettings.PLATENUM, this.getShell()
+							.getBounds().width,
+							(this.getShell().getBounds().height - 63)
+									/ ConfigSettings.PLATENUM);
+					tables[table].setFont(new Font(getDisplay(), "Calibri", 10,
+							SWT.NONE));
 					tableColumns[table][0] = new TableColumn(tables[table],
 							SWT.NONE);
 					tableColumns[table][0].setWidth(20);

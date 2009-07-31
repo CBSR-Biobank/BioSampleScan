@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,26 +20,29 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private Shell dialogShell;
-	private Button buttonCancle;
-	private Button buttonConfig;
-	private Button buttonPreview;
+
 	private Text textDpi;
 	private Text textBrightness;
 	private Text textContrast;
+	private Text platesText[][];
+
+	private Button buttonCancel;
+	private Button buttonConfig;
+	private Button buttonPreview;
 	private Button twainBtn;
 	private Button wiaBtn;
-	/*Plate Arrays*/
-	private Group[] groups;
-	private Text platesText[][];
+
 	private Label labels[];
 	private Label platelabels[];
+
+	private Group[] groups;
 
 	public ConfigDialog(Shell parent, int style) {
 		super(parent, style);
@@ -51,18 +55,16 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					| SWT.APPLICATION_MODAL);
 			GridLayout dialogShellLayout = new GridLayout();
 			dialogShellLayout.makeColumnsEqualWidth = true;
-			SWTManager.registerResourceUser(dialogShell);
-			groups = new Group[2 + ConfigSettings.PLATENUM + 2];
-			platesText = new Text[ConfigSettings.PLATENUM + 1][4];//left,top,right,bottom
+			groups = new Group[3 + ConfigSettings.PLATENUM + 2];
+			platesText = new Text[ConfigSettings.PLATENUM + 1][4];// left,top,right,bottom
 			labels = new Label[ConfigSettings.PLATENUM * 5 + 10 + 1];
 			platelabels = new Label[ConfigSettings.PLATENUM * 4];
 			int label_it = 0;
 			int groups_it = 0;
-
 			dialogShell.setLayout(dialogShellLayout);
-			dialogShell.setText("Scanner Settings");
-			dialogShell.setFont(SWTManager.getFont("Tahoma", 10, 1, false,
-					false));
+			dialogShell.setText("Scanner Configuration");
+			dialogShell
+					.setFont(new Font(Display.getDefault(), "Tahoma", 10, 0));
 			{
 				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
 				RowLayout group1Layout = new RowLayout(
@@ -81,6 +83,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					twainBtn.setText("Twain");
 					twainBtn.setSelection(true);
 					twainBtn.addMouseListener(new MouseAdapter() {
+						@Override
 						public void mouseUp(MouseEvent evt) {
 							for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 								platelabels[4 * i + 2].setText("     Bottom:");
@@ -94,6 +97,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					wiaBtn.setText("Wia");
 					wiaBtn.setSelection(false);
 					wiaBtn.addMouseListener(new MouseAdapter() {
+						@Override
 						public void mouseUp(MouseEvent evt) {
 							for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 								platelabels[4 * i + 2].setText("    Height:");
@@ -101,7 +105,6 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 							}
 						}
 					});
-
 				}
 			}
 			{
@@ -110,7 +113,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 						org.eclipse.swt.SWT.HORIZONTAL);
 				GridData group1LData = new GridData();
 				group1LData.widthHint = 421;
-				group1LData.heightHint = 13;
+				group1LData.heightHint = 16;
 				groups[groups_it].setLayoutData(group1LData);
 				groups[groups_it].setLayout(group1Layout);
 				groups[groups_it].setText("Scanner Settings");
@@ -119,7 +122,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					labels[label_it].setText("Dots Per Inch:");
 				}
 				{
-					textDpi = new Text(groups[groups_it], SWT.NONE);
+					textDpi = new Text(groups[groups_it], SWT.BORDER);
 					textDpi.setTextLimit(3);
 					textDpi.setText("300");
 				}
@@ -129,7 +132,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					labels[label_it].setBounds(12, 21, 58, 13);
 				}
 				{
-					textBrightness = new Text(groups[groups_it], SWT.NONE);
+					textBrightness = new Text(groups[groups_it], SWT.BORDER);
 					textBrightness.setText("0");
 					textBrightness.setTextLimit(5);
 					textBrightness.setBounds(68, 22, 33, 14);
@@ -140,33 +143,31 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					labels[label_it].setBounds(105, 22, 49, 13);
 				}
 				{
-					textContrast = new Text(groups[groups_it], SWT.NONE);
+					textContrast = new Text(groups[groups_it], SWT.BORDER);
 					textContrast.setText("0");
 					textContrast.setTextLimit(5);
-					textContrast.setBounds(153, 22, 35, 14);
+					textContrast.setBounds(153, 22, 35, 20);
 				}
 			}
 			for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
-
 				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
 				FillLayout group2Layout = new FillLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
 				groups[groups_it].setLayout(group2Layout);
 				GridData group2LData = new GridData();
-				group2LData.heightHint = 13;
+				group2LData.heightHint = 16;
 				group2LData.horizontalAlignment = GridData.FILL;
 				groups[groups_it].setLayoutData(group2LData);
 				groups[groups_it].setText(String.format("Plate %d Position",
 						plate + 1));
-
 				{
 					platelabels[4 * plate + 0] = new Label(groups[groups_it],
 							SWT.NONE);
 					platelabels[4 * plate + 0].setText("Top:");
-
 				}
 				{
-					platesText[plate][1] = new Text(groups[groups_it], SWT.NONE);
+					platesText[plate][1] = new Text(groups[groups_it],
+							SWT.BORDER);
 					platesText[plate][1].setText("0");
 					platesText[plate][1].setTextLimit(6);
 					platesText[plate][1].setOrientation(SWT.HORIZONTAL);
@@ -179,7 +180,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					platelabels[4 * plate + 1].setText("      Left:");
 				}
 				{
-					platesText[plate][0] = new Text(groups[groups_it], SWT.NONE);
+					platesText[plate][0] = new Text(groups[groups_it],
+							SWT.BORDER);
 					platesText[plate][0].setText("0");
 					platesText[plate][0].setTextLimit(6);
 				}
@@ -189,7 +191,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					platelabels[4 * plate + 2].setText("   Bottom:");
 				}
 				{
-					platesText[plate][3] = new Text(groups[groups_it], SWT.NONE);
+					platesText[plate][3] = new Text(groups[groups_it],
+							SWT.BORDER);
 					platesText[plate][3].setText("0");
 					platesText[plate][3].setTextLimit(6);
 				}
@@ -199,7 +202,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					platelabels[4 * plate + 3].setText("    Right:");
 				}
 				{
-					platesText[plate][2] = new Text(groups[groups_it], SWT.NONE);
+					platesText[plate][2] = new Text(groups[groups_it],
+							SWT.BORDER);
 					platesText[plate][2].setText("0");
 					platesText[plate][2].setTextLimit(6);
 				}
@@ -207,36 +211,41 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					buttonPreview = new Button(groups[groups_it], SWT.PUSH);
 					buttonPreview.setText("Edit");
 					if (plate < ConfigSettings.getInstance().getPlatemode()) {
-						switch (plate + 1) {//TODO find a better way of doing this (BELOW)
+						switch (plate + 1) {// TODO find a better way of doing
+							// this (BELOW)
 							case (1):
 								buttonPreview
 										.addMouseListener(new MouseAdapter() {
+											@Override
 											public void mouseUp(MouseEvent evt) {
-												buttonPlateImageDialog(evt, 1);
+												buttonPlateImageDialog(1);
 											}
 										});
 								break;
 							case (2):
 								buttonPreview
 										.addMouseListener(new MouseAdapter() {
+											@Override
 											public void mouseUp(MouseEvent evt) {
-												buttonPlateImageDialog(evt, 2);
+												buttonPlateImageDialog(2);
 											}
 										});
 								break;
 							case (3):
 								buttonPreview
 										.addMouseListener(new MouseAdapter() {
+											@Override
 											public void mouseUp(MouseEvent evt) {
-												buttonPlateImageDialog(evt, 3);
+												buttonPlateImageDialog(3);
 											}
 										});
 								break;
 							case (4):
 								buttonPreview
 										.addMouseListener(new MouseAdapter() {
+											@Override
 											public void mouseUp(MouseEvent evt) {
-												buttonPlateImageDialog(evt, 4);
+												buttonPlateImageDialog(4);
 											}
 										});
 								break;
@@ -288,31 +297,33 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				{
 					buttonConfig = new Button(groups[groups_it], SWT.PUSH
 							| SWT.CENTER);
-					buttonConfig.setText("   OK   ");
+					buttonConfig.setText(" Apply ");
 					buttonConfig.setSize(250, 70);
-					buttonConfig.setFont(SWTManager.getFont("Tahoma", 10, 1,
-							false, false));
+					buttonConfig.setFont(new Font(Display.getDefault(),
+							"Tahoma", 10, SWT.BOLD));
 					RowData buttonConfigLData = new RowData();
 					buttonConfig.setLayoutData(buttonConfigLData);
 					buttonConfig.addMouseListener(new MouseAdapter() {
+						@Override
 						public void mouseUp(MouseEvent evt) {
-							buttonConfigMouseUp(evt);
+							buttonConfigMouseUp();
 						}
 					});
 				}
 
 				{
-					buttonCancle = new Button(groups[groups_it], SWT.PUSH
+					buttonCancel = new Button(groups[groups_it], SWT.PUSH
 							| SWT.CENTER);
-					buttonCancle.setText(" Cancle ");
+					buttonCancel.setText(" Cancel ");
 					RowData button1LData = new RowData();
-					buttonCancle.setSize(250, 70);
-					buttonCancle.setLayoutData(button1LData);
-					buttonCancle.setFont(SWTManager.getFont("Tahoma", 10, 0,
-							false, false));
-					buttonCancle.addMouseListener(new MouseAdapter() {
+					buttonCancel.setSize(250, 70);
+					buttonCancel.setLayoutData(button1LData);
+					buttonCancel.setFont(new Font(Display.getDefault(),
+							"Tahoma", 10, 0));
+					buttonCancel.addMouseListener(new MouseAdapter() {
+						@Override
 						public void mouseUp(MouseEvent evt) {
-							buttonCancleMouseUp(evt);
+							buttonCancelMouseUp();
 						}
 					});
 				}
@@ -374,18 +385,21 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		return 0;
 	}
 
-	private void buttonCancleMouseUp(MouseEvent evt) {
+	private void buttonCancelMouseUp() {
 		dialogShell.dispose();
 	}
 
-	private void buttonPlateImageDialog(MouseEvent evt, int plate) {
+	private void buttonPlateImageDialog(int plate) {
 		double nplates[][] = new double[ConfigSettings.PLATENUM][4];
 		readPlatesIntoArray(nplates);
-		if (!(new File("align100.bmp").exists())
-				|| MessageDialog.openConfirm(dialogShell, "Re-scan?",
-						"Re-scan the image for alignment?")) {
-			ScanLibFactory.getScanLib().slScanImage(100, 0, 0, 0, 0,
-					"align100.bmp");
+		if (!(new File(PlateImageDialog.alignFile).exists())
+				|| MessageDialog.openConfirm(dialogShell,
+						"Re-Scan Plate Image?",
+						"If you have moved the plates since the last calibration press OK.\n"
+								+ "")) {
+			ScanLibFactory.getScanLib().slScanImage(
+					(int) PlateImageDialog.alignDpi, 0, 0, 0, 0,
+					PlateImageDialog.alignFile);
 		}
 
 		PlateImageDialog pid = new PlateImageDialog(dialogShell, SWT.NONE);
@@ -422,16 +436,39 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				"%s\nReturned Error Code: %d\n", Identifier, code));
 	}
 
-	private void buttonConfigMouseUp(MouseEvent evt) {
+	private void buttonConfigMouseUp() {
+		int configSettingsReturn;
 		try {
 			ConfigSettings configSettings = ConfigSettings.getInstance();
 			if (twainBtn.getSelection()) {
-				configSettings.setDriverType("TWAIN");
+				configSettingsReturn = configSettings.setDriverType("TWAIN");
 			}
 			else if (wiaBtn.getSelection()) {
-				configSettings.setDriverType("WIA");
+				configSettingsReturn = configSettings.setDriverType("WIA");
 			}
-			int configSettingsReturn = configSettings.setDpi(textDpi.getText());
+			else {
+				configSettingsReturn = ConfigSettings.CS_INVALID_INPUT;
+			}
+			switch (configSettingsReturn) {
+				case (ConfigSettings.CS_SUCCESS):
+					break;
+				case (ConfigSettings.CS_NOCHANGE):
+					break;
+				case (ConfigSettings.CS_INVALID_INPUT):
+					MessageDialog.openError(dialogShell,
+							"configSettings.setDriverType",
+							"Please enter a valid input");
+					return;
+
+				case (ConfigSettings.CS_FILE_ERROR):
+					MessageDialog.openError(dialogShell,
+							"configSettings.setDriverType",
+							"Could not find scanlib.ini file");
+					dialogShell.dispose();
+					return;
+			}
+
+			configSettingsReturn = configSettings.setDpi(textDpi.getText());
 			switch (configSettingsReturn) {
 				case (ConfigSettings.CS_SUCCESS):
 					break;
@@ -445,7 +482,6 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					MessageDialog
 							.openError(dialogShell, "configSettings.setDpi",
 									"Dpi must be greater than 0 and no greater than 600");
-					dialogShell.dispose();
 					return;
 				case (ConfigSettings.CS_NOCHANGE):
 					break;
@@ -478,8 +514,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				case (ConfigSettings.CS_INVALID_INPUT):
 					MessageDialog.openError(dialogShell,
 							"configSettings.setBrightness",
-							"Brightness: Invalid Value");
-					dialogShell.dispose();
+							"Brightness ranges from -1000 to 1000\n"
+									+ "Please enter a valid input value");
 					return;
 				case (ConfigSettings.CS_NOCHANGE):
 					break;
@@ -496,7 +532,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 						case (ScanLib.SC_SUCCESS):
 							break;
 						case (ScanLib.SC_INVALID_VALUE):
-							this.errorMsg("Conrast: Invalid Value",
+							this.errorMsg("Contrast: Invalid Value",
 									scanlibReturn);
 							dialogShell.dispose();
 							return;
@@ -513,8 +549,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				case (ConfigSettings.CS_INVALID_INPUT):
 					MessageDialog.openError(dialogShell,
 							"configSettings.setContrast",
-							"Contrast: Invalid input");
-					dialogShell.dispose();
+							"Contrast ranges from -1000 to 1000\n"
+									+ "Please enter a valid input value");
 					return;
 				case (ConfigSettings.CS_NOCHANGE):
 					break;
@@ -615,8 +651,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 				else if (setPlateReturn == ConfigSettings.CS_INVALID_INPUT) {
 					MessageDialog.openError(dialogShell,
-							"configSettings.setPlate", "Invalid Input");
-					dialogShell.dispose();
+							"configSettings.setPlate",
+							"Please enter a valid input");
 					return;
 				}
 

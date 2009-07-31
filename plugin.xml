@@ -326,11 +326,11 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="BioSampleScan.application"
-            name="BioSampleScan2">
+            application="org.eclipse.ui.ide.workbench"
+            name="BioSampleScan">
          <property
                name="appName"
-               value="BioSampleScan2">
+               value="BioSampleScan">
          </property>
       </product>
    </extension>

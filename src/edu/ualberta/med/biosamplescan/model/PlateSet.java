@@ -123,7 +123,7 @@ public class PlateSet {
 		for (int pi = 0; pi < plateids.length; pi++) {
 			if (plates.containsKey(plateids[pi])) {
 				for (int r = 0; r < 8; r++) {
-					for (int c = 1; c < 12; c++) {
+					for (int c = 1; c < 13; c++) {
 						if (plates.get(plateids[pi]).getBarcode() == null) {
 							return;
 						}

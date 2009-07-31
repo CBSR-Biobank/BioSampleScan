@@ -1,4 +1,4 @@
-package edu.ualberta.med.biosamplescan.singleton;
+package edu.ualberta.med.biosamplescan.model;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import org.ini4j.Wini;
 
 import edu.ualberta.med.scanlib.ScanLib;
 
-public class ConfigSettings {
+public class ConfigSettings { //Singleton 
 	private int brightness = 0;
 	private int contrast = 0;
 	private int dpi = ScanLib.DPI_300;
@@ -136,15 +136,23 @@ public class ConfigSettings {
 		if (plate - 1 >= PLATENUM) {
 			return CS_INVALID_INPUT;
 		}
+		if (left < 0 || right < 0 || top < 0 || bottom < 0) {
+			return CS_INVALID_INPUT;
+		}
+		if (this.getDriverType().equals("TWAIN")) {
+			if (left > right || top > bottom) {
+				return CS_INVALID_INPUT;
+			}
+
+		}
+		else { // WIA
+		}
+
 		if (left == this.plates[plate - 1][0]
 				&& top == this.plates[plate - 1][1]
 				&& right == this.plates[plate - 1][2]
 				&& bottom == this.plates[plate - 1][3]) {
 			return CS_NOCHANGE;
-
-		}
-		if (left > right) {
-			return CS_INVALID_INPUT;
 		}
 
 		this.plates[plate - 1] = new double[4];

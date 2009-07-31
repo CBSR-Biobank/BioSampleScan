@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.PlateModeDialog;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 
 public class PlateMode extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {

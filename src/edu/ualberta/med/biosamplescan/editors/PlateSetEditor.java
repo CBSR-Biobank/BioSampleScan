@@ -12,8 +12,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
 
 public class PlateSetEditor extends EditorPart {
 

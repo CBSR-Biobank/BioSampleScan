@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 
-import edu.ualberta.med.biosamplescan.singleton.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 
 public class PlateModeDialog extends Dialog {
 
