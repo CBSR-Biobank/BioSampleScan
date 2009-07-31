@@ -2,6 +2,8 @@ package edu.ualberta.med.biosamplescan.gui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -60,6 +62,7 @@ public class ViewComposite extends Composite {
 				tableColumns = new TableColumn[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 13];
 				tableItems = new TableItem[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 8];
 				plateIdText = new Text[ConfigSettings.PLATENUM];
+
 				//TODO make this work
 				for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 					plateBtn[i] = new Button(this, SWT.CHECK);
@@ -76,6 +79,58 @@ public class ViewComposite extends Composite {
 					plateIdText[i] = new Text(this, SWT.BORDER);
 					plateIdText[i].setTextLimit(15);
 					plateIdText[i].setBounds(5 + 100 * i + 50, 30, 90, 18);
+					plateIdText[i].addKeyListener(new KeyListener() {
+
+						@Override
+						public void keyReleased(KeyEvent e) {
+
+							PlateSet plateSet = ((PlateSetEditor) PlatformUI
+									.getWorkbench().getActiveWorkbenchWindow()
+									.getActivePage().getActivePart())
+									.getPlateSet();
+
+							for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+
+								if (plateSet.getPlateId(i + 1).length() > 0) {
+									boolean emptyTable = true;
+									for (int y = 0; y < plateSet
+											.getPlateDim(i + 1).height; y++) {
+										for (int x = 0; x < plateSet
+												.getPlateDim(i + 1).width; x++) {
+											try {
+												if (plateSet.getPlate(i + 1) != null
+														&& plateSet
+																.getPlate(i + 1)[x][y] != null
+														&& !plateSet
+																.getPlate(i + 1)[x][y]
+																.isEmpty()) {
+													emptyTable = false;
+													break;
+												}
+											}
+											catch (NullPointerException e1) {
+												continue;
+											}
+										}
+									}
+									if (!emptyTable) {
+
+										plateIdText[i].setText(plateSet
+												.getPlateId(i + 1));
+										continue;
+									}
+
+								}
+
+								plateSet.setPlateId(i + 1, plateIdText[i]
+										.getText());
+							}
+						}
+
+						@Override
+						public void keyPressed(KeyEvent e) {
+						}
+					});
 				}
 
 				for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
@@ -208,14 +263,17 @@ public class ViewComposite extends Composite {
 		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
-
 		for (int r = 0; r < 8; r++) {
 			tableItems[plate - 1][r].setText(plateSet.getPlate(plate)[r]);
+
 		}
 
 	}
 
 	public void clearPlateBtnWidgetSelected(SelectionEvent evt) {
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
 		if (confirmMsg("Clear Table(s)",
 				"Do you want to clear the selected tables?")) {
 			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
@@ -223,6 +281,8 @@ public class ViewComposite extends Composite {
 					for (int r = 0; r < 8; r++) {
 						for (int c = 0; c < 12; c++) {
 							tableItems[p][r].setText(c + 1, "");
+							plateSet.setPlate(p + 1, null); //TODO TEST THIS!!!!!
+							plateIdText[p].setText("");
 						}
 					}
 				}
@@ -285,10 +345,16 @@ public class ViewComposite extends Composite {
 	}
 
 	public void clearTables() {
+		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getPlateSet();
+
 		for (int p = 0; p < ConfigSettings.PLATENUM; p++) {
 			for (int r = 0; r < 8; r++) {
 				for (int c = 0; c < 12; c++) {
 					tableItems[p][r].setText(c + 1, "");
+					plateSet.setPlate(p + 1, null); //TODO TEST THIS!!!!!
+					plateIdText[p].setText("");
 				}
 			}
 		}

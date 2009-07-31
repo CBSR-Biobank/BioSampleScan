@@ -281,5 +281,4 @@ public class ConfigSettings { //Singleton
 	public boolean getAppendSetting() {
 		return appendSetting.equals("TRUE");
 	}
-
 }

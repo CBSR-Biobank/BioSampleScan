@@ -440,6 +440,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		int configSettingsReturn;
 		try {
 			ConfigSettings configSettings = ConfigSettings.getInstance();
+
 			if (twainBtn.getSelection()) {
 				configSettingsReturn = configSettings.setDriverType("TWAIN");
 			}

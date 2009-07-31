@@ -1,5 +1,6 @@
 package edu.ualberta.med.biosamplescan.model;
 
+import java.awt.Dimension;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,6 +37,39 @@ public class PlateSet {
 	public String[][] getPlate(Integer id) {
 		if (plates.containsKey(id)) {
 			return plates.get(id).getBarcode();
+		}
+		else {
+			return null;
+		}
+	}
+
+	public Dimension getPlateDim(Integer id) {
+		if (plates.containsKey(id)) {
+			return plates.get(id).getDim();
+		}
+		else {
+			return null;
+		}
+	}
+
+	public boolean setPlateId(Integer id, String plateid) {
+		if (plates.containsKey(id)) {
+			plates.get(id).setPlateIdText(plateid);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public String getPlateId(Integer id) {
+		if (plates.containsKey(id)) {
+			if (plates.get(id).getPlateIdText() == null) {
+				return "";
+			}
+			else {
+				return plates.get(id).getPlateIdText();
+			}
 		}
 		else {
 			return null;
@@ -137,8 +171,11 @@ public class PlateSet {
 									out
 											.write(String
 													.format(
-															"%d,%s,%d,%s,%s\r\n",
-															pi + 1,
+															"%s,%s,%d,%s,%s\r\n",
+															plates
+																	.get(
+																			plateids[pi])
+																	.getPlateIdText(),
 															//TODO platenumber depends on position in string[] 
 															Character
 																	.toString((char) (65 + r)),
