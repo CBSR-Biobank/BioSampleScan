@@ -130,18 +130,6 @@
                   name="BioSampleScan.separator3"
                   visible="true">
             </separator>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.appendsetting"
-                  icon="icons/building_add.png"
-                  label="Append Setting"
-                  style="push">
-            </command>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.scannersettings"
-                  icon="icons/image.png"
-                  label="Scanner Settings..."
-                  style="push">
-            </command>
          </menu>
          <menu
                id="edu.ualberta.med.biosamplescan.menu.scanner"
@@ -150,6 +138,12 @@
                   commandId="edu.ualberta.med.biosamplescan.commands.selectsource"
                   icon="icons/image.png"
                   label="Select Source"
+                  style="push">
+            </command>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.scannersettings"
+                  icon="icons/image.png"
+                  label="Scanner Configuration... "
                   style="push">
             </command>
             <separator
@@ -326,7 +320,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.ui.ide.workbench"
+            application="BioSampleScan.application"
             name="BioSampleScan">
          <property
                name="appName"

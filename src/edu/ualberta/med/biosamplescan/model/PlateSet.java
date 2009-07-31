@@ -100,6 +100,8 @@ public class PlateSet {
 	public void savePlates(String fileLocation, Integer[] plateids,
 			boolean appendFile) {
 
+		appendFile = false; //TODO depreciated, remove all references
+
 		BufferedWriter out = null;
 		try {
 			out = new BufferedWriter(new FileWriter(fileLocation, appendFile));
@@ -110,11 +112,11 @@ public class PlateSet {
 		try {
 			if (appendFile) {
 				if (new File(fileLocation).length() <= 0) {
-					out.write("#plate,Row,Col,Barcode,Date\r\n");
+					out.write("#PlateId,Row,Col,Barcode,Date\r\n");
 				}
 			}
 			else {
-				out.write("#plate,Row,Col,Barcode,Date\r\n");
+				out.write("#PlateId,Row,Col,Barcode,Date\r\n");
 			}
 		}
 		catch (IOException e1) {

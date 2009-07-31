@@ -8,10 +8,12 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
@@ -21,6 +23,8 @@ import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ViewComposite extends Composite {
+
+	private static final int fontSize = 7;
 	private Button loadFromFile;
 	private Button reScanPlateBtn;
 	private Button scanPlateBtn;
@@ -29,6 +33,7 @@ public class ViewComposite extends Composite {
 	private Table[] tables;
 	private TableColumn[][] tableColumns;
 	private TableItem[][] tableItems;
+	private Text[] plateIdText;
 
 	public ViewComposite(Composite parent, int style) {
 		super(parent, style);
@@ -48,12 +53,30 @@ public class ViewComposite extends Composite {
 		try {
 			this.setLayout(null);
 			this.layout();
-			pack();
 			{
+
 				plateBtn = new Button[ConfigSettings.PLATENUM];
 				tables = new Table[ConfigSettings.PLATENUM];
 				tableColumns = new TableColumn[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 13];
 				tableItems = new TableItem[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 8];
+				plateIdText = new Text[ConfigSettings.PLATENUM];
+				//TODO make this work
+				for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+					plateBtn[i] = new Button(this, SWT.CHECK);
+					plateBtn[i].setText(String.format("Plate %d", i + 1));
+					plateBtn[i].setBounds(5 + 63 * i, 5, 63, 18);
+					plateBtn[i].setSelection(true);
+				}
+
+				Label l = new Label(this, SWT.NONE);
+				l.setText("Plate Id:");
+				l.setBounds(8, 32, 40, 18);
+
+				for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+					plateIdText[i] = new Text(this, SWT.BORDER);
+					plateIdText[i].setTextLimit(15);
+					plateIdText[i].setBounds(5 + 100 * i + 50, 30, 90, 18);
+				}
 
 				for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 
@@ -62,24 +85,22 @@ public class ViewComposite extends Composite {
 					tables[table].setLinesVisible(true);
 					tables[table].setHeaderVisible(true);
 
-					tables[table].setBounds(5, 63 + table
-							* (this.getShell().getBounds().height - 63)
-							/ ConfigSettings.PLATENUM, this.getShell()
-							.getBounds().width,
-							(this.getShell().getBounds().height - 63)
-									/ ConfigSettings.PLATENUM);
-					tables[table].setFont(new Font(getDisplay(), "Calibri", 10,
-							SWT.NONE));
+					tables[table].setBackground(new Color(getDisplay(), 0xCC,
+							0xCC, 0xCC));
+					tables[table].setFont(new Font(getDisplay(), "Calibri",
+							ViewComposite.fontSize, SWT.NONE));
 					tableColumns[table][0] = new TableColumn(tables[table],
 							SWT.NONE);
-					tableColumns[table][0].setWidth(20);
-					tableColumns[table][0].setResizable(false);
+					tableColumns[table][0].setWidth(ViewComposite.fontSize * 10
+							- tables[table].getGridLineWidth() * 10);
+					tableColumns[table][0].setResizable(true);
 					for (int i = 0; i < 12; i++) {
 						tableColumns[table][i + 1] = new TableColumn(
 								tables[table], SWT.NONE);
 						tableColumns[table][i + 1].setText(String.format("%d",
 								i + 1));
-						tableColumns[table][i + 1].setWidth(68);
+						tableColumns[table][i + 1].setWidth((this.getShell()
+								.getBounds().width - 25) / 12 - 6);
 					}
 					for (int i = 0; i < 8; i++) {
 						tableItems[table][i] = new TableItem(tables[table],
@@ -100,6 +121,14 @@ public class ViewComposite extends Composite {
 						}
 
 					}
+
+					int w = this.getShell().getBounds().width - 43;
+					int h = (tables[table].getItemHeight()) * 8
+							+ tables[table].getHeaderHeight() * 3;
+					int x = 5;
+					int y = 63 + table * h;
+
+					tables[table].setBounds(x, y, w, h);
 				}
 			}
 
@@ -123,12 +152,6 @@ public class ViewComposite extends Composite {
 
 					}
 				});
-			}
-			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-				plateBtn[i] = new Button(this, SWT.CHECK | SWT.LEFT);
-				plateBtn[i].setText(String.format("Plate %d", i + 1));
-				plateBtn[i].setBounds(20 + 63 * i, 22, 63, 18);
-				plateBtn[i].setSelection(true);
 			}
 			{
 				reScanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -208,7 +231,7 @@ public class ViewComposite extends Composite {
 		}
 	}
 
-	public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean append) {
+	public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
 		boolean pass = false;
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			if (plateBtn[i].getSelection()) {
@@ -219,6 +242,17 @@ public class ViewComposite extends Composite {
 		if (!pass) {
 			errorMsg("No Plates Selected", 0);
 			return;
+		}
+
+		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+			if (plateBtn[i].getSelection()) {
+				String plateId = plateIdText[i].getText();
+				if (plateId == null || plateId.isEmpty()) {
+					errorMsg(String.format("Plate %d must have a plate id",
+							i + 1), 0);
+					return;
+				} //TODO check and add plateid for all save routines
+			}
 		}
 
 		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
@@ -243,7 +277,7 @@ public class ViewComposite extends Composite {
 								scanlibReturn);
 						return;
 				}
-				plateSet.loadFromScanlibFile(plate + 1, append);
+				plateSet.loadFromScanlibFile(plate + 1, rescan);
 				this.fillTablesFromPlateSet(plate + 1);
 
 			}
@@ -266,9 +300,13 @@ public class ViewComposite extends Composite {
 		for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
 			set = (table < platecount);
 			tables[table].setEnabled(set);
+			tables[table].setVisible(set);
 			plateBtn[table].setEnabled(set);
+			plateIdText[table].setEnabled(set);
 			if (!set) {
+				plateIdText[table].setText("");
 				plateBtn[table].setSelection(false);
+
 				for (int r = 0; r < 8; r++) {
 					for (int c = 0; c < 12; c++) {
 						tableItems[table][r].setText(c + 1, "");
@@ -281,4 +319,5 @@ public class ViewComposite extends Composite {
 	public boolean getPlateBtnSelection(int platenum) {
 		return plateBtn[platenum].getSelection();
 	}
+
 }
