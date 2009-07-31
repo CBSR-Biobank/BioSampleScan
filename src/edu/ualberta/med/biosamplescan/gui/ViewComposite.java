@@ -2,12 +2,15 @@ package edu.ualberta.med.biosamplescan.gui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -24,7 +27,7 @@ import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scanlib.ScanLibFactory;
 
-public class ViewComposite extends Composite {
+public class ViewComposite extends ScrolledComposite {
 
 	private static final int fontSize = 7;
 	private Button loadFromFile;
@@ -38,7 +41,7 @@ public class ViewComposite extends Composite {
 	private Text[] plateIdText;
 
 	public ViewComposite(Composite parent, int style) {
-		super(parent, style);
+		super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		initGUI();
 	}
 
@@ -53,8 +56,70 @@ public class ViewComposite extends Composite {
 
 	private void initGUI() {
 		try {
-			this.setLayout(null);
-			this.layout();
+			//getShell().setLayout(new GridLayout(1, false));
+			//setLayout(new GridLayout(1, false));
+
+			setExpandHorizontal(true);
+			setExpandVertical(true);
+
+			Composite top = new Composite(this, SWT.NONE);
+			top.setLayout(new GridLayout(1, false));
+
+			Composite section = new Composite(top, SWT.NONE);
+			section.setLayout(new GridLayout(4, false));
+			section.setLayoutData(new GridData(
+					GridData.HORIZONTAL_ALIGN_BEGINNING));
+			{
+				clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
+				clearPlateBtn.setText("Clear Table(s)");
+				//clearPlateBtn.setBounds(488, 6, 90, 40);
+				clearPlateBtn.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						clearPlateBtnWidgetSelected(evt);
+
+					}
+				});
+			}
+			{
+				reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
+				reScanPlateBtn.setText("Re-Scan Plate(s)");
+				//reScanPlateBtn.setBounds(596, 6, 90, 40);
+				reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						scanPlateBtnWidgetSelected(evt, true);
+					}
+				});
+			}
+			{//TODO this button is only for debugging purposes
+				loadFromFile = new Button(section, SWT.PUSH | SWT.CENTER);
+				loadFromFile.setText("Load From File");
+				//loadFromFile.setBounds(380, 6, 90, 40);
+				loadFromFile.setVisible(false); //TODO REMOVE
+				loadFromFile.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						PlateSet plateSet = ((PlateSetEditor) PlatformUI
+								.getWorkbench().getActiveWorkbenchWindow()
+								.getActivePage().getActivePart()).getPlateSet();
+						for (int i = 0; i < ConfigSettings.getInstance()
+								.getPlatemode(); i++) {
+							plateSet.loadFromScanlibFile(i + 1, false);
+							fillTablesFromPlateSet(i + 1);
+						}
+					}
+				});
+			}
+
+			{
+				scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
+				scanPlateBtn.setText("Scan Plate(s)");
+				//scanPlateBtn.setBounds(698, 6, 90, 40);
+				scanPlateBtn.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent evt) {
+						scanPlateBtnWidgetSelected(evt, false);
+					}
+				});
+			}
+			//pack();
 			{
 
 				plateBtn = new Button[ConfigSettings.PLATENUM];
@@ -63,23 +128,28 @@ public class ViewComposite extends Composite {
 				tableItems = new TableItem[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 8];
 				plateIdText = new Text[ConfigSettings.PLATENUM];
 
-				//TODO make this work
-				for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-					plateBtn[i] = new Button(this, SWT.CHECK);
-					plateBtn[i].setText(String.format("Plate %d", i + 1));
-					plateBtn[i].setBounds(5 + 63 * i, 5, 63, 18);
-					plateBtn[i].setSelection(true);
-				}
+				for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
+					section = new Composite(top, SWT.NONE);
+					section.setLayout(new GridLayout(1, false));
 
-				Label l = new Label(this, SWT.NONE);
-				l.setText("Plate Id:");
-				l.setBounds(8, 32, 40, 18);
+					Composite subSection = new Composite(section, SWT.NONE);
+					subSection.setLayout(new GridLayout(3, false));
 
-				for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-					plateIdText[i] = new Text(this, SWT.BORDER);
-					plateIdText[i].setTextLimit(15);
-					plateIdText[i].setBounds(5 + 100 * i + 50, 30, 90, 18);
-					plateIdText[i].addKeyListener(new KeyListener() {
+					plateBtn[table] = new Button(subSection, SWT.CHECK);
+					plateBtn[table].setText(String
+							.format("Plate %d", table + 1));
+					//plateBtn[table].setBounds(5 + 63 * table, 5, 63, 18);
+					plateBtn[table].setSelection(true);
+
+					Label l = new Label(subSection, SWT.NONE);
+					l.setText("Plate Id:");
+					//l.setBounds(8, 32, 40, 18);
+
+					plateIdText[table] = new Text(subSection, SWT.BORDER);
+					plateIdText[table].setTextLimit(15);
+					//plateIdText[table].setBounds(5 + 100 * table + 50, 30, 90,
+					//		18);
+					plateIdText[table].addKeyListener(new KeyListener() {
 
 						@Override
 						public void keyReleased(KeyEvent e) {
@@ -131,11 +201,8 @@ public class ViewComposite extends Composite {
 						public void keyPressed(KeyEvent e) {
 						}
 					});
-				}
 
-				for (int table = 0; table < ConfigSettings.PLATENUM; table++) {
-
-					tables[table] = new Table(this, SWT.FULL_SELECTION
+					tables[table] = new Table(section, SWT.FULL_SELECTION
 							| SWT.EMBEDDED | SWT.V_SCROLL | SWT.BORDER);
 					tables[table].setLinesVisible(true);
 					tables[table].setHeaderVisible(true);
@@ -183,61 +250,15 @@ public class ViewComposite extends Composite {
 					int x = 5;
 					int y = 63 + table * h;
 
-					tables[table].setBounds(x, y, w, h);
+					//tables[table].setBounds(x, y, w, h);
 				}
 			}
-
-			{
-				scanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
-				scanPlateBtn.setText("Scan Plate(s)");
-				scanPlateBtn.setBounds(698, 6, 90, 40);
-				scanPlateBtn.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent evt) {
-						scanPlateBtnWidgetSelected(evt, false);
-					}
-				});
-			}
-			{
-				clearPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
-				clearPlateBtn.setText("Clear Table(s)");
-				clearPlateBtn.setBounds(488, 6, 90, 40);
-				clearPlateBtn.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent evt) {
-						clearPlateBtnWidgetSelected(evt);
-
-					}
-				});
-			}
-			{
-				reScanPlateBtn = new Button(this, SWT.PUSH | SWT.CENTER);
-				reScanPlateBtn.setText("Re-Scan Plate(s)");
-				reScanPlateBtn.setBounds(596, 6, 90, 40);
-				reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent evt) {
-						scanPlateBtnWidgetSelected(evt, true);
-					}
-				});
-			}
-			{//TODO this button is only for debugging purposes
-				loadFromFile = new Button(this, SWT.PUSH | SWT.CENTER);
-				loadFromFile.setText("Load From File");
-				loadFromFile.setBounds(380, 6, 90, 40);
-				loadFromFile.setVisible(false); //TODO REMOVE
-				loadFromFile.addSelectionListener(new SelectionAdapter() {
-					public void widgetSelected(SelectionEvent evt) {
-						PlateSet plateSet = ((PlateSetEditor) PlatformUI
-								.getWorkbench().getActiveWorkbenchWindow()
-								.getActivePage().getActivePart()).getPlateSet();
-						for (int i = 0; i < ConfigSettings.getInstance()
-								.getPlatemode(); i++) {
-							plateSet.loadFromScanlibFile(i + 1, false);
-							fillTablesFromPlateSet(i + 1);
-						}
-					}
-				});
-			}
-			pack();
 			this.setPlateMode();
+			top.pack();
+			setContent(top);
+
+			setMinWidth(top.getBounds().width);
+			setMinHeight(top.getBounds().height);
 
 		}
 		catch (Exception e) {
