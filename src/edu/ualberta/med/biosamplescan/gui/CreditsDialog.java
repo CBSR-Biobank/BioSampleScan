@@ -56,6 +56,7 @@ public class CreditsDialog extends Dialog {
 			final Canvas canvas = new Canvas(dialogShell, SWT.NONE);
 			canvas.setBackground(new Color(Display.getDefault(), 0, 0, 0));
 			canvas.setSize(500, 301);
+			/*
 			final Thread t = new Thread() {
 				public void run() {
 					for (int i = 0; i < 40; i++) {
@@ -78,6 +79,20 @@ public class CreditsDialog extends Dialog {
 			canvas.addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent e) {
 					t.run();
+				}
+			});*/
+
+			canvas.addPaintListener(new PaintListener() {
+				public void paintControl(PaintEvent e) {
+					GC gc = new GC(canvas);
+					gc.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+					gc
+							.setForeground(new Color(Display.getDefault(),
+									0xFF, 0, 0));
+					gc.drawOval(0, 0, 60, 60);
+					gc.drawArc(20, 35, 20, 15, 160, 210);
+					gc.drawLine(20, 10, 20, 20);
+					gc.drawLine(35, 10, 35, 20);
 				}
 			});
 

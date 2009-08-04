@@ -58,11 +58,10 @@ public class ViewComposite extends ScrolledComposite {
 
 	private void initGUI() {
 		try {
-			//getShell().setLayout(new GridLayout(1, false));
-			//setLayout(new GridLayout(1, false));
-
 			setExpandHorizontal(true);
 			setExpandVertical(true);
+			this.getVerticalBar().setIncrement(10);
+			this.getHorizontalBar().setIncrement(10);
 
 			top = new Composite(this, SWT.NONE);
 			top.setLayout(new GridLayout(1, false));
@@ -73,7 +72,7 @@ public class ViewComposite extends ScrolledComposite {
 					GridData.HORIZONTAL_ALIGN_BEGINNING));
 			{
 				clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-				clearPlateBtn.setText("Clear Table(s)");
+				clearPlateBtn.setText("Clear Selected Table(s)");
 				//clearPlateBtn.setBounds(488, 6, 90, 40);
 				clearPlateBtn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -84,7 +83,7 @@ public class ViewComposite extends ScrolledComposite {
 			}
 			{
 				reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-				reScanPlateBtn.setText("Re-Scan Plate(s)");
+				reScanPlateBtn.setText("Re-Scan Selected Plate(s)");
 				//reScanPlateBtn.setBounds(596, 6, 90, 40);
 				reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
@@ -96,7 +95,7 @@ public class ViewComposite extends ScrolledComposite {
 				loadFromFile = new Button(section, SWT.PUSH | SWT.CENTER);
 				loadFromFile.setText("Load From File");
 				//loadFromFile.setBounds(380, 6, 90, 40);
-				loadFromFile.setVisible(false); //TODO REMOVE
+				loadFromFile.setVisible(true); //TODO REMOVE
 				loadFromFile.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
 						PlateSet plateSet = ((PlateSetEditor) PlatformUI
@@ -113,7 +112,7 @@ public class ViewComposite extends ScrolledComposite {
 
 			{
 				scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-				scanPlateBtn.setText("Scan Plate(s)");
+				scanPlateBtn.setText("Scan Selected Plate(s)");
 				//scanPlateBtn.setBounds(698, 6, 90, 40);
 				scanPlateBtn.addSelectionListener(new SelectionAdapter() {
 					public void widgetSelected(SelectionEvent evt) {
