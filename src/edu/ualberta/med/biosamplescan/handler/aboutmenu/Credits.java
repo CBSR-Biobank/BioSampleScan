@@ -9,6 +9,7 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.CreditsDialog;
+import edu.ualberta.med.biosamplescan.gui.SimpleSynth;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 
 public class Credits extends AbstractHandler implements IHandler {
@@ -18,6 +19,8 @@ public class Credits extends AbstractHandler implements IHandler {
 				.getActivePart()).getViewComposite();
 		CreditsDialog cd = new CreditsDialog(viewComposite.getActiveShell(),
 				SWT.NONE);
+
+		new SimpleSynth();
 		cd.open();
 		return null;
 	}
