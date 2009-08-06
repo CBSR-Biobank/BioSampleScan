@@ -9,6 +9,7 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PlateSetInput;
+import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 
 public class NewScan extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -21,7 +22,9 @@ public class NewScan extends AbstractHandler implements IHandler {
 		catch (PartInitException e) {
 			e.printStackTrace();
 		}
-
+		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
+				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getActivePart()).getViewComposite();
 		return null;
 	}
 }

@@ -3,6 +3,8 @@ package edu.ualberta.med.biosamplescan.gui;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,6 +39,7 @@ public class ViewComposite extends ScrolledComposite {
 	private Button scanPlateBtn;
 	private Button clearPlateBtn;
 	private Button[] plateBtn;
+	private Button[] clearBtns;
 	private Table[] tables;
 	private TableColumn[][] tableColumns;
 	private TableItem[][] tableItems;
@@ -44,6 +47,18 @@ public class ViewComposite extends ScrolledComposite {
 
 	public ViewComposite(Composite parent, int style) {
 		super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		this.addControlListener(new ControlListener() {
+
+			@Override
+			public void controlMoved(ControlEvent e) {
+			}
+
+			@Override
+			public void controlResized(ControlEvent e) {
+
+			}
+
+		});
 		initGUI();
 	}
 
@@ -122,7 +137,7 @@ public class ViewComposite extends ScrolledComposite {
 			}
 			//pack();
 			{
-
+				clearBtns = new Button[ConfigSettings.PLATENUM];
 				plateBtn = new Button[ConfigSettings.PLATENUM];
 				tables = new Table[ConfigSettings.PLATENUM];
 				tableColumns = new TableColumn[ConfigSettings.PLATENUM][ConfigSettings.PLATENUM * 13];
@@ -134,7 +149,7 @@ public class ViewComposite extends ScrolledComposite {
 					section.setLayout(new GridLayout(1, false));
 
 					Composite subSection = new Composite(section, SWT.NONE);
-					subSection.setLayout(new GridLayout(3, false));
+					subSection.setLayout(new GridLayout(4, false));
 
 					plateBtn[table] = new Button(subSection, SWT.CHECK);
 					plateBtn[table].setText(String
@@ -150,8 +165,12 @@ public class ViewComposite extends ScrolledComposite {
 					plateIdText[table].setTextLimit(15);
 					//plateIdText[table].setBounds(5 + 100 * table + 50, 30, 90,
 					//		18);
-					plateIdText[table].addKeyListener(new KeyListener() {
 
+					clearBtns[table] = new Button(subSection, SWT.NONE);
+					clearBtns[table].setText("Clear");
+					//clearBtns[table]
+
+					plateIdText[table].addKeyListener(new KeyListener() {
 						@Override
 						public void keyReleased(KeyEvent e) {
 
@@ -244,14 +263,6 @@ public class ViewComposite extends ScrolledComposite {
 						}
 
 					}
-
-					int w = this.getShell().getBounds().width - 43;
-					int h = (tables[table].getItemHeight()) * 8
-							+ tables[table].getHeaderHeight() * 3;
-					int x = 5;
-					int y = 63 + table * h;
-
-					//tables[table].setBounds(x, y, w, h);
 				}
 			}
 			this.setPlateMode();

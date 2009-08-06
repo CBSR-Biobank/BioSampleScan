@@ -14,6 +14,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -27,6 +28,7 @@ import edu.ualberta.med.scanlib.ScanLibFactory;
 public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private Shell dialogShell;
+	private Composite top;
 
 	private Text textDpi;
 	private Text textBrightness;
@@ -50,23 +52,22 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	public void open() {
 		try {
-			Shell parent = getParent();
-			dialogShell = new Shell(parent, SWT.DIALOG_TRIM
-					| SWT.APPLICATION_MODAL);
-			GridLayout dialogShellLayout = new GridLayout();
-			dialogShellLayout.makeColumnsEqualWidth = true;
+			int label_it = 0;
+			int groups_it = 0;
 			groups = new Group[3 + ConfigSettings.PLATENUM + 2];
 			platesText = new Text[ConfigSettings.PLATENUM + 1][4];// left,top,right,bottom
 			labels = new Label[ConfigSettings.PLATENUM * 5 + 10 + 1];
 			platelabels = new Label[ConfigSettings.PLATENUM * 4];
-			int label_it = 0;
-			int groups_it = 0;
-			dialogShell.setLayout(dialogShellLayout);
-			dialogShell.setText("Scanner Configuration");
+
+			dialogShell = new Shell(getParent(), SWT.DIALOG_TRIM
+					| SWT.APPLICATION_MODAL);
 			dialogShell
 					.setFont(new Font(Display.getDefault(), "Tahoma", 10, 0));
+			dialogShell.setText("Scanner Configuration");
+			top = new Composite(dialogShell, SWT.NONE);
+			top.setLayout(new GridLayout(1, false));
 			{
-				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
+				groups[++groups_it] = new Group(top, SWT.NONE);
 				RowLayout group1Layout = new RowLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
 				groups[groups_it].setLayout(group1Layout);
@@ -108,7 +109,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 			}
 			{
-				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
+				groups[++groups_it] = new Group(top, SWT.NONE);
 				FillLayout group1Layout = new FillLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
 				GridData group1LData = new GridData();
@@ -150,7 +151,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 			}
 			for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
-				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
+				groups[++groups_it] = new Group(top, SWT.NONE);
 				FillLayout group2Layout = new FillLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
 				groups[groups_it].setLayout(group2Layout);
@@ -288,7 +289,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 			}
 			{
-				groups[++groups_it] = new Group(dialogShell, SWT.NONE);
+				groups[++groups_it] = new Group(top, SWT.NONE);
 				RowLayout group5Layout = new RowLayout(
 						org.eclipse.swt.SWT.HORIZONTAL);
 				groups[groups_it].setLayout(group5Layout);
@@ -329,6 +330,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				}
 			}
 			this.loadFromConfigSettings();
+			top.pack();
 			dialogShell.layout();
 			dialogShell.pack();
 			dialogShell.setLocation(getParent().toDisplay(100, 100));
