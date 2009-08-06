@@ -169,8 +169,21 @@ public class ViewComposite extends ScrolledComposite {
 
 					clearBtns[table] = new Button(subSection, SWT.NONE);
 					clearBtns[table].setText("Clear");
-					//clearBtns[table]
+					{
+						final int ftable = table + 1;
+						clearBtns[table]
+								.addSelectionListener(new SelectionAdapter() {
+									public void widgetSelected(
+											SelectionEvent evt) {
+										if (confirmMsg(
+												"Clear Platetext and Clear PlateTable",
+												"Are you sure you want to clear the plate?")) {
+											clearPlateTable(ftable);
+										}
 
+									}
+								});
+					}
 					plateIdText[table].addKeyListener(new KeyListener() {
 						@Override
 						public void keyReleased(KeyEvent e) {
@@ -267,6 +280,7 @@ public class ViewComposite extends ScrolledComposite {
 				}
 			}
 			this.setPlateMode();
+			top.layout();
 			top.pack();
 			setContent(top);
 
@@ -394,6 +408,22 @@ public class ViewComposite extends ScrolledComposite {
 		}
 	}
 
+	private void clearPlateTable(int table) {
+		plateIdText[table - 1].setText("");
+		for (int r = 0; r < 8; r++) {
+			for (int c = 0; c < 12; c++) {
+				tableItems[table - 1][r].setText(c + 1, "");
+			}
+		}
+		PlateSetEditor pse = (PlateSetEditor) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart();
+		if (pse != null) { //During initialization of this program, pse = null.
+			PlateSet ps = pse.getPlateSet();
+			ps.initPlate(table, 13, 8);
+		}
+
+	}
+
 	public void setPlateMode() {
 		int platecount = ConfigSettings.getInstance().getPlatemode();
 		boolean set = false;
@@ -403,15 +433,10 @@ public class ViewComposite extends ScrolledComposite {
 			tables[table].setVisible(set);
 			plateBtn[table].setEnabled(set);
 			plateIdText[table].setEnabled(set);
-			if (!set) {
-				plateIdText[table].setText("");
-				plateBtn[table].setSelection(false);
 
-				for (int r = 0; r < 8; r++) {
-					for (int c = 0; c < 12; c++) {
-						tableItems[table][r].setText(c + 1, "");
-					}
-				}
+			if (!set) {
+				clearPlateTable(table + 1);
+				plateBtn[table].setSelection(false);
 			}
 		}
 	}

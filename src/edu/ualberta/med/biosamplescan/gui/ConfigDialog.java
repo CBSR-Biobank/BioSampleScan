@@ -41,13 +41,12 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	private Button buttonConfig;
 	private Button[] buttonEdit;
 	private Button[] buttonClear;
+	private Button[] ratioBtns;
 	private Button twainBtn;
 	private Button wiaBtn;
 
 	private Label labels[];
 	private Label platelabels[];
-
-	private Button[] ratioBtns;
 
 	private Group[] groups;
 
@@ -60,9 +59,9 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 			int label_it = 0;
 			int groups_it = 0;
-			groups = new Group[4 + ConfigSettings.PLATENUM + 2];
+			groups = new Group[ConfigSettings.PLATENUM + 6];
 			platesText = new Text[ConfigSettings.PLATENUM + 1][4];// left,top,right,bottom
-			labels = new Label[ConfigSettings.PLATENUM * 5 + 10 + 1];
+			labels = new Label[ConfigSettings.PLATENUM * 5 + 11];
 			platelabels = new Label[ConfigSettings.PLATENUM * 4];
 			buttonEdit = new Button[4];
 			buttonClear = new Button[4];
@@ -100,7 +99,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 							@Override
 							public void mouseUp(MouseEvent evt) {
 								for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
-									colorPlateText(i);
+									setPlateTextSettings(i);
 								}
 							}
 						});
@@ -261,81 +260,23 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					buttonEdit[plate].setText("Edit");
 					buttonClear[plate] = new Button(groups[groups_it], SWT.PUSH);
 					buttonClear[plate].setText("Clear");
-					switch (plate + 1) {// TODO find a better way of doing
-						// this (BELOW)
-						case (1):
-							buttonEdit[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonPlateImageDialog(1);
-										}
-									});
-							buttonClear[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonClearPlateText(1);
-										}
-									});
-
-							break;
-						case (2):
-							buttonEdit[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonPlateImageDialog(2);
-										}
-									});
-							buttonClear[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonClearPlateText(2);
-										}
-									});
-							break;
-						case (3):
-							buttonEdit[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonPlateImageDialog(3);
-										}
-									});
-							buttonClear[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonClearPlateText(3);
-										}
-									});
-							break;
-						case (4):
-							buttonEdit[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonPlateImageDialog(4);
-										}
-									});
-							buttonClear[plate]
-									.addMouseListener(new MouseAdapter() {
-										@Override
-										public void mouseUp(MouseEvent evt) {
-											buttonClearPlateText(4);
-										}
-									});
-							break;
-						default:
-							break;
+					{
+						final int fplate = plate;//.hak
+						buttonEdit[plate].addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseUp(MouseEvent evt) {
+								buttonPlateImageDialog(fplate + 1);
+							}
+						});
+						buttonClear[plate].addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseUp(MouseEvent evt) {
+								buttonClearPlateText(fplate + 1);
+							}
+						});
 					}
 				}
-				{
-					this.colorPlateText(plate);
-				}
-
+				this.setPlateTextSettings(plate);
 			}
 			{
 				groups[++groups_it] = new Group(top, SWT.NONE);
@@ -395,7 +336,13 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		}
 	}
 
-	void readPlatesIntoArray(double plateArray[][]) {
+	private ViewComposite getActiveViewComposite() {
+		return ((PlateSetEditor) PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage().getActivePart())
+				.getViewComposite();
+	}
+
+	private void readPlatesTextToArray(double plateArray[][]) {
 		for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
 			for (int side = 0; side < 4; side++) {
 				plateArray[plate][side] = Double
@@ -404,10 +351,26 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		}
 	}
 
-	void buttonClearPlateText(int plate) {
-		for (int side = 0; side < 4; side++) {
-			if (platesText[plate - 1][side].getEditable()) {
-				platesText[plate - 1][side].setText("0.0");
+	private int getActivePlateMode() {
+		for (int i = 0; i < ratioBtns.length; i++) {
+			if (ratioBtns[i].getSelection()) {
+				return i + 1;
+			}
+		}
+		return 0;
+	}
+
+	private void buttonClearPlateText(int plate) {
+		if (MessageDialog
+				.openConfirm(
+						this.getActiveViewComposite().getActiveShell(),
+						"Save over existing file?",
+						"A file already exists at the selected location are you sure you want to save over it?")) {
+
+			for (int side = 0; side < 4; side++) {
+				if (platesText[plate - 1][side].getEditable()) {
+					platesText[plate - 1][side].setText("0.0");
+				}
 			}
 		}
 	}
@@ -449,7 +412,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		return 0;
 	}
 
-	private void colorPlateText(int plate) {
+	private void setPlateTextSettings(int plate) {
 		Color c;
 		switch (plate) {
 			case (0):
@@ -468,13 +431,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 				c = new Color(Display.getDefault(), 255, 255, 255);
 				break;
 		}
-		int plateMode = 0;
-		for (int i = 0; i < ratioBtns.length; i++) {
-			if (ratioBtns[i].getSelection()) {
-				plateMode = i + 1;
-				break;
-			}
-		}
+		int plateMode = this.getActivePlateMode();
 
 		if (plateMode > 0 && plateMode <= ConfigSettings.PLATENUM) {
 			for (int i = 0; i < 4; i++) {
@@ -502,7 +459,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 	private void buttonPlateImageDialog(int plate) {
 		double nplates[][] = new double[ConfigSettings.PLATENUM][4];
-		readPlatesIntoArray(nplates);
+		readPlatesTextToArray(nplates);
 		if (!(new File(PlateImageDialog.alignFile).exists())
 				|| MessageDialog.openConfirm(dialogShell,
 						"Re-Scan Plate Image?",
@@ -603,18 +560,10 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 		int configSettingsReturn;
 		try {
 			ConfigSettings configSettings = ConfigSettings.getInstance();
-			ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.getActivePart()).getViewComposite();
+			ViewComposite viewComposite = this.getActiveViewComposite();
 
 			/*=================Set Plate Mode================*/
-			int plateMode = 0;
-			for (int i = 0; i < ratioBtns.length; i++) {
-				if (ratioBtns[i].getSelection()) {
-					plateMode = i + 1;
-					break;
-				}
-			}
+			int plateMode = this.getActivePlateMode();
 			if (plateMode > 0 && plateMode <= ConfigSettings.PLATENUM) {
 				ConfigSettings.getInstance().setPlatemode(
 						String.valueOf(plateMode));
@@ -749,7 +698,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
 			/*=================Set Plate Settings ================*/
 			double nplates[][] = new double[ConfigSettings.PLATENUM][4];
-			readPlatesIntoArray(nplates); /*Reads Plate Config Settings*/
+			readPlatesTextToArray(nplates); /*Reads Plate Config Settings*/
 
 			for (int plate = 0; plate < ConfigSettings.PLATENUM; plate++) {
 				int setPlateReturn = configSettings.setPlate(plate + 1,

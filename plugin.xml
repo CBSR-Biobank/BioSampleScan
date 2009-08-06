@@ -229,7 +229,7 @@
             name="Append Setting">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.ScannerSettings"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScannerSettings"
             id="edu.ualberta.med.biosamplescan.commands.scannersettings"
             name="Scanner Settings">
       </command>
