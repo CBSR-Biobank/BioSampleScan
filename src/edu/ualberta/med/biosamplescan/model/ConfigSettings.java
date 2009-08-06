@@ -143,7 +143,6 @@ public class ConfigSettings { //Singleton
 			if (left > right || top > bottom) {
 				return CS_INVALID_INPUT;
 			}
-
 		}
 		else { // WIA
 		}

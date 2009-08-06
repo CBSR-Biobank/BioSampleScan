@@ -1,9 +1,12 @@
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
+import java.io.File;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
@@ -38,6 +41,15 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 
 		}
 		if (ConfigSettings.getInstance().getLastSaveLocation() == null) {//TODO remove later
+			return null;
+		}
+		if (new File(ConfigSettings.getInstance().getLastSaveLocation())
+				.exists()
+				&& !MessageDialog
+						.openConfirm(
+								viewComposite.getActiveShell(),
+								"Save over existing file?",
+								"A file already exists at the selected location are you sure you want to save over it?")) {
 			return null;
 		}
 

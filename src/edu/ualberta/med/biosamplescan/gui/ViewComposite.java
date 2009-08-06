@@ -41,6 +41,7 @@ public class ViewComposite extends ScrolledComposite {
 	private Button[] plateBtn;
 	private Button[] clearBtns;
 	private Table[] tables;
+
 	private TableColumn[][] tableColumns;
 	private TableItem[][] tableItems;
 	private Text[] plateIdText;

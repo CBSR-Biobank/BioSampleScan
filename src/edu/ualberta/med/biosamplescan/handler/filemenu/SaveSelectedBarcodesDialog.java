@@ -1,5 +1,7 @@
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
+import java.io.File;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -44,6 +46,15 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 				ConfigSettings.getInstance().getAppendSetting()));
 		String saveLocation = dlg.open();
 		if (saveLocation != null) {
+			if (new File(ConfigSettings.getInstance().getLastSaveLocation())
+					.exists()
+					&& !MessageDialog
+							.openConfirm(
+									viewComposite.getActiveShell(),
+									"Save over existing file?",
+									"A file already exists at the selected location are you sure you want to save over it?")) {
+				return null;
+			}
 			boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
 			for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 				tablesCheck[i] = viewComposite.getPlateBtnSelection(i);

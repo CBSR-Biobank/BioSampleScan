@@ -22,18 +22,6 @@ public class CreditsDialog extends Dialog {
 
 	private Shell dialogShell;
 
-	public static void main(String[] args) {
-		try {
-			Display display = Display.getDefault();
-			Shell shell = new Shell(display);
-			PlateModeDialog inst = new PlateModeDialog(shell, SWT.NULL);
-			inst.open();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public CreditsDialog(Shell parent, int style) {
 		super(parent, style);
 	}

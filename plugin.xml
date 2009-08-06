@@ -118,20 +118,6 @@
             </separator>
          </menu>
          <menu
-               id="edu.ualberta.med.biosamplescan.menu.options"
-               label="Options">
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.platemode"
-                  icon="icons/application_view_tile.png"
-                  label="Plate Mode"
-                  style="push">
-            </command>
-            <separator
-                  name="BioSampleScan.separator3"
-                  visible="true">
-            </separator>
-         </menu>
-         <menu
                id="edu.ualberta.med.biosamplescan.menu.scanner"
                label="Scanner">
             <command
@@ -241,11 +227,6 @@
             defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.AppendSetting"
             id="edu.ualberta.med.biosamplescan.commands.appendsetting"
             name="Append Setting">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.PlateMode"
-            id="edu.ualberta.med.biosamplescan.commands.platemode"
-            name="Plate Mode">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.ScannerSettings"
