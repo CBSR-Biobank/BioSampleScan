@@ -11,7 +11,6 @@ import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PlateSetInput;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class Startup implements IStartup {
 
@@ -22,7 +21,7 @@ public class Startup implements IStartup {
 			public void run() {
 				String osname = System.getProperty("os.name");
 				if (osname.startsWith("Windows")) {
-					if (ScanLibFactory.getScanLib().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
+					if (ScanLib.getInstance().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
 						Display.getDefault().asyncExec(new Runnable() {
 							public void run() {
 								BioSampleScanPlugin
