@@ -27,7 +27,6 @@ import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PlateSet;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ViewComposite extends ScrolledComposite {
 
@@ -375,7 +374,7 @@ public class ViewComposite extends ScrolledComposite {
 					+ configSettings.getPlate(plate + 1)[2]
 					+ configSettings.getPlate(plate + 1)[3] > 0
 					&& plateBtn[plate].getSelection()) {
-				int scanlibReturn = ScanLibFactory.getScanLib().slDecodePlate(
+				int scanlibReturn = ScanLib.getInstance().slDecodePlate(
 						configSettings.getDpi(), plate + 1);
 				switch (scanlibReturn) {
 					case (ScanLib.SC_SUCCESS):

@@ -6,12 +6,10 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class SelectSource extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		int scanlibReturn = ScanLibFactory.getScanLib()
-				.slSelectSourceAsDefault();
+		int scanlibReturn = ScanLib.getInstance().slSelectSourceAsDefault();
 		switch (scanlibReturn) {
 			case (ScanLib.SC_SUCCESS):
 				break;

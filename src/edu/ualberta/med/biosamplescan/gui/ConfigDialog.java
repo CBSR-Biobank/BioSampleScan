@@ -25,7 +25,6 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 
@@ -465,9 +464,8 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 						"Re-Scan Plate Image?",
 						"If you have moved the plates since the last calibration press OK.\n"
 								+ "")) {
-			ScanLibFactory.getScanLib().slScanImage(
-					(int) PlateImageDialog.alignDpi, 0, 0, 0, 0,
-					PlateImageDialog.alignFile);
+			ScanLib.getInstance().slScanImage((int) PlateImageDialog.alignDpi,
+					0, 0, 0, 0, PlateImageDialog.alignFile);
 		}
 
 		PlateImageDialog pid = new PlateImageDialog(dialogShell, SWT.NONE);
@@ -507,10 +505,10 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 	private void calibrateToPlate(int plate) {
 		ConfigSettings configSettings = ConfigSettings.getInstance();
 
-		int scanlibReturn = ScanLibFactory.getScanLib().slCalibrateToPlate(
+		int scanlibReturn = ScanLib.getInstance().slCalibrateToPlate(
 				configSettings.getDpi(), plate);
 		if (scanlibReturn != ScanLib.SC_SUCCESS) {
-			ScanLibFactory.getScanLib().slConfigPlateFrame(plate, 0, 0, 0, 0);
+			ScanLib.getInstance().slConfigPlateFrame(plate, 0, 0, 0, 0);
 			dialogShell.redraw();
 		}
 		switch (scanlibReturn) {
@@ -627,7 +625,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					.getText());
 			switch (configSettingsReturn) {
 				case (ConfigSettings.CS_SUCCESS):
-					int scanlibReturn = ScanLibFactory.getScanLib()
+					int scanlibReturn = ScanLib.getInstance()
 							.slConfigScannerBrightness(
 									configSettings.getBrightness());
 					switch (scanlibReturn) {
@@ -664,7 +662,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 					.getText());
 			switch (configSettingsReturn) {
 				case (ConfigSettings.CS_SUCCESS):
-					int scanlibReturn = ScanLibFactory.getScanLib()
+					int scanlibReturn = ScanLib.getInstance()
 							.slConfigScannerContrast(
 									configSettings.getContrast());
 					switch (scanlibReturn) {
@@ -706,7 +704,7 @@ public class ConfigDialog extends org.eclipse.swt.widgets.Dialog {
 						nplates[plate][2], nplates[plate][3]);
 				if (setPlateReturn == ConfigSettings.CS_SUCCESS
 						|| setPlateReturn == ConfigSettings.CS_CLEARDATA) {
-					int scanlibReturn = ScanLibFactory.getScanLib()
+					int scanlibReturn = ScanLib.getInstance()
 							.slConfigPlateFrame(plate + 1,
 									configSettings.getPlate(plate + 1)[0],
 									configSettings.getPlate(plate + 1)[1],

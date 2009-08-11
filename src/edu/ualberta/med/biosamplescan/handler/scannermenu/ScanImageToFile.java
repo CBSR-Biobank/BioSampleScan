@@ -13,7 +13,6 @@ import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class ScanImageToFile extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -29,7 +28,7 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
 		if (saveLocation == null) {
 			return null;
 		}
-		int scanlibReturn = ScanLibFactory.getScanLib().slScanImage(
+		int scanlibReturn = ScanLib.getInstance().slScanImage(
 				configSettings.getDpi(), 0, 0, 0, 0, saveLocation);
 		switch (scanlibReturn) {
 			case (ScanLib.SC_SUCCESS):

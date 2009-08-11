@@ -11,7 +11,6 @@ import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scanlib.ScanLibFactory;
 
 public class SaveImagePlateX {
 	public static final Object execute(ExecutionEvent event, int platenum)
@@ -40,7 +39,7 @@ public class SaveImagePlateX {
 			return null;
 		}
 
-		int scanlibReturn = ScanLibFactory.getScanLib().slScanPlate(
+		int scanlibReturn = ScanLib.getInstance().slScanPlate(
 				configSettings.getDpi(), platenum, saveLocation);
 		switch (scanlibReturn) {
 			case (ScanLib.SC_SUCCESS):
