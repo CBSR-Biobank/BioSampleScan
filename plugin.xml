@@ -40,6 +40,12 @@
                   label="New Scan"
                   style="push">
             </command>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.newtab"
+                  icon="icons/application_go.png"
+                  label="New Tab"
+                  style="push">
+            </command>
              <separator
                   name="BioSampleScan.separator1"
                   visible="true">
@@ -100,12 +106,6 @@
                   name="BioSampleScan.separator2"
                   visible="true">
             </separator>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.clearalltables"
-                  icon="icons/table_lightning.png"
-                  label="Clear All Tables"
-                  style="push">
-            </command>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.quit"
                   icon="icons/stop.png"
@@ -214,11 +214,6 @@
             name="Save Selected Barcodes...">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.ClearAllTables"
-            id="edu.ualberta.med.biosamplescan.commands.clearalltables"
-            name="Clear All Tables">
-      </command>
-      <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"
             id="edu.ualberta.med.biosamplescan.commands.quit"
             name="Quit">
@@ -291,7 +286,12 @@
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewScan"
             id="edu.ualberta.med.biosamplescan.commands.newview"
-            name="New View">
+            name="New Scan">
+      </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewTab"
+            id="edu.ualberta.med.biosamplescan.commands.newtab"
+            name="New Tab">
       </command>
    </extension>
    <extension

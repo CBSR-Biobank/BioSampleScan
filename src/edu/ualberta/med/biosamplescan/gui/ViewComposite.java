@@ -386,9 +386,10 @@ public class ViewComposite extends ScrolledComposite {
 						return;
 				}
 				plateSet.loadFromScanlibFile(plate + 1, rescan);
+				plateSet.setPlateTimestampNOW(plate + 1);
 				this.fillTablesFromPlateSet(plate + 1);
-
 			}
+
 		}
 	}
 

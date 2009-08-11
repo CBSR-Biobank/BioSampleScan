@@ -1,6 +1,8 @@
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -27,12 +29,25 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
 		dlg.setText(String.format("Save All Barcodes"));
+
+		long largestSaveTime = 0;
+		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+			if (plateSet.getPlateTimestamp(i + 1) > largestSaveTime) {
+				largestSaveTime = plateSet.getPlateTimestamp(i + 1);
+			}
+		}
+		if (largestSaveTime != 0) {
+			Date d = new Date();
+			d.setTime(largestSaveTime);
+			dlg.setFileName(new SimpleDateFormat("yyyy_MM_dd_HH:mm:ss")
+					.format(d));
+		}
+
 		String saveLocation = dlg.open();
 		if (saveLocation == null) {
 			return null;
 		}
-		if (new File(ConfigSettings.getInstance().getLastSaveLocation())
-				.exists()
+		if (new File(saveLocation).exists()
 				&& !MessageDialog
 						.openConfirm(
 								viewComposite.getActiveShell(),
@@ -43,11 +58,8 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 		boolean[] tablesCheck = new boolean[ConfigSettings.PLATENUM];
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			if (i < ConfigSettings.getInstance().getPlatemode()) tablesCheck[i] = true;
-
 		}
-
 		plateSet.saveTables(saveLocation, tablesCheck, false);
 		return null;
 	}
-
 }

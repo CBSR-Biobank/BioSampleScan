@@ -5,9 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import edu.ualberta.med.scanlib.ScanCell;
@@ -19,6 +17,7 @@ public class PlateSet {
 		plates = new HashMap<Integer, Plate>();
 	}
 
+	/*Integer id is the plate number*/
 	public void initPlate(Integer id, int w, int h) {
 		Plate dummyPlate = new Plate(w, h);
 		plates.put(id, dummyPlate);
@@ -76,6 +75,25 @@ public class PlateSet {
 		}
 	}
 
+	public boolean setPlateTimestampNOW(Integer id) {
+		if (plates.containsKey(id)) {
+			plates.get(id).setPlateTimestampNOW();
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public long getPlateTimestamp(Integer id) {
+		if (plates.containsKey(id)) {
+			return plates.get(id).getPlateTimestamp();
+		}
+		else {
+			return 0;
+		}
+	}
+
 	private String nulltoblankString(String in) {
 		if (in == null || in.isEmpty()) {
 			return "";
@@ -112,12 +130,6 @@ public class PlateSet {
 		}
 		this.setPlate(table, data);
 		return 0;
-	}
-
-	private String getDateTime() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		return dateFormat.format(date);
 	}
 
 	public void saveTables(String fileLocation, boolean[] tables,
@@ -176,11 +188,16 @@ public class PlateSet {
 																	.get(
 																			plateids[pi])
 																	.getPlateIdText(),
-															//TODO platenumber depends on position in string[] 
 															Character
 																	.toString((char) (65 + r)),
-															c, barcode,
-															getDateTime()));
+															c,
+															barcode,
+															new SimpleDateFormat(
+																	"E dd/MM/yyyy HH:mm:ss")
+																	.format(plates
+																			.get(
+																					plateids[pi])
+																			.getPlateTimestamp())));
 								}
 								catch (IOException e) {
 									e.printStackTrace();

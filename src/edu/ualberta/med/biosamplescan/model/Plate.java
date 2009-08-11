@@ -1,25 +1,21 @@
 package edu.ualberta.med.biosamplescan.model;
 
 import java.awt.Dimension;
+import java.util.Date;
 
 public class Plate {
-	private int Width;
-	private int Height;
+	private final int width;
+	private final int height;
 	private String[][] BarcodeTable;
 	private String plateIdText;
+	private long timestamp;
 
-	public Plate() {
-		this.init(-1, -1);
-	}
+	//TODO place all properties into a hash map
 
 	public Plate(int widthTestTubes, int heightTestTubes) {
-		this.init(heightTestTubes, heightTestTubes);
-	}
-
-	public void init(int widthTestTubes, int heightTestTubes) {
-		Width = widthTestTubes;
-		Height = heightTestTubes;
-		BarcodeTable = new String[Width][Height];
+		this.width = widthTestTubes;
+		this.height = heightTestTubes;
+		BarcodeTable = new String[this.width][this.height];
 	}
 
 	public String[][] getBarcode() {
@@ -39,7 +35,17 @@ public class Plate {
 	}
 
 	public Dimension getDim() {
-		return new Dimension(this.Width, this.Height);
+		return new Dimension(this.width, this.height);
+	}
+
+	public void setPlateTimestampNOW() {
+		this.timestamp = (new Date()).getTime();
+
+	}
+
+	public long getPlateTimestamp() {
+		return this.timestamp;
+
 	}
 
 }

@@ -13,12 +13,11 @@ public class SelectSource extends AbstractHandler implements IHandler {
 		int scanlibReturn = ScanLibFactory.getScanLib()
 				.slSelectSourceAsDefault();
 		switch (scanlibReturn) {
-		case (ScanLib.SC_SUCCESS):
-			break;
-		case (ScanLib.SC_INVALID_VALUE): // user canceled dialog box
-			break;
+			case (ScanLib.SC_SUCCESS):
+				break;
+			case (ScanLib.SC_INVALID_VALUE): // user canceled dialog box
+				break;
 		}
 		return null;
 	}
-
 }

@@ -1,6 +1,8 @@
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -30,11 +32,16 @@ public class SaveBarcodesFromTableX {
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
 		dlg.setFilterExtensions(new String[] { "*.csv", "*.*" });
 		dlg.setText(String.format("Save Barcodes For Plate %d", platenum));
+		if (plateSet.getPlateTimestamp(platenum) != 0) {
+			Date d = new Date();
+			d.setTime(plateSet.getPlateTimestamp(platenum));
+			dlg.setFileName(new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss")
+					.format(d));
+		}
 		String saveLocation = dlg.open();
 
 		if (saveLocation != null) {
-			if (new File(ConfigSettings.getInstance().getLastSaveLocation())
-					.exists()
+			if (new File(saveLocation).exists()
 					&& !MessageDialog
 							.openConfirm(
 									viewComposite.getActiveShell(),

@@ -1,6 +1,8 @@
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -44,10 +46,24 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
 		dlg.setText(String.format(
 				"Save Barcodes for the Selected Plates, Append:%s",
 				ConfigSettings.getInstance().getAppendSetting()));
+
+		long largestSaveTime = 0;
+		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
+			if (plateSet.getPlateTimestamp(i + 1) > largestSaveTime
+					&& viewComposite.getPlateBtnSelection(i)) {
+				largestSaveTime = plateSet.getPlateTimestamp(i + 1);
+			}
+		}
+		if (largestSaveTime != 0) {
+			Date d = new Date();
+			d.setTime(largestSaveTime);
+			dlg.setFileName(new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss")
+					.format(d));
+		}
+
 		String saveLocation = dlg.open();
 		if (saveLocation != null) {
-			if (new File(ConfigSettings.getInstance().getLastSaveLocation())
-					.exists()
+			if (new File(saveLocation).exists()
 					&& !MessageDialog
 							.openConfirm(
 									viewComposite.getActiveShell(),
