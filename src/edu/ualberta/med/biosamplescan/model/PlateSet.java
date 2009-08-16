@@ -11,15 +11,15 @@ import java.util.HashMap;
 import edu.ualberta.med.scanlib.ScanCell;
 
 public class PlateSet {
-	private HashMap<Integer, Plate> plates;
+	private HashMap<Integer, Pallet> plates;
 
 	public PlateSet() {
-		plates = new HashMap<Integer, Plate>();
+		plates = new HashMap<Integer, Pallet>();
 	}
 
 	/*Integer id is the plate number*/
 	public void initPlate(Integer id, int w, int h) {
-		Plate dummyPlate = new Plate(w, h);
+		Pallet dummyPlate = new Pallet(w, h);
 		plates.put(id, dummyPlate);
 	}
 
