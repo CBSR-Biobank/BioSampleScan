@@ -13,11 +13,11 @@ import org.eclipse.ui.part.EditorPart;
 
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.model.PlateSet;
+import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class PlateSetEditor extends EditorPart {
 
-	private PlateSet plateSet;
+	private PalletSet plateSet;
 
 	private ViewComposite viewComposite;
 
@@ -61,7 +61,7 @@ public class PlateSetEditor extends EditorPart {
 	public void createPartControl(Composite parent) {
 		//TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
 
-		plateSet = new PlateSet();
+		plateSet = new PalletSet();
 		ConfigSettings.getInstance();
 		for (int i = 0; i < ConfigSettings.PLATENUM; i++) {
 			plateSet.initPlate(i + 1, 13, 8);
@@ -73,7 +73,7 @@ public class PlateSetEditor extends EditorPart {
 		return viewComposite;
 	}
 
-	public PlateSet getPlateSet() {
+	public PalletSet getPlateSet() {
 		return plateSet;
 	}
 

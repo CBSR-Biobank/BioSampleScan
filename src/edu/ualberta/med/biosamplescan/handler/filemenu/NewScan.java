@@ -10,7 +10,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.model.PlateSet;
+import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class NewScan extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -20,7 +20,7 @@ public class NewScan extends AbstractHandler implements IHandler {
 		if (MessageDialog.openConfirm(viewComposite.getActiveShell(),
 				"New Scan", "Do you want to clear all the tables?")) {
 			viewComposite.clearTables();
-			PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
+			PalletSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage().getActivePart())
 					.getPlateSet();
 			for (int p = 0; p < ConfigSettings.PLATENUM; p++) {

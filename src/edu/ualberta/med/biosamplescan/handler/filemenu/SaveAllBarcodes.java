@@ -16,14 +16,14 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.model.PlateSet;
+import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class SaveAllBarcodes extends AbstractHandler implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
 				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.getActivePart()).getViewComposite();
-		PlateSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
+		PalletSet plateSet = ((PlateSetEditor) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().getActivePart())
 				.getPlateSet();
 		FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
