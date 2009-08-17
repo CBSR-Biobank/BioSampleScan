@@ -20,11 +20,11 @@ public class SaveImagePlateX {
 				.getActivePart()).getViewComposite();
 		ConfigSettings configSettings = ConfigSettings.getInstance();
 
-		if (configSettings.getPlatemode() < platenum) {
+		if (configSettings.getPalletMode() < platenum) {
 			return null;
 		} //TODO actually disable menu items
 
-		if (!configSettings.plateIsSet(platenum)) { //TODO apply this code to all applicable routines
+		if (!configSettings.palletIsSet(platenum)) { //TODO apply this code to all applicable routines
 			MessageDialog.openError(viewComposite.getActiveShell(), "Error",
 					String.format("plate %d:\n%s", platenum,
 							"Has no dimensions set"));

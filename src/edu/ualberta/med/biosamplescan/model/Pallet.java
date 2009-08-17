@@ -57,4 +57,12 @@ public class Pallet {
         return timestamp;
     }
 
+    public void clear() {
+        for (String [] row : barcodeTable) {
+            for (String cell : row) {
+                cell = "";
+            }
+        }
+    }
+
 }

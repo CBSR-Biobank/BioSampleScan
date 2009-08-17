@@ -19,6 +19,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -32,6 +33,8 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     // The shared instance
     private static BioSampleScanPlugin plugin;
 
+    private PalletSet palletSet;
+
     public BioSampleScanPlugin() {
         String osname = System.getProperty("os.name");
         if (osname.startsWith("Windows")) {
@@ -43,6 +46,13 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        palletSet = new PalletSet();
+        ConfigSettings.getInstance();
+        for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+            palletSet.initPallet(i + 1, 13, 8);
+        }
+
         parseCommandLine();
     }
 
@@ -148,4 +158,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         });
     }
 
+    public PalletSet getPalletSet() {
+        return palletSet;
+    }
 }
