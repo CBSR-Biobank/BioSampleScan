@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import edu.ualberta.med.biosamplescan.model.Pallet;
+import edu.ualberta.med.scanlib.ScanCell;
 
 public class PalletTableWidget extends Composite {
 
@@ -33,7 +34,7 @@ public class PalletTableWidget extends Composite {
     // private static final int [] bounds = {
     // 10, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
 
-    private List<PalletTableModel> model;
+    private List<PalletModel> model;
 
     private TableViewer tableViewer;
 
@@ -87,9 +88,9 @@ public class PalletTableWidget extends Composite {
         tableViewer.setColumnProperties(headings);
         tableViewer.setUseHashlookup(true);
 
-        model = new ArrayList<PalletTableModel>();
+        model = new ArrayList<PalletModel>();
         for (int i = 0; i < 8; ++i) {
-            model.add(new PalletTableModel(String.valueOf((char) ('A' + i))));
+            model.add(new PalletModel(String.valueOf((char) ('A' + i))));
         }
         tableViewer.setInput(model);
 
@@ -169,14 +170,11 @@ public class PalletTableWidget extends Composite {
             public void run() {
                 if (getTableViewer().getTable().isDisposed()) return;
 
-                PalletTableModel modelItem;
-                String [][] barcodes = pallet.getBarcode();
-                int rowCount = 0;
+                PalletModel modelItem;
 
-                for (String [] row : barcodes) {
-                    modelItem = model.get(rowCount);
-                    modelItem.o = row;
-                    ++rowCount;
+                for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
+                    modelItem = model.get(r);
+                    modelItem.o = pallet.getBarcodesRow(r);
                 }
 
                 getTableViewer().getTable().getDisplay().asyncExec(

@@ -50,7 +50,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         palletSet = new PalletSet();
         ConfigSettings.getInstance();
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-            palletSet.initPallet(i + 1, 13, 8);
+            palletSet.initPallet(i + 1);
         }
 
         parseCommandLine();

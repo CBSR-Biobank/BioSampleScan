@@ -1,11 +1,11 @@
 
 package edu.ualberta.med.biosamplescan.widgets;
 
-public class PalletTableModel {
+public class PalletModel {
     public String rowLabel;
     public Object o;
 
-    public PalletTableModel(String rowLabel) {
+    public PalletModel(String rowLabel) {
         this.rowLabel = rowLabel;
     }
 }

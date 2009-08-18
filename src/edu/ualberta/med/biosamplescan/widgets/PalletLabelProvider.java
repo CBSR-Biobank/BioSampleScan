@@ -15,8 +15,8 @@ public class PalletLabelProvider extends LabelProvider implements
 
     @Override
     public String getColumnText(Object element, int columnIndex) {
-        if (element instanceof PalletTableModel) {
-            PalletTableModel item = (PalletTableModel) element;
+        if (element instanceof PalletModel) {
+            PalletModel item = (PalletModel) element;
             if (columnIndex == 0)
                 return item.rowLabel;
 

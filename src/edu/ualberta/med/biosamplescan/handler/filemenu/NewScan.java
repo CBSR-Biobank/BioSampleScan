@@ -20,10 +20,10 @@ public class NewScan extends AbstractHandler implements IHandler {
         if (MessageDialog.openConfirm(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             "New Scan", "Do you want to clear all the tables?")) {
-            viewComposite.clearTables();
+            viewComposite.clearPallets();
             PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
             for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
-                plateSet.initPallet(p + 1, 13, 8);
+                plateSet.initPallet(p + 1);
             }
         }
 

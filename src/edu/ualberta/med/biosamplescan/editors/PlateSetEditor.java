@@ -43,19 +43,16 @@ public class PlateSetEditor extends EditorPart {
 
     @Override
     public boolean isDirty() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isSaveAsAllowed() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void createPartControl(Composite parent) {
-        // TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
         allPalletsWidget = new AllPalletsWidget(parent, SWT.BORDER);
     }
 
@@ -66,6 +63,10 @@ public class PlateSetEditor extends EditorPart {
     @Override
     public void setFocus() {
         allPalletsWidget.setFocus();
+    }
+
+    public void refreshPallet(int pallet) {
+        allPalletsWidget.refreshPallet(pallet);
     }
 
 }
