@@ -12,11 +12,11 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import edu.ualberta.med.biosamplescan.gui.ViewComposite;
+import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class PlateSetEditor extends EditorPart {
 
-    private ViewComposite viewComposite;
+    private AllPalletsWidget viewComposite;
 
     public static final String ID = "edu.ualberta.med.biosamplescan.editors.plateset";
 
@@ -56,10 +56,10 @@ public class PlateSetEditor extends EditorPart {
     @Override
     public void createPartControl(Composite parent) {
         // TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
-        viewComposite = new ViewComposite(parent, SWT.BORDER);
+        viewComposite = new AllPalletsWidget(parent, SWT.BORDER);
     }
 
-    public ViewComposite getViewComposite() {
+    public AllPalletsWidget getViewComposite() {
         return viewComposite;
     }
 

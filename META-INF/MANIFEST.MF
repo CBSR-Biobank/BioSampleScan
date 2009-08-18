@@ -15,5 +15,4 @@ Bundle-ClassPath: .,
  lib/scanlib.jar,
  lib/jopt-simple-3.1.jar
 Export-Package: edu.ualberta.med.biosamplescan,
- edu.ualberta.med.biosamplescan.gui,
  edu.ualberta.med.biosamplescan.rcp

@@ -1,4 +1,4 @@
-package edu.ualberta.med.biosamplescan.gui;
+package edu.ualberta.med.biosamplescan;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;

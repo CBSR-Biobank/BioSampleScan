@@ -14,9 +14,9 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
-import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
+import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class SaveBarcodesFromTableX {
     public static final Object execute(ExecutionEvent event, int platenum)
@@ -25,7 +25,7 @@ public class SaveBarcodesFromTableX {
             return null;
         }// TODO actually disable menu items
 
-        ViewComposite viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
         PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
         FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
         dlg.setFilterExtensions(new String [] { "*.csv", "*.*" });

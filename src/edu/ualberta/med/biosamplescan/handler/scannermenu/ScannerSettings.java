@@ -10,7 +10,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.dialogs.CalibrateDialog;
-import edu.ualberta.med.biosamplescan.gui.ConfigDialog;
+import edu.ualberta.med.biosamplescan.dialogs.ConfigDialog;
 
 public class ScannerSettings extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {

@@ -1,5 +1,5 @@
 
-package edu.ualberta.med.biosamplescan.gui;
+package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -14,17 +14,16 @@ import org.eclipse.swt.widgets.Composite;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.biosamplescan.widgets.PalletWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
-public class ViewComposite extends ScrolledComposite {
+public class AllPalletsWidget extends ScrolledComposite {
 
     private Button reScanPlateBtn;
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletWidget [] palletWidgets;
 
-    public ViewComposite(Composite parent, int style) {
+    public AllPalletsWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         initGUI();
     }

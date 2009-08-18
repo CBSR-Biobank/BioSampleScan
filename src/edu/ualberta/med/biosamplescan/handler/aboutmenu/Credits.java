@@ -8,14 +8,14 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
+import edu.ualberta.med.biosamplescan.SimpleSynth;
+import edu.ualberta.med.biosamplescan.dialogs.CreditsDialog;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
-import edu.ualberta.med.biosamplescan.gui.CreditsDialog;
-import edu.ualberta.med.biosamplescan.gui.SimpleSynth;
-import edu.ualberta.med.biosamplescan.gui.ViewComposite;
+import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class Credits extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ViewComposite viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
         CreditsDialog cd = new CreditsDialog(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             SWT.NONE);

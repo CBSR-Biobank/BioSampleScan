@@ -1,5 +1,5 @@
 
-package edu.ualberta.med.biosamplescan.gui;
+package edu.ualberta.med.biosamplescan.dialogs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class ConfigDialog extends Dialog {
@@ -280,7 +281,7 @@ public class ConfigDialog extends Dialog {
         return contents;
     }
 
-    private ViewComposite getActiveViewComposite() {
+    private AllPalletsWidget getActiveViewComposite() {
         return ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
     }
 
@@ -434,7 +435,7 @@ public class ConfigDialog extends Dialog {
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
-        ViewComposite viewComposite = this.getActiveViewComposite();
+        AllPalletsWidget viewComposite = this.getActiveViewComposite();
 
         /* =================Set Plate Mode================ */
         int plateMode = this.getActivePlateMode();
