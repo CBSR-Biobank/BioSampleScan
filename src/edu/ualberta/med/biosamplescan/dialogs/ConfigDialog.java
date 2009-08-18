@@ -29,6 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
 import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
@@ -341,8 +342,12 @@ public class ConfigDialog extends Dialog {
         textContrast.setText(String.valueOf(configSettings.getContrast()));
 
         for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
-            for (int side = 0; side < 4; side++) {
-                platesText[plate][side].setText(String.valueOf(configSettings.getPallet(plate + 1)[side]));
+            PalletScanCoordinates coords = configSettings.getPallet(plate + 1);
+            if (coords != null) {
+                platesText[plate][0].setText(String.valueOf(coords.left));
+                platesText[plate][1].setText(String.valueOf(coords.top));
+                platesText[plate][2].setText(String.valueOf(coords.right));
+                platesText[plate][3].setText(String.valueOf(coords.bottom));
             }
         }
         return 0;
@@ -568,10 +573,10 @@ public class ConfigDialog extends Dialog {
             if (setPlateReturn == ConfigSettings.SUCCESS
                 || setPlateReturn == ConfigSettings.CLEARDATA) {
                 int scanlibReturn = ScanLib.getInstance().slConfigPlateFrame(
-                    plate + 1, configSettings.getPallet(plate + 1)[0],
-                    configSettings.getPallet(plate + 1)[1],
-                    configSettings.getPallet(plate + 1)[2],
-                    configSettings.getPallet(plate + 1)[3]);
+                    plate + 1, configSettings.getPallet(plate + 1).left,
+                    configSettings.getPallet(plate + 1).top,
+                    configSettings.getPallet(plate + 1).right,
+                    configSettings.getPallet(plate + 1).bottom);
                 switch (scanlibReturn) {
                     case (ScanLib.SC_SUCCESS):
                         if (setPlateReturn == ConfigSettings.SUCCESS) {

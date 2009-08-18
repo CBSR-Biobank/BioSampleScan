@@ -4,6 +4,8 @@ package edu.ualberta.med.biosamplescan.model;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.core.runtime.Assert;
+import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
@@ -21,7 +23,7 @@ public class ConfigSettings {
     private int brightness = 0;
     private int contrast = 0;
     private int dpi = ScanLib.DPI_300;
-    private double pallets[][] = new double [PALLET_NUM] [4];
+    private PalletScanCoordinates [] palletScanCoordinates;
     private int palletMode = PALLET_NUM;
     private String driverType = "TWAIN";
     private String appendSetting = "FALSE";
@@ -36,8 +38,9 @@ public class ConfigSettings {
     private static ConfigSettings instance = null;
 
     private ConfigSettings() {
-        this.loadFromFile();
         saveFileName = null;
+        palletScanCoordinates = new PalletScanCoordinates [PALLET_NUM];
+        loadFromFile();
     }
 
     public static ConfigSettings getInstance() {
@@ -135,38 +138,36 @@ public class ConfigSettings {
 
     public boolean palletIsSet(int pallet) {
         for (int i = 0; i < 4; i++)
-            if (this.pallets[pallet - 1][i] != 0) return true;
+            if (this.palletScanCoordinates[pallet - 1] != null) return true;
         return false;
     }
 
     public int setPallet(int pallet, double left, double top, double right,
         double bottom) {
-        if (pallet - 1 >= PALLET_NUM) {
+        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+            "invalid pallet number: " + pallet);
+        if ((left < 0) || (right < 0) || (top < 0) || (bottom < 0)) {
             return INVALID_INPUT;
         }
-        if (left < 0 || right < 0 || top < 0 || bottom < 0) {
-            return INVALID_INPUT;
-        }
+
         if (this.getDriverType().equals("TWAIN")) {
-            if (left > right || top > bottom) {
+            if ((left > right) || (top > bottom)) {
                 return INVALID_INPUT;
             }
         }
-        else { // WIA
-        }
 
-        if (left == this.pallets[pallet - 1][0]
-            && top == this.pallets[pallet - 1][1]
-            && right == this.pallets[pallet - 1][2]
-            && bottom == this.pallets[pallet - 1][3]) {
+        --pallet;
+
+        if ((palletScanCoordinates[pallet] != null)
+            && (left == palletScanCoordinates[pallet].left)
+            && (top == palletScanCoordinates[pallet].top)
+            && (right == palletScanCoordinates[pallet].right)
+            && (bottom == palletScanCoordinates[pallet].bottom)) {
             return NOCHANGE;
         }
 
-        this.pallets[pallet - 1] = new double [4];
-        this.pallets[pallet - 1][0] = left;
-        this.pallets[pallet - 1][1] = top;
-        this.pallets[pallet - 1][2] = right;
-        this.pallets[pallet - 1][3] = bottom;
+        palletScanCoordinates[pallet] = new PalletScanCoordinates(pallet + 1,
+            left, top, right, bottom);
 
         if (left == top && top == right && right == bottom && bottom == 0) {
             return CLEARDATA;
@@ -174,18 +175,10 @@ public class ConfigSettings {
         return SUCCESS;
     }
 
-    public double [] getPallet(int pallet) {
-        if (pallet - 1 < PALLET_NUM) {
-            return this.pallets[pallet - 1];
-        }
-        return null;
-    }
-
-    private String sfix(String in) {
-        if (in == null || in.isEmpty()) {
-            return "0";
-        }
-        return in;
+    public PalletScanCoordinates getPallet(int pallet) {
+        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+            "invalid pallet number: " + pallet);
+        return palletScanCoordinates[pallet - 1];
     }
 
     public int loadFromFile() {
@@ -205,25 +198,51 @@ public class ConfigSettings {
             e.printStackTrace();
             return FILE_ERROR;
         }
-        this.setBrightness(sfix(ini.get("scanner", "brightness")));
-        this.setContrast(sfix(ini.get("scanner", "contrast")));
 
-        for (int pallet = 0; pallet < ConfigSettings.PALLET_NUM; pallet++) {
-            // TODO check for errors
-            this.setPallet(pallet + 1, Double.valueOf(sfix(ini.get(
-                String.format("plate-%d", pallet + 1), "left"))),
-                Double.valueOf(sfix(ini.get(String.format("plate-%d",
-                    pallet + 1), "top"))), Double.valueOf(sfix(ini.get(
-                    String.format("plate-%d", pallet + 1), "right"))),
-                Double.valueOf(sfix(ini.get(String.format("plate-%d",
-                    pallet + 1), "bottom"))));
-            /* curse eclipse auto-formatting */
+        Ini.Section section = ini.get("scanner");
+        if (section != null) {
+            String brightness = section.get("brightness");
+            String contrast = section.get("contrast");
+
+            if (brightness != null) setBrightness(brightness);
+            if (contrast != null) setContrast(contrast);
         }
-        this.setDpi(ini.get("settings", "dpi"));
-        this.setPalletCount(ini.get("settings", "platemode"));
-        this.setLastSaveLocation(ini.get("settings", "lastsavelocation"));
-        this.setDriverType(ini.get("settings", "drivertype"));
-        this.setAppendSetting(ini.get("settings", "appendsetting"));
+
+        for (int pallet = 1; pallet <= ConfigSettings.PALLET_NUM; pallet++) {
+            section = ini.get("plate-" + pallet);
+            if (section == null) continue;
+
+            Double left = section.get("left", Double.class);
+            Double top = section.get("top", Double.class);
+            Double right = section.get("right", Double.class);
+            Double bottom = section.get("bottom", Double.class);
+
+            if ((left != null) && (top != null) && (right != null)
+                && (bottom != null)) {
+
+                setPallet(pallet, left.doubleValue(), top.doubleValue(),
+                    right.doubleValue(), bottom.doubleValue());
+            }
+        }
+
+        section = ini.get("settings");
+        if (section != null) {
+            String dpi = section.get("dpi");
+            if (dpi != null) setDpi(dpi);
+
+            String palletcount = section.get("palletcount");
+            if (palletcount != null) setPalletCount(palletcount);
+
+            String lastsavelocation = section.get("lastsavelocation");
+            if (lastsavelocation != null) setLastSaveLocation(lastsavelocation);
+
+            String appendsetting = section.get("appendsetting");
+            if (appendsetting != null) setDriverType(appendsetting);
+
+            String drivertype = section.get("drivertype");
+            if (drivertype != null) setAppendSetting(drivertype);
+        }
+
         return SUCCESS;
     }
 
@@ -234,7 +253,7 @@ public class ConfigSettings {
             return INVALID_INPUT;
         }
         else {
-            this.palletMode = Integer.parseInt(platemode);
+            palletMode = Integer.parseInt(platemode);
             return saveToIni("settings", "platemode", platemode);
         }
     }

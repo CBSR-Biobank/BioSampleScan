@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class AllPalletsWidget extends ScrolledComposite {
@@ -136,10 +137,10 @@ public class AllPalletsWidget extends ScrolledComposite {
         for (int pallet = 0; pallet < ConfigSettings.PALLET_NUM; pallet++) {
             ConfigSettings configSettings = ConfigSettings.getInstance();
 
-            if ((configSettings.getPallet(pallet + 1)[0]
-                + configSettings.getPallet(pallet + 1)[1]
-                + configSettings.getPallet(pallet + 1)[2]
-                + configSettings.getPallet(pallet + 1)[3] > 0)
+            PalletScanCoordinates coords = configSettings.getPallet(pallet + 1);
+
+            if ((coords != null)
+                && (coords.left + coords.top + coords.right + coords.bottom > 0)
                 && palletWidgets[pallet].isSelected()) {
                 palletsToDecode.add(pallet + 1);
             }
