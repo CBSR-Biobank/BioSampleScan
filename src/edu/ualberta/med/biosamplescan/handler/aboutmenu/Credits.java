@@ -10,12 +10,9 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.SimpleSynth;
 import edu.ualberta.med.biosamplescan.dialogs.CreditsDialog;
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
-import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class Credits extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
         CreditsDialog cd = new CreditsDialog(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             SWT.NONE);

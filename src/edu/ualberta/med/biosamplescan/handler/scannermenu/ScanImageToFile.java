@@ -17,7 +17,7 @@ import edu.ualberta.med.scanlib.ScanLib;
 
 public class ScanImageToFile extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);

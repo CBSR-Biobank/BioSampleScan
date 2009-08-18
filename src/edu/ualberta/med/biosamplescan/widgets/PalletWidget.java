@@ -21,15 +21,13 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class PalletWidget extends Composite {
 
-    private Button plateBtn;
-
     private Button clearBtn;
 
     private Text plateIdText;
 
     private PalletTableWidget tableWidget;
 
-    public PalletWidget(Composite parent, int style, int plateNum) {
+    public PalletWidget(Composite parent, int style, int palletNum) {
         super(parent, style);
 
         setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -38,20 +36,11 @@ public class PalletWidget extends Composite {
         Composite subSection = new Composite(this, SWT.NONE);
         subSection.setLayout(new GridLayout(4, false));
 
-        plateBtn = new Button(subSection, SWT.CHECK);
-        plateBtn.setText(String.format("Plate %d", plateNum + 1));
-        // plateBtn.setBounds(5 + 63 * table, 5, 63, 18);
-        plateBtn.setSelection(true);
-
         Label l = new Label(subSection, SWT.NONE);
-        l.setText("Plate Id:");
-        // l.setBounds(8, 32, 40, 18);
+        l.setText("Pallet " + (palletNum + 1) + " bar code:");
 
         plateIdText = new Text(subSection, SWT.BORDER);
         plateIdText.setTextLimit(15);
-        // plateIdText.setBounds(5 + 100 * table + 50, 30,
-        // 90,
-        // 18);
 
         clearBtn = new Button(subSection, SWT.NONE);
         clearBtn.setText("Clear");
@@ -113,7 +102,7 @@ public class PalletWidget extends Composite {
     }
 
     public boolean isSelected() {
-        return plateBtn.getSelection();
+        return (plateIdText.getText().length() > 0);
     }
 
     public String getPalletId() {
@@ -128,16 +117,14 @@ public class PalletWidget extends Composite {
     public void setEnabled(boolean enabled) {
         tableWidget.getTableViewer().getTable().setEnabled(enabled);
         tableWidget.getTableViewer().getTable().setVisible(enabled);
-        plateBtn.setEnabled(enabled);
         plateIdText.setEnabled(enabled);
-        plateBtn.setSelection(enabled);
 
         if (!enabled) {
             clearPlateTable();
         }
     }
 
-    public void refreshPalleteTable() {
+    public void refreshPalletTable() {
         tableWidget.refresh();
     }
 

@@ -25,7 +25,7 @@ public class SaveBarcodesFromTableX {
             return null;
         }// TODO actually disable menu items
 
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
         FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
         dlg.setFilterExtensions(new String [] { "*.csv", "*.*" });

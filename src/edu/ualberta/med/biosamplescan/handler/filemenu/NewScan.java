@@ -16,7 +16,7 @@ import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class NewScan extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         if (MessageDialog.openConfirm(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             "New Scan", "Do you want to clear all the tables?")) {

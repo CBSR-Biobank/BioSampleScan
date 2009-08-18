@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 
 import edu.ualberta.med.biosamplescan.model.Pallet;
 
@@ -105,7 +104,7 @@ public class PalletTableWidget extends Composite {
                 }
 
                 Table table = (Table) event.widget;
-                TableItem item = (TableItem) event.item;
+                // TableItem item = (TableItem) event.item;
                 int clientWidth = table.getClientArea().width;
 
                 GC gc = event.gc;

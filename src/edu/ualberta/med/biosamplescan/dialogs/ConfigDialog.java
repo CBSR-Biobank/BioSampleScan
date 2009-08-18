@@ -281,10 +281,6 @@ public class ConfigDialog extends Dialog {
         return contents;
     }
 
-    private AllPalletsWidget getActiveViewComposite() {
-        return ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
-    }
-
     private void readPlatesTextToArray(double plateArray[][]) {
         for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
             for (int side = 0; side < 4; side++) {
@@ -435,7 +431,7 @@ public class ConfigDialog extends Dialog {
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
-        AllPalletsWidget viewComposite = this.getActiveViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
 
         /* =================Set Plate Mode================ */
         int plateMode = this.getActivePlateMode();

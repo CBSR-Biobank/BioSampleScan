@@ -22,7 +22,7 @@ import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class SaveAllBarcodes extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
         FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
         dlg.setFilterExtensions(new String [] { "*.csv", "*.*" });

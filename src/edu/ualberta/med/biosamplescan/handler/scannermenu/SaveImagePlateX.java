@@ -16,7 +16,7 @@ import edu.ualberta.med.scanlib.ScanLib;
 public class SaveImagePlateX {
     public static final Object execute(ExecutionEvent event, int platenum)
         throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (configSettings.getPalletMode() < platenum) {
@@ -24,7 +24,7 @@ public class SaveImagePlateX {
         } // TODO actually disable menu items
 
         if (!configSettings.palletIsSet(platenum)) { // TODO apply this code to
-                                                     // all applicable routines
+            // all applicable routines
             MessageDialog.openError(
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 "Error", String.format("plate %d:\n%s", platenum,

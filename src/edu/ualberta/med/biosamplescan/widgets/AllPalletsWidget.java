@@ -1,6 +1,9 @@
 
 package edu.ualberta.med.biosamplescan.widgets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -12,9 +15,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
+import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.scanlib.ScanLib;
 
 public class AllPalletsWidget extends ScrolledComposite {
 
@@ -128,22 +131,11 @@ public class AllPalletsWidget extends ScrolledComposite {
             }
         }
         if (!pass) {
-            errorMsg("No Plates Selected", 0);
+            errorMsg("No Pallets Selected", 0);
             return;
         }
 
-        for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-            if (palletWidgets[i].isSelected()) {
-                String plateId = palletWidgets[i].getPalletId();
-                if (plateId == null || plateId.isEmpty()) {
-                    errorMsg("Pallet " + (i + 1) + " must have a label", 0);
-                    return;
-                } // TODO check and add plateid for all save routines
-            }
-        }
-
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-
+        List<Integer> palletsToDecode = new ArrayList<Integer>();
         for (int pallet = 0; pallet < ConfigSettings.PALLET_NUM; pallet++) {
             ConfigSettings configSettings = ConfigSettings.getInstance();
 
@@ -152,22 +144,16 @@ public class AllPalletsWidget extends ScrolledComposite {
                 + configSettings.getPallet(pallet + 1)[2]
                 + configSettings.getPallet(pallet + 1)[3] > 0)
                 && palletWidgets[pallet].isSelected()) {
-                int scanlibReturn = ScanLib.getInstance().slDecodePlate(
-                    configSettings.getDpi(), pallet + 1);
-                switch (scanlibReturn) {
-                    case (ScanLib.SC_SUCCESS):
-                        break;
-                    case (ScanLib.SC_INVALID_IMAGE):
-                        errorMsg("scanPlateBtnWidgetSelected, DecodePlate",
-                            scanlibReturn);
-                        return;
-                }
-                palletSet.loadFromScanlibFile(pallet + 1, rescan);
-                palletSet.setPalletTimestampNOW(pallet + 1);
-                palletWidgets[pallet].refreshPalleteTable();
+                palletsToDecode.add(pallet + 1);
             }
 
+            new DecodeDialog(palletsToDecode, rescan);
+
         }
+    }
+
+    public void refreshPallet(int pallet) {
+        palletWidgets[pallet].refreshPalletTable();
     }
 
     public void clearTables() {

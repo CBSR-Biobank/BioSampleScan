@@ -16,7 +16,7 @@ import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class PlateSetEditor extends EditorPart {
 
-    private AllPalletsWidget viewComposite;
+    private AllPalletsWidget allPalletsWidget;
 
     public static final String ID = "edu.ualberta.med.biosamplescan.editors.plateset";
 
@@ -56,16 +56,16 @@ public class PlateSetEditor extends EditorPart {
     @Override
     public void createPartControl(Composite parent) {
         // TODO MOVE ABOVE CODE TO TREE VIEWER VIEW WHEN READY
-        viewComposite = new AllPalletsWidget(parent, SWT.BORDER);
+        allPalletsWidget = new AllPalletsWidget(parent, SWT.BORDER);
     }
 
-    public AllPalletsWidget getViewComposite() {
-        return viewComposite;
+    public AllPalletsWidget getPalletsWidget() {
+        return allPalletsWidget;
     }
 
     @Override
     public void setFocus() {
-        viewComposite.setFocus();
+        allPalletsWidget.setFocus();
     }
 
 }
