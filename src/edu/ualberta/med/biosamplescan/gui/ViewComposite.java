@@ -46,19 +46,11 @@ public class ViewComposite extends ScrolledComposite {
         top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         createTopButtonsSection(top);
+        palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
 
-        Composite section;
-
-        // palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
-        //
-        // for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
-        // section = new Composite(top, SWT.NONE);
-        // section.setLayout(new GridLayout(1, false));
-        // section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        //
-        // palletWidgets[table] = new PalletWidget(section, SWT.NONE, table);
-        //
-        // }
+        for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
+            palletWidgets[table] = new PalletWidget(top, SWT.NONE, table);
+        }
 
         setPlateMode();
         top.layout();
