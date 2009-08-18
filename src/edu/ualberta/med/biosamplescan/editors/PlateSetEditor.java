@@ -12,6 +12,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 
 public class PlateSetEditor extends EditorPart {
@@ -37,8 +38,8 @@ public class PlateSetEditor extends EditorPart {
         throws PartInitException {
         setSite(site);
         setInput(input);
-        this.setPartName(new SimpleDateFormat("E dd/MM/yyyy HH:mm:ss").format(new Date()));
-
+        setPartName(new SimpleDateFormat("E dd/MM/yyyy HH:mm:ss").format(new Date()));
+        BioSampleScanPlugin.getDefault().setPlateSetEditor(this);
     }
 
     @Override
@@ -63,10 +64,6 @@ public class PlateSetEditor extends EditorPart {
     @Override
     public void setFocus() {
         allPalletsWidget.setFocus();
-    }
-
-    public void refreshPallet(int pallet) {
-        allPalletsWidget.refreshPallet(pallet);
     }
 
 }

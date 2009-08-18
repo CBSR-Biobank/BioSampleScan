@@ -5,62 +5,59 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.eclipse.core.runtime.Assert;
 
 public class PalletSet {
-    private HashMap<Integer, Pallet> pallets;
+    private Pallet [] pallets;
 
     public PalletSet() {
-        pallets = new HashMap<Integer, Pallet>();
-    }
-
-    /* Integer id is the plate number */
-    public void initPallet(Integer id) {
-        pallets.put(id, new Pallet());
+        pallets = new Pallet [ConfigSettings.PALLET_NUM];
+        for (int i = 0; i < pallets.length; ++i) {
+            pallets[i] = new Pallet();
+        }
     }
 
     public Pallet getPallet(Integer id) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        return pallet;
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        return pallets[id];
     }
 
     public void setPalletId(Integer id, String plateid) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        pallets.get(id).setPalleteBarcode(plateid);
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        pallets[id].setPalleteBarcode(plateid);
     }
 
     public String getPalletId(Integer id) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        return pallet.getPlateBarcode();
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        return pallets[id].getPlateBarcode();
     }
 
     public void setPalletTimestampNOW(Integer id) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        pallet.setPlateTimestampNOW();
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        pallets[id].setPlateTimestampNOW();
     }
 
     public long getPalletTimestamp(Integer id) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        return pallet.getPlateTimestamp();
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        return pallets[id].getPlateTimestamp();
     }
 
     public void clearPallet(Integer id) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        pallet.clear();
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        pallets[id].clear();
     }
 
     public void loadFromScanlibFile(int id, boolean append) {
-        Pallet pallet = pallets.get(id);
-        Assert.isNotNull(pallet);
-        pallet.loadFromScanlibFile(append);
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        pallets[id].loadFromScanlibFile(append);
     }
 
     public void saveTables(String fileLocation, boolean [] tables,
@@ -91,7 +88,7 @@ public class PalletSet {
                 out.write("#PlateId,Row,Col,Barcode,Date\r\n");
             }
             for (int pi = 0; pi < plateids.length; pi++) {
-                Pallet pallet = pallets.get(pi);
+                Pallet pallet = pallets[pi];
                 if (pallet == null) continue;
                 out.write(pallet.toString());
             }
@@ -102,10 +99,9 @@ public class PalletSet {
         }
     }
 
-    public void clearTable(int p) {
-        Assert.isTrue(p < pallets.size(), "invalid pallet number: " + p);
-        Pallet pallet = pallets.get(p);
-        Assert.isNotNull(pallet, "pallet not initialized: " + p);
-        pallet.clear();
+    public void clearTable(int id) {
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        pallets[id].clear();
     }
 }

@@ -21,7 +21,7 @@ import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
 public class SaveBarcodesFromTableX {
     public static final Object execute(ExecutionEvent event, int platenum)
         throws ExecutionException {
-        if (ConfigSettings.getInstance().getPalletMode() < platenum) {
+        if (ConfigSettings.getInstance().getPalletCount() < platenum) {
             return null;
         }// TODO actually disable menu items
 

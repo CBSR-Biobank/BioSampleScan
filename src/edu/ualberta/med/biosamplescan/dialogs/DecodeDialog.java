@@ -7,11 +7,9 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
@@ -33,29 +31,19 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             final int p = plate;
                             int scanlibReturn = ScanLib.getInstance().slDecodePlate(
                                 configSettings.getDpi(), p);
-                            switch (scanlibReturn) {
-                                case (ScanLib.SC_SUCCESS):
-                                    break;
-                                case (ScanLib.SC_INVALID_IMAGE):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Decoding Error",
-                                        "scanPlateBtnWidgetSelected, DecodePlate");
-                                    return;
+                            if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                                BioSampleScanPlugin.openAsyncError(
+                                    "Decoding Error", "scanlib returned: "
+                                        + scanlibReturn);
+                                return;
                             }
                             PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
 
-                            palletSet.loadFromScanlibFile(p, rescan);
-                            palletSet.setPalletTimestampNOW(p);
+                            palletSet.loadFromScanlibFile(p - 1, rescan);
+                            palletSet.setPalletTimestampNOW(p - 1);
 
-                            final AllPalletsWidget w = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
-                            w.updatePalletModel(p - 1,
-                                palletSet.getPallet(p - 1));
-
-                            Display.getDefault().asyncExec(new Runnable() {
-                                public void run() {
-                                    w.refreshPallet(p);
-                                }
-                            });
+                            final AllPalletsWidget w = BioSampleScanPlugin.getDefault().getPlateSetEditor().getPalletsWidget();
+                            w.updatePalletModel(p - 1);
                         }
                     }
                     catch (Exception e) {

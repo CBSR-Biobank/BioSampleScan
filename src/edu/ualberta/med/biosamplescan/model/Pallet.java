@@ -20,6 +20,7 @@ public class Pallet {
     }
 
     public ScanCell [] getBarcodesRow(int row) {
+        if (barcodes == null) return null;
         Assert.isTrue(((row >= 0) && (row < barcodes.length)), "invalid row: "
             + row);
         return barcodes[row];
@@ -42,6 +43,7 @@ public class Pallet {
     }
 
     public void clear() {
+        if (barcodes == null) return;
         for (int r = 0; r < barcodes.length; ++r) {
             for (int c = 0; c < barcodes[0].length; ++c) {
                 barcodes[r][c] = null;

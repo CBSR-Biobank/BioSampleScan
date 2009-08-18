@@ -220,14 +220,14 @@ public class ConfigSettings {
             /* curse eclipse auto-formatting */
         }
         this.setDpi(ini.get("settings", "dpi"));
-        this.setPalletMode(ini.get("settings", "platemode"));
+        this.setPalletCount(ini.get("settings", "platemode"));
         this.setLastSaveLocation(ini.get("settings", "lastsavelocation"));
         this.setDriverType(ini.get("settings", "drivertype"));
         this.setAppendSetting(ini.get("settings", "appendsetting"));
         return SUCCESS;
     }
 
-    public int setPalletMode(String platemode) { // TODO handle return values
+    public int setPalletCount(String platemode) { // TODO handle return values
         if (platemode == null || platemode.isEmpty()
             || Integer.parseInt(platemode) < 1
             || Integer.parseInt(platemode) > ConfigSettings.PALLET_NUM) {
@@ -239,7 +239,7 @@ public class ConfigSettings {
         }
     }
 
-    public int getPalletMode() {
+    public int getPalletCount() {
         return palletMode;
     }
 

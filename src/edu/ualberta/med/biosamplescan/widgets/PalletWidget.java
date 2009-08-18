@@ -66,7 +66,6 @@ public class PalletWidget extends Composite {
 
     public void clearPlateTable() {
         plateIdText.setText("");
-        tableWidget.refresh();
     }
 
     public void setEnabled(boolean enabled) {
@@ -77,10 +76,6 @@ public class PalletWidget extends Composite {
         if (!enabled) {
             clearPlateTable();
         }
-    }
-
-    public void refreshPalletTable() {
-        tableWidget.refresh();
     }
 
     public void setPalletBarcodes(Pallet pallet) {

@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Composite;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class AllPalletsWidget extends ScrolledComposite {
@@ -46,7 +45,7 @@ public class AllPalletsWidget extends ScrolledComposite {
             palletWidgets[table] = new PalletWidget(top, SWT.NONE, table);
         }
 
-        setPlateMode();
+        setPlateCount();
         top.layout();
         top.pack();
         setContent(top);
@@ -57,7 +56,7 @@ public class AllPalletsWidget extends ScrolledComposite {
 
     public boolean setFocus() {
         /* reload global ui states */
-        setPlateMode();
+        setPlateCount();
         return true;
     }
 
@@ -149,40 +148,29 @@ public class AllPalletsWidget extends ScrolledComposite {
         new DecodeDialog(palletsToDecode, rescan);
     }
 
-    public void updatePalletModel(int palletNum, Pallet pallet) {
+    public void updatePalletModel(int palletNum) {
         Assert.isTrue((palletNum >= 0)
             && (palletNum < ConfigSettings.PALLET_NUM),
             "invalid pallet number: " + palletNum);
-        palletWidgets[palletNum].setPalletBarcodes(pallet);
-    }
-
-    public void refreshPallet(int pallet) {
-        Assert.isTrue((pallet >= 0) && (pallet < ConfigSettings.PALLET_NUM),
-            "invalid pallet number: " + pallet);
-        palletWidgets[pallet].refreshPalletTable();
+        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        palletWidgets[palletNum].setPalletBarcodes(palletSet.getPallet(palletNum));
     }
 
     public void clearPallets() {
+        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
-            clearPallet(p);
+            palletSet.getPallet(p).clear();
+            updatePalletModel(p);
         }
     }
 
-    private void clearPallet(int table) {
-        palletWidgets[table].clearPlateTable();
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        palletSet.initPallet(table + 1);
-    }
-
-    public void setPlateMode() {
-        int platecount = ConfigSettings.getInstance().getPalletMode();
+    public void setPlateCount() {
+        clearPallets();
+        int platecount = ConfigSettings.getInstance().getPalletCount();
         boolean set = false;
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
             set = (table < platecount);
             palletWidgets[table].setEnabled(set);
-            if (!set) {
-                clearPallet(table);
-            }
         }
     }
 

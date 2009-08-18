@@ -187,8 +187,4 @@ public class PalletTableWidget extends Composite {
         };
         t.start();
     }
-
-    public void refresh() {
-        getTableViewer().refresh();
-    }
 }

@@ -108,8 +108,8 @@ public class ConfigDialog extends Dialog {
                         }
                     });
                 }
-                if (ConfigSettings.getInstance().getPalletMode() > 0) {
-                    ratioBtns[ConfigSettings.getInstance().getPalletMode() - 1].setSelection(true);
+                if (ConfigSettings.getInstance().getPalletCount() > 0) {
+                    ratioBtns[ConfigSettings.getInstance().getPalletCount() - 1].setSelection(true);
                 }
             }
         }
@@ -436,9 +436,9 @@ public class ConfigDialog extends Dialog {
         /* =================Set Plate Mode================ */
         int plateMode = this.getActivePlateMode();
         if (plateMode > 0 && plateMode <= ConfigSettings.PALLET_NUM) {
-            ConfigSettings.getInstance().setPalletMode(
+            ConfigSettings.getInstance().setPalletCount(
                 String.valueOf(plateMode));
-            viewComposite.setPlateMode();
+            viewComposite.setPlateCount();
         }
         /* =================Set Plate Mode================ */
 

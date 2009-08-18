@@ -1,9 +1,12 @@
+
 package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
+
+import edu.ualberta.med.scanlib.ScanCell;
 
 public class PalletLabelProvider extends LabelProvider implements
     ITableLabelProvider {
@@ -17,17 +20,18 @@ public class PalletLabelProvider extends LabelProvider implements
     public String getColumnText(Object element, int columnIndex) {
         if (element instanceof PalletModel) {
             PalletModel item = (PalletModel) element;
-            if (columnIndex == 0)
-                return item.rowLabel;
+            if (columnIndex == 0) return item.rowLabel;
 
-            if (item.o == null)
-                return "";
+            if (item.o == null) return "";
 
-            String[] rowBarcodes = (String[]) item.o;
+            Assert.isTrue((item.o instanceof ScanCell []), "invalid class: "
+                + item.o.getClass());
+
+            ScanCell [] rowBarcodes = (ScanCell []) item.o;
 
             Assert.isTrue(columnIndex <= rowBarcodes.length,
                 "Invalid size for row barcodes: " + rowBarcodes.length);
-            return rowBarcodes[columnIndex - 1];
+            return rowBarcodes[columnIndex - 1].getValue();
         }
         else {
             Assert.isTrue(false, "invalid object type: " + element.getClass());

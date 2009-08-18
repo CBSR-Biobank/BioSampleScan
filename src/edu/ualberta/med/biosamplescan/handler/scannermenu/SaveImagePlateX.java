@@ -19,7 +19,7 @@ public class SaveImagePlateX {
         AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
-        if (configSettings.getPalletMode() < platenum) {
+        if (configSettings.getPalletCount() < platenum) {
             return null;
         } // TODO actually disable menu items
 
