@@ -10,7 +10,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
@@ -30,10 +29,6 @@ public class ViewComposite extends ScrolledComposite {
         initGUI();
     }
 
-    public Shell getActiveShell() {
-        return this.getShell();
-    }
-
     public boolean setFocus() {
         /* reload global ui states */
         setPlateMode();
@@ -41,44 +36,37 @@ public class ViewComposite extends ScrolledComposite {
     }
 
     private void initGUI() {
-        try {
-            setExpandHorizontal(true);
-            setExpandVertical(true);
-            this.getVerticalBar().setIncrement(10);
-            this.getHorizontalBar().setIncrement(10);
+        setExpandHorizontal(true);
+        setExpandVertical(true);
+        this.getVerticalBar().setIncrement(10);
+        this.getHorizontalBar().setIncrement(10);
 
-            Composite top = new Composite(this, SWT.NONE);
-            top.setLayout(new GridLayout(1, false));
-            top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        Composite top = new Composite(this, SWT.NONE);
+        top.setLayout(new GridLayout(1, false));
+        top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            createTopButtonsSection(top);
+        createTopButtonsSection(top);
 
-            Composite section;
+        Composite section;
 
-            palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
+        // palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
+        //
+        // for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
+        // section = new Composite(top, SWT.NONE);
+        // section.setLayout(new GridLayout(1, false));
+        // section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        //
+        // palletWidgets[table] = new PalletWidget(section, SWT.NONE, table);
+        //
+        // }
 
-            for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
-                section = new Composite(top, SWT.NONE);
-                section.setLayout(new GridLayout(1, false));
-                section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        setPlateMode();
+        top.layout();
+        top.pack();
+        setContent(top);
 
-                palletWidgets[table] = new PalletWidget(section, SWT.NONE,
-                    table);
-
-            }
-
-            this.setPlateMode();
-            top.layout();
-            top.pack();
-            setContent(top);
-
-            setMinWidth(top.getBounds().width);
-            setMinHeight(top.getBounds().height);
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        setMinWidth(top.getBounds().width);
+        setMinHeight(top.getBounds().height);
     }
 
     private void createTopButtonsSection(Composite parent) {

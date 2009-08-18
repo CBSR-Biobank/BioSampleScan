@@ -55,13 +55,13 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 
         }
         if (ConfigSettings.getInstance().getLastSaveLocation() == null) {// TODO
-                                                                         // remove
-                                                                         // later
+            // remove
+            // later
             return null;
         }
         if (new File(ConfigSettings.getInstance().getLastSaveLocation()).exists()
             && !MessageDialog.openConfirm(
-                viewComposite.getActiveShell(),
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 "Save over existing file?",
                 "A file already exists at the selected location are you sure you want to save over it?")) {
             return null;

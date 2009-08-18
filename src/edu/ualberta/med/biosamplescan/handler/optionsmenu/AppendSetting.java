@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.handler.optionsmenu;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -12,31 +13,27 @@ import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 
 public class AppendSetting extends AbstractHandler implements IHandler {
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart()).getViewComposite();
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        ViewComposite viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
 
-		if (ConfigSettings.getInstance().getAppendSetting() == false) {
-			if (MessageDialog
-					.openConfirm(
-							viewComposite.getActiveShell(),
-							"Append to File",
-							"Do you want to ENABLE appending when you save through 'Save Selected Barcodes'?")) {
-				ConfigSettings.getInstance().setAppendSetting("TRUE");
-			}
-		}
-		else {
-			if (MessageDialog
-					.openConfirm(
-							viewComposite.getActiveShell(),
-							"Append to File",
-							"Do you want to DISABLE appending when you save through 'Save Selected Barcodes'?")) {
-				ConfigSettings.getInstance().setAppendSetting("FALSE");
-			}
-		}
+        if (ConfigSettings.getInstance().getAppendSetting() == false) {
+            if (MessageDialog.openConfirm(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Append to File",
+                "Do you want to ENABLE appending when you save through 'Save Selected Barcodes'?")) {
+                ConfigSettings.getInstance().setAppendSetting("TRUE");
+            }
+        }
+        else {
+            if (MessageDialog.openConfirm(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Append to File",
+                "Do you want to DISABLE appending when you save through 'Save Selected Barcodes'?")) {
+                ConfigSettings.getInstance().setAppendSetting("FALSE");
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

@@ -211,11 +211,11 @@ public class ConfigSettings {
         for (int pallet = 0; pallet < ConfigSettings.PALLET_NUM; pallet++) {
             // TODO check for errors
             this.setPallet(pallet + 1, Double.valueOf(sfix(ini.get(
-                String.format("pallet-%d", pallet + 1), "left"))),
-                Double.valueOf(sfix(ini.get(String.format("pallet-%d",
+                String.format("plate-%d", pallet + 1), "left"))),
+                Double.valueOf(sfix(ini.get(String.format("plate-%d",
                     pallet + 1), "top"))), Double.valueOf(sfix(ini.get(
-                    String.format("pallet-%d", pallet + 1), "right"))),
-                Double.valueOf(sfix(ini.get(String.format("pallet-%d",
+                    String.format("plate-%d", pallet + 1), "right"))),
+                Double.valueOf(sfix(ini.get(String.format("plate-%d",
                     pallet + 1), "bottom"))));
             /* curse eclipse auto-formatting */
         }

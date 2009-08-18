@@ -17,7 +17,8 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 public class NewScan extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         ViewComposite viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
-        if (MessageDialog.openConfirm(viewComposite.getActiveShell(),
+        if (MessageDialog.openConfirm(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             "New Scan", "Do you want to clear all the tables?")) {
             viewComposite.clearTables();
             PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();

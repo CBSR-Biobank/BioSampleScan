@@ -40,7 +40,7 @@ public class SaveBarcodesFromTableX {
         if (saveLocation != null) {
             if (new File(saveLocation).exists()
                 && !MessageDialog.openConfirm(
-                    viewComposite.getActiveShell(),
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                     "Save over existing file?",
                     "A file already exists at the selected location are you sure you want to save over it?")) {
                 return null;

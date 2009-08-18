@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -11,16 +12,15 @@ import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.gui.ViewComposite;
 
 public class Quit extends AbstractHandler implements IHandler {
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ViewComposite viewComposite = ((PlateSetEditor) PlatformUI
-				.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getActivePart()).getViewComposite();
-		if (MessageDialog.openConfirm(viewComposite.getActiveShell(), "Quit",
-				"Do you want to quit?")) {
-			System.exit(0);
-		}
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        ViewComposite viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getViewComposite();
+        if (MessageDialog.openConfirm(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            "Quit", "Do you want to quit?")) {
+            System.exit(0);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

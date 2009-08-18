@@ -33,8 +33,9 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
             }
         }
         if (!pass) {
-            MessageDialog.openError(viewComposite.getActiveShell(), "Error",
-                "No Plates Selected");
+            MessageDialog.openError(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Error", "No Plates Selected");
             return null;
         }
 
@@ -61,7 +62,7 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
         if (saveLocation != null) {
             if (new File(saveLocation).exists()
                 && !MessageDialog.openConfirm(
-                    viewComposite.getActiveShell(),
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                     "Save over existing file?",
                     "A file already exists at the selected location are you sure you want to save over it?")) {
                 return null;
