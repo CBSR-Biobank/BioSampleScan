@@ -26,6 +26,17 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="edu.ualberta.med.biosamplescan.rcp.perspective">
+         <view
+               closeable="false"
+               id="edu.ualberta.med.biosamplescan.views.plateset"
+               minimized="false"
+               moveable="false"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               showTitle="false"
+               standalone="true"
+               visible="true">
+         </view>
       </perspectiveExtension>
    </extension>
    <extension
@@ -41,16 +52,6 @@
                   label="New Scan"
                   style="push">
             </command>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.newtab"
-                  icon="icons/application_go.png"
-                  label="New Tab"
-                  style="push">
-            </command>
-             <separator
-                  name="BioSampleScan.separator1"
-                  visible="true">
-            </separator>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
                   icon="icons/disk.png"
@@ -69,25 +70,25 @@
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate1"
                      icon="icons/tab.png"
-                     label="From Plate 1"
+                     label="From Pallet 1"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate2"
                      icon="icons/tab.png"
-                     label="From Plate 2"
+                     label="From Pallet 2"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate3"
                      icon="icons/tab.png"
-                     label="From Plate 3"
+                     label="From Pallet 3"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate4"
                      icon="icons/tab.png"
-                     label="From Plate 4"
+                     label="From Pallet 4"
                      style="push">
                </command>
             </menu>
@@ -146,29 +147,29 @@
             <menu
                   icon="icons/picture_go.png"
                   id="edu.ualberta.med.biosamplescan.commands.scanimagetoplatemenu"
-                  label="Scan Plate to File...">
+                  label="Scan Pallet to File...">
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
                      icon="icons/tab.png"
-                     label="Plate 1"
+                     label="Pallet 1"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
                      icon="icons/tab.png"
-                     label="Plate 2"
+                     label="Pallet 2"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
                      icon="icons/tab.png"
-                     label="Plate 3"
+                     label="Pallet 3"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
                      icon="icons/tab.png"
-                     label="Plate 4"
+                     label="Pallet 4"
                      style="push">
                </command>
             </menu>
@@ -242,42 +243,42 @@
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable1"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate1"
-            name="Save From Plate 1">
+            name="Save From Pallet 1">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable2"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate2"
-            name="Save From Plate 2">
+            name="Save From Pallet 2">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable3"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate3"
-            name="Save From Plate 3">
+            name="Save From Pallet 3">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveBarcodesFromTable4"
             id="edu.ualberta.med.biosamplescan.commands.savefromplate4"
-            name="Save From Plate 4">
+            name="Save From Pallet 4">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate1"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
-            name="Save Image to Plate 1">
+            name="Save Image to Pallet 1">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate2"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
-            name="Save Image to Plate 2">
+            name="Save Image to Pallet 2">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate3"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
-            name="Save Image to Plate 3">
+            name="Save Image to Pallet 3">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate4"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
-            name="Save Image to Plate 4">
+            name="Save Image to Pallet 4">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.aboutmenu.Credits"
@@ -289,26 +290,11 @@
             id="edu.ualberta.med.biosamplescan.commands.newview"
             name="New Scan">
       </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewTab"
-            id="edu.ualberta.med.biosamplescan.commands.newtab"
-            name="New Tab">
-      </command>
-   </extension>
-   <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            class="edu.ualberta.med.biosamplescan.editors.PlateSetEditor"
-            default="true"
-            icon="icons/star.png"
-            id="edu.ualberta.med.biosamplescan.editors.plateset"
-            name="PlateSet">
-      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="edu.ualberta.med.biosamplescan.startup.Startup"></startup>
+            class="edu.ualberta.med.biosamplescan.Startup"></startup>
    </extension>
    <extension
          id="product"
@@ -334,6 +320,16 @@
                value="BioSasmpleScan">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            class="edu.ualberta.med.biosamplescan.PlateSetView"
+            id="edu.ualberta.med.biosamplescan.views.plateset"
+            name="PlateSet View"
+            restorable="true">
+      </view>
    </extension>
 
 </plugin>

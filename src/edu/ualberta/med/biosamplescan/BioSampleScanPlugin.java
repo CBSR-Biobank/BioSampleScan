@@ -18,7 +18,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
@@ -36,7 +35,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
     private PalletSet palletSet;
 
-    private PlateSetEditor plateSetEditor;
+    private PlateSetView plateSetView;
 
     public BioSampleScanPlugin() {
         String osname = System.getProperty("os.name");
@@ -170,11 +169,11 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         this.palletSet = palletSet;
     }
 
-    public PlateSetEditor getPlateSetEditor() {
-        return plateSetEditor;
+    public PlateSetView getPlateSetView() {
+        return plateSetView;
     }
 
-    public void setPlateSetEditor(PlateSetEditor plateSetEditor) {
-        this.plateSetEditor = plateSetEditor;
+    public void setPlateSetView(PlateSetView plateSetEditor) {
+        this.plateSetView = plateSetEditor;
     }
 }

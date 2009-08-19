@@ -9,13 +9,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
+import edu.ualberta.med.biosamplescan.PlateSetView;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class NewScan extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         if (MessageDialog.openConfirm(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             "New Scan", "Do you want to clear all the tables?")) {

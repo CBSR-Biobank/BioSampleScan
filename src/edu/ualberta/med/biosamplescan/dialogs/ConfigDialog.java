@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
+import edu.ualberta.med.biosamplescan.PlateSetView;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
@@ -436,7 +436,7 @@ public class ConfigDialog extends Dialog {
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
-        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
 
         /* =================Set Plate Mode================ */
         int plateMode = this.getActivePlateMode();

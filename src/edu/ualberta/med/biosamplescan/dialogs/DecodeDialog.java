@@ -42,7 +42,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
 
-                            final PalletSetWidget w = BioSampleScanPlugin.getDefault().getPlateSetEditor().getPalletsWidget();
+                            final PalletSetWidget w = BioSampleScanPlugin.getDefault().getPlateSetView().getPalletsWidget();
                             w.updatePalletModel(p - 1);
                         }
                     }

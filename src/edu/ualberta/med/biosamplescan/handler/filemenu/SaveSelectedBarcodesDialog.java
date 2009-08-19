@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
+import edu.ualberta.med.biosamplescan.PlateSetView;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
@@ -23,7 +23,7 @@ import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 public class SaveSelectedBarcodesDialog extends AbstractHandler implements
     IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
         boolean pass = false;
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {

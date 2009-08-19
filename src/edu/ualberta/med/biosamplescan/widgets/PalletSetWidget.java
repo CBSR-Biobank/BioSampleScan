@@ -27,6 +27,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button reScanPlateBtn;
     private Button scanPlateBtn;
     private Button clearPlateBtn;
+    private PalletBarcodesWidget palletBarcodesWidget;
     private PalletWidget [] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
@@ -41,6 +42,8 @@ public class PalletSetWidget extends ScrolledComposite {
         top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         createTopButtonsSection(top);
+        palletBarcodesWidget = new PalletBarcodesWidget(top, SWT.NONE);
+
         palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
 
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
@@ -57,8 +60,6 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public boolean setFocus() {
-        /* reload global ui states */
-        setPlateCount();
         return true;
     }
 
@@ -68,7 +69,7 @@ public class PalletSetWidget extends ScrolledComposite {
         section.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-        clearPlateBtn.setText("Clear Selected Table(s)");
+        clearPlateBtn.setText("Clear Selected");
         // clearPlateBtn.setBounds(488, 6, 90, 40);
         clearPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
@@ -78,7 +79,7 @@ public class PalletSetWidget extends ScrolledComposite {
         });
 
         reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-        reScanPlateBtn.setText("Re-Scan Selected Plate(s)");
+        reScanPlateBtn.setText("Re-Scan Selected");
         // reScanPlateBtn.setBounds(596, 6, 90, 40);
         reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
@@ -87,7 +88,7 @@ public class PalletSetWidget extends ScrolledComposite {
         });
 
         scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-        scanPlateBtn.setText("Scan Selected Plate(s)");
+        scanPlateBtn.setText("Scan Selected");
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
                 scanPlateBtnWidgetSelected(evt, false);
@@ -116,7 +117,7 @@ public class PalletSetWidget extends ScrolledComposite {
             "Do you want to clear the selected tables?")) {
             for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
                 palletSet.clearTable(p);
-                palletWidgets[p].clearPlateTable();
+                palletBarcodesWidget.clearText();
                 updatePalletModel(p);
             }
         }
@@ -125,7 +126,7 @@ public class PalletSetWidget extends ScrolledComposite {
     public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
         List<Integer> selected = new ArrayList<Integer>();
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-            if (palletWidgets[i].isSelected()) {
+            if (palletBarcodesWidget.isSelected(i)) {
                 selected.add(i + 1);
             }
         }
@@ -183,7 +184,7 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public boolean getPlateBtnSelection(int platenum) {
-        return palletWidgets[platenum].isSelected();
+        return palletBarcodesWidget.isSelected(platenum);
     }
 
 }

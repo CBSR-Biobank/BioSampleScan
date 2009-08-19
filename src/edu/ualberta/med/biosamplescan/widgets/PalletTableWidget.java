@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -18,8 +17,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -43,8 +40,6 @@ public class PalletTableWidget extends Composite {
 
     private TableColumn [] tableColumns;
 
-    private Color colorBackground;
-
     private int firstColWidth;
 
     public PalletTableWidget(Composite parent, int style) {
@@ -54,15 +49,13 @@ public class PalletTableWidget extends Composite {
         setLayout(new GridLayout(1, false));
 
         tableViewer = new TableViewer(this, SWT.BORDER | SWT.H_SCROLL
-            | SWT.V_SCROLL | SWT.VIRTUAL);
+            | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.VIRTUAL);
         tableViewer.setLabelProvider(new PalletLabelProvider());
         tableViewer.setContentProvider(new ArrayContentProvider());
 
         table = tableViewer.getTable();
         table.setLayout(new TableLayout());
-        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-        // gd.heightHint = 160;
-        table.setLayoutData(gd);
+        table.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
@@ -74,10 +67,13 @@ public class PalletTableWidget extends Composite {
 
         int index = 0;
         for (String name : headings) {
-            final TableColumn col = new TableColumn(table, SWT.NONE);
+            TableColumn col = new TableColumn(table, SWT.NONE);
             col.setText(name);
             if (index == 0) {
                 col.setWidth(firstColWidth);
+            }
+            else {
+                col.pack();
             }
             if (index != 0) col.setResizable(true);
             tableColumns[index] = col;
@@ -91,31 +87,6 @@ public class PalletTableWidget extends Composite {
             model.add(new PalletModel(String.valueOf((char) ('A' + i))));
         }
         tableViewer.setInput(model);
-
-        colorBackground = getDisplay().getSystemColor(SWT.COLOR_DARK_CYAN);
-
-        table.addListener(SWT.EraseItem, new Listener() {
-            public void handleEvent(Event event) {
-                event.detail &= ~SWT.HOT;
-                if ((event.detail & SWT.SELECTED) == 0) {
-                    // / item not selected
-                    return;
-                }
-
-                Table table = (Table) event.widget;
-                // TableItem item = (TableItem) event.item;
-                int clientWidth = table.getClientArea().width;
-
-                GC gc = event.gc;
-                Color oldBackground = gc.getBackground();
-
-                gc.setBackground(colorBackground);
-                gc.fillRectangle(0, event.y, clientWidth, event.height);
-
-                gc.setBackground(oldBackground);
-                event.detail &= ~SWT.SELECTED;
-            }
-        });
 
         addControlListener(new ControlAdapter() {
             public void controlResized(ControlEvent e) {
@@ -153,7 +124,6 @@ public class PalletTableWidget extends Composite {
                 }
             }
         });
-
     }
 
     public TableViewer getTableViewer() {
