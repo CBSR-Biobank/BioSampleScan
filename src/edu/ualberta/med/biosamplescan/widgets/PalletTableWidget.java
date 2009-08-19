@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -44,6 +45,8 @@ public class PalletTableWidget extends Composite {
 
     private Color colorBackground;
 
+    private int firstColWidth;
+
     public PalletTableWidget(Composite parent, int style) {
         super(parent, style);
 
@@ -65,20 +68,18 @@ public class PalletTableWidget extends Composite {
 
         tableColumns = new TableColumn [headings.length];
 
+        GC gc = new GC(parent);
+        FontMetrics fm = gc.getFontMetrics();
+        firstColWidth = 4 * fm.getAverageCharWidth();
+
         int index = 0;
         for (String name : headings) {
             final TableColumn col = new TableColumn(table, SWT.NONE);
             col.setText(name);
             if (index == 0) {
-                col.setWidth(30);
+                col.setWidth(firstColWidth);
             }
-            // col.pack();
             if (index != 0) col.setResizable(true);
-            col.addListener(SWT.SELECTED, new Listener() {
-                public void handleEvent(Event event) {
-                // col.pack();
-                }
-            });
             tableColumns[index] = col;
             index++;
         }
@@ -122,7 +123,7 @@ public class PalletTableWidget extends Composite {
                 Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
                 ScrollBar vBar = table.getVerticalBar();
                 int width = area.width - table.computeTrim(0, 0, 0, 0).width
-                    - vBar.getSize().x - 30;
+                    - vBar.getSize().x - firstColWidth;
                 if (size.y > area.height + table.getHeaderHeight()) {
                     // Subtract the scrollbar width from the total column width
                     // if a vertical scrollbar will be required
