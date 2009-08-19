@@ -18,11 +18,11 @@ import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
+import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
         if (ConfigSettings.getInstance().getLastSaveLocation() == null
             || ConfigSettings.getInstance().getLastSaveLocation().isEmpty()) {

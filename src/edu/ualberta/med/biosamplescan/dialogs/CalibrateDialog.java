@@ -21,7 +21,7 @@ public class CalibrateDialog extends ProgressMonitorDialog {
             run(true, true, new IRunnableWithProgress() {
                 public void run(IProgressMonitor monitor) {
                     try {
-                        monitor.beginTask("Calibrating plates...",
+                        monitor.beginTask("Configuring pallet position...",
                             IProgressMonitor.UNKNOWN);
                         ConfigSettings configSettings = ConfigSettings.getInstance();
 
@@ -31,38 +31,11 @@ public class CalibrateDialog extends ProgressMonitorDialog {
                                 configSettings.getDpi(), p);
 
                             if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                                BioSampleScanPlugin.openAsyncError(
+                                    "Calibration Error",
+                                    ScanLib.getErrMsg(scanlibReturn));
                                 ScanLib.getInstance().slConfigPlateFrame(p, 0,
                                     0, 0, 0);
-                            }
-
-                            switch (scanlibReturn) {
-                                case (ScanLib.SC_INVALID_PLATE_NUM):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Calibration Error",
-                                        "Invalid Plate Number: "
-                                            + scanlibReturn);
-                                    break;
-
-                                case (ScanLib.SC_INI_FILE_ERROR):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Calibration Error",
-                                        "Plate dimensions not found inside scanlib.ini");
-                                    break;
-                                case (ScanLib.SC_CALIBRATOR_ERROR):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Calibration Error",
-                                        "Could not find 8 rows and 12 columns");
-                                    break;
-                                case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Calibration Error",
-                                        "menuConfigurationWidgetSelected, Calibratation");
-                                    break;
-                                case (ScanLib.SC_FAIL):
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Calibration Error", "Failed to scan");
-                                    break;
-                                default:
                             }
                         }
                     }

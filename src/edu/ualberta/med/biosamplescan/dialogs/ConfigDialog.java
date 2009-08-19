@@ -30,7 +30,7 @@ import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
-import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
+import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class ConfigDialog extends Dialog {
@@ -436,7 +436,7 @@ public class ConfigDialog extends Dialog {
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
 
         /* =================Set Plate Mode================ */
         int plateMode = this.getActivePlateMode();
@@ -502,20 +502,10 @@ public class ConfigDialog extends Dialog {
             case (ConfigSettings.SUCCESS):
                 int scanlibReturn = ScanLib.getInstance().slConfigScannerBrightness(
                     configSettings.getBrightness());
-                switch (scanlibReturn) {
-                    case (ScanLib.SC_SUCCESS):
-                        break;
-                    case (ScanLib.SC_INVALID_VALUE):
-                        BioSampleScanPlugin.openError("Set Brightness",
-                            "Brightness: Invalid Value");
-                        getShell().dispose();
-                        return;
-
-                    case (ScanLib.SC_INI_FILE_ERROR):
-                        BioSampleScanPlugin.openError("Set Brightness",
-                            "Brightness: Could not find scanlib.ini file");
-                        getShell().dispose();
-                        return;
+                if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                    BioSampleScanPlugin.openError("Set Brightness",
+                        ScanLib.getErrMsg(scanlibReturn));
+                    getShell().dispose();
                 }
                 break;
             case (ConfigSettings.INVALID_INPUT):
@@ -535,20 +525,11 @@ public class ConfigDialog extends Dialog {
             case (ConfigSettings.SUCCESS):
                 int scanlibReturn = ScanLib.getInstance().slConfigScannerContrast(
                     configSettings.getContrast());
-                switch (scanlibReturn) {
-                    case (ScanLib.SC_SUCCESS):
-                        break;
-                    case (ScanLib.SC_INVALID_VALUE):
-                        BioSampleScanPlugin.openError("Set Contrast",
-                            "Contrast: Invalid Value");
-                        getShell().dispose();
-                        return;
+                if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                    BioSampleScanPlugin.openError("Set Contrast",
+                        ScanLib.getErrMsg(scanlibReturn));
+                    getShell().dispose();
 
-                    case (ScanLib.SC_INI_FILE_ERROR):
-                        BioSampleScanPlugin.openError("Set Contrast",
-                            "Contrast: Could not find scanlib.ini file");
-                        getShell().dispose();
-                        return;
                 }
                 break;
             case (ConfigSettings.INVALID_INPUT):
@@ -577,23 +558,21 @@ public class ConfigDialog extends Dialog {
                     configSettings.getPallet(plate + 1).top,
                     configSettings.getPallet(plate + 1).right,
                     configSettings.getPallet(plate + 1).bottom);
-                switch (scanlibReturn) {
-                    case (ScanLib.SC_SUCCESS):
-                        if (setPlateReturn == ConfigSettings.SUCCESS) {
-                            platesToCalibrate.add(plate + 1);
+                if (scanlibReturn == ScanLib.SC_SUCCESS) {
+                    if (setPlateReturn == ConfigSettings.SUCCESS) {
+                        platesToCalibrate.add(plate + 1);
 
-                            /*
-                             * Only calibrates to plate if: the text fields
-                             * changed AND they are not all equal to zero AND
-                             * slConfigPlateFrame returns SC_SUCCESS
-                             */
-                        }
-                        break;
-                    case (ScanLib.SC_INI_FILE_ERROR):
+                        /*
+                         * Only calibrates to plate if: the text fields changed
+                         * AND they are not all equal to zero AND
+                         * slConfigPlateFrame returns SC_SUCCESS
+                         */
+                    }
+                    else {
                         BioSampleScanPlugin.openError("Plate Settings",
-                            "ConfigPlateFrame: Could not find scanlib.ini file");
+                            ScanLib.getErrMsg(scanlibReturn));
                         getShell().dispose();
-                        return;
+                    }
                 }
             }
             else if (setPlateReturn == ConfigSettings.INVALID_INPUT) {

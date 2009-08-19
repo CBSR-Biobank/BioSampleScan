@@ -18,17 +18,18 @@ import org.eclipse.swt.widgets.Composite;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
-public class AllPalletsWidget extends ScrolledComposite {
+public class PalletSetWidget extends ScrolledComposite {
 
     private Button reScanPlateBtn;
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletWidget [] palletWidgets;
 
-    public AllPalletsWidget(Composite parent, int style) {
+    public PalletSetWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         setExpandHorizontal(true);
         setExpandVertical(true);
@@ -116,6 +117,7 @@ public class AllPalletsWidget extends ScrolledComposite {
             for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
                 palletSet.clearTable(p);
                 palletWidgets[p].clearPlateTable();
+                updatePalletModel(p);
             }
         }
     }
@@ -159,7 +161,8 @@ public class AllPalletsWidget extends ScrolledComposite {
             && (palletNum < ConfigSettings.PALLET_NUM),
             "invalid pallet number: " + palletNum);
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        palletWidgets[palletNum].setPalletBarcodes(palletSet.getPallet(palletNum));
+        Pallet pallet = palletSet.getPallet(palletNum);
+        if (pallet != null) palletWidgets[palletNum].setPalletBarcodes(pallet);
     }
 
     public void clearPallets() {

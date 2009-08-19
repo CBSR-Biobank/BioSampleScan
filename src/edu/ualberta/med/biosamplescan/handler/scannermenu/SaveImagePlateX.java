@@ -10,13 +10,13 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.editors.PlateSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
-import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
+import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class SaveImagePlateX {
     public static final Object execute(ExecutionEvent event, int platenum)
         throws ExecutionException {
-        AllPalletsWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PlateSetEditor) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (configSettings.getPalletCount() < platenum) {
@@ -42,39 +42,11 @@ public class SaveImagePlateX {
 
         int scanlibReturn = ScanLib.getInstance().slScanPlate(
             configSettings.getDpi(), platenum, saveLocation);
-        switch (scanlibReturn) {
-            case (ScanLib.SC_SUCCESS):
-                break;
-            case (ScanLib.SC_INVALID_DPI):
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    "Error", String.format("%s\nReturned Error Code: %d\n",
-                        "Scanlib ScanPlate", "Invalid Dpi"));
-                break;
-            case (ScanLib.SC_INVALID_PLATE_NUM):
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    "Error", String.format("%s\nReturned Error Code: %d\n",
-                        "Scanlib ScanPlaten", "Invalid Plate Number"));
-                break;
-            case (ScanLib.SC_CALIBRATOR_NO_REGIONS):
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    "Error", String.format("%s\nReturned Error Code: %d\n",
-                        "Scanlib ScanPlate", "Calibrator Error"));
-                break;
-            case (ScanLib.SC_FAIL):
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    "Error", String.format("%s\nReturned Error Code: %d\n",
-                        "Scanlib ScanPlate", "Failure"));
-                break;
-            case (ScanLib.SC_FILE_SAVE_ERROR):
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    "Error", String.format("%s\nReturned Error Code: %d\n",
-                        "Scanlib ScanPlate", "Failed to save to file"));
-                break;
+
+        if (scanlibReturn != ScanLib.SC_SUCCESS) {
+            MessageDialog.openError(
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                "Scanning Error", ScanLib.getErrMsg(scanlibReturn));
         }
         return null;
     }

@@ -17,7 +17,6 @@ public class PalletSet {
     public Pallet getPallet(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
-        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         return pallets[id];
     }
 
@@ -51,7 +50,9 @@ public class PalletSet {
     public void loadFromScanlibFile(int id, boolean append) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
-        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
+        if (pallets[id] == null) {
+            pallets[id] = new Pallet();
+        }
         pallets[id].loadFromScanlibFile(append);
     }
 

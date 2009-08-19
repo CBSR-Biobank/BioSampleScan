@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.startup;
 
 import org.eclipse.swt.widgets.Display;
@@ -14,42 +15,42 @@ import edu.ualberta.med.scanlib.ScanLib;
 
 public class Startup implements IStartup {
 
-	@Override
-	public void earlyStartup() {
-		final IWorkbench workbench = PlatformUI.getWorkbench();
-		workbench.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				String osname = System.getProperty("os.name");
-				if (osname.startsWith("Windows")) {
-					if (ScanLib.getInstance().slIsTwainAvailable() != ScanLib.SC_SUCCESS) {
-						Display.getDefault().asyncExec(new Runnable() {
-							public void run() {
-								BioSampleScanPlugin
-										.openError("TWAIN Driver Error",
-												"TWAIN driver not installed on this computer.");
-								PlatformUI.getWorkbench()
-										.getActiveWorkbenchWindow().close();
-							}
-						});
-						return;
-					}
-				}
-				IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+    @Override
+    public void earlyStartup() {
+        final IWorkbench workbench = PlatformUI.getWorkbench();
+        workbench.getDisplay().asyncExec(new Runnable() {
+            public void run() {
+                String osname = System.getProperty("os.name");
+                if (osname.startsWith("Windows")) {
+                    final int result = ScanLib.getInstance().slIsTwainAvailable();
+                    if (result != ScanLib.SC_SUCCESS) {
+                        Display.getDefault().asyncExec(new Runnable() {
+                            public void run() {
+                                BioSampleScanPlugin.openError(
+                                    "TWAIN Driver Error",
+                                    ScanLib.getErrMsg(result));
+                                PlatformUI.getWorkbench().getActiveWorkbenchWindow().close();
+                            }
+                        });
+                        return;
+                    }
+                }
+                IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 
-				try {
-					window.getActivePage().openEditor(new PlateSetInput(),
-							PlateSetEditor.ID, true);
-				}
-				catch (PartInitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                try {
+                    window.getActivePage().openEditor(new PlateSetInput(),
+                        PlateSetEditor.ID, true);
+                }
+                catch (PartInitException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 
-				if (window != null) {
-					// do something
-				}
-			}
-		});
+                if (window != null) {
+                    // do something
+                }
+            }
+        });
 
-	}
+    }
 }

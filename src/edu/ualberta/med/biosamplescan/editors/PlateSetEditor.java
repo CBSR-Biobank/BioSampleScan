@@ -13,11 +13,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.widgets.AllPalletsWidget;
+import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class PlateSetEditor extends EditorPart {
 
-    private AllPalletsWidget allPalletsWidget;
+    private PalletSetWidget allPalletsWidget;
 
     public static final String ID = "edu.ualberta.med.biosamplescan.editors.plateset";
 
@@ -54,10 +54,10 @@ public class PlateSetEditor extends EditorPart {
 
     @Override
     public void createPartControl(Composite parent) {
-        allPalletsWidget = new AllPalletsWidget(parent, SWT.BORDER);
+        allPalletsWidget = new PalletSetWidget(parent, SWT.BORDER);
     }
 
-    public AllPalletsWidget getPalletsWidget() {
+    public PalletSetWidget getPalletsWidget() {
         return allPalletsWidget;
     }
 

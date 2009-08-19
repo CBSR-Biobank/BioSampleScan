@@ -43,17 +43,25 @@ public class Pallet {
     }
 
     public void clear() {
-        if (barcodes == null) return;
-        for (int r = 0; r < barcodes.length; ++r) {
-            for (int c = 0; c < barcodes[0].length; ++c) {
-                barcodes[r][c] = null;
-            }
-        }
+        barcodes = null;
     }
 
     public void loadFromScanlibFile(boolean append) {
         try {
-            barcodes = ScanCell.getScanLibResults();
+            ScanCell [][] readBarcodes = ScanCell.getScanLibResults();
+            if ((barcodes == null) || !append) {
+                barcodes = readBarcodes;
+                return;
+            }
+
+            // need to merge current with new
+            for (int r = 0; r < barcodes.length; ++r) {
+                for (int c = 0; c < barcodes[0].length; ++c) {
+                    if (readBarcodes[r][c].getValue().length() > 0) {
+                        barcodes[r][c] = readBarcodes[r][c];
+                    }
+                }
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
