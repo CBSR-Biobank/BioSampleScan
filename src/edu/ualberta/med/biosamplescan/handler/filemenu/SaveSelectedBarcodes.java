@@ -72,7 +72,7 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
             tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
         }
         plateSet.saveTables(ConfigSettings.getInstance().getLastSaveLocation(),
-            tablesCheck, ConfigSettings.getInstance().getAppendSetting());
+            tablesCheck);
         return null;
     }
 

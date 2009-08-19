@@ -71,8 +71,7 @@ public class SaveSelectedBarcodesDialog extends AbstractHandler implements
             for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
                 tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
             }
-            plateSet.saveTables(saveLocation, tablesCheck,
-                ConfigSettings.getInstance().getAppendSetting());
+            plateSet.saveTables(saveLocation, tablesCheck);
             ConfigSettings.getInstance().setLastSaveLocation(saveLocation);
         }
         return saveLocation;

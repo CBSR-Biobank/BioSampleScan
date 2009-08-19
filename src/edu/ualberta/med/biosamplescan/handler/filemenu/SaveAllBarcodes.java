@@ -55,7 +55,7 @@ public class SaveAllBarcodes extends AbstractHandler implements IHandler {
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
             if (i < ConfigSettings.getInstance().getPalletCount()) tablesCheck[i] = true;
         }
-        plateSet.saveTables(saveLocation, tablesCheck, false);
+        plateSet.saveTables(saveLocation, tablesCheck);
         return null;
     }
 }

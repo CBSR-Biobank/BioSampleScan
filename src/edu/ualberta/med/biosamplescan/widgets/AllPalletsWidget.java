@@ -121,32 +121,37 @@ public class AllPalletsWidget extends ScrolledComposite {
     }
 
     public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
-        boolean pass = false;
+        List<Integer> selected = new ArrayList<Integer>();
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
             if (palletWidgets[i].isSelected()) {
-                pass = true;
-                break;
+                selected.add(i + 1);
             }
         }
-        if (!pass) {
+
+        if (selected.size() == 0) {
             errorMsg("No Pallets Selected", 0);
             return;
         }
 
+        ConfigSettings configSettings = ConfigSettings.getInstance();
         List<Integer> palletsToDecode = new ArrayList<Integer>();
-        for (int pallet = 0; pallet < ConfigSettings.PALLET_NUM; pallet++) {
-            ConfigSettings configSettings = ConfigSettings.getInstance();
 
-            PalletScanCoordinates coords = configSettings.getPallet(pallet + 1);
+        for (Integer pallet : selected) {
+            PalletScanCoordinates coords = configSettings.getPallet(pallet);
 
-            if ((coords != null)
-                && (coords.left + coords.top + coords.right + coords.bottom > 0)
-                && palletWidgets[pallet].isSelected()) {
-                palletsToDecode.add(pallet + 1);
+            if (coords == null) {
+                errorMsg("Pallete " + pallet + " not calibrated", 0);
+                return;
+            }
+
+            if (coords.left + coords.top + coords.right + coords.bottom > 0) {
+                palletsToDecode.add(pallet);
             }
         }
 
-        new DecodeDialog(palletsToDecode, rescan);
+        if (palletsToDecode.size() > 0) {
+            new DecodeDialog(palletsToDecode, rescan);
+        }
     }
 
     public void updatePalletModel(int palletNum) {
@@ -166,7 +171,6 @@ public class AllPalletsWidget extends ScrolledComposite {
     }
 
     public void setPlateCount() {
-        clearPallets();
         int platecount = ConfigSettings.getInstance().getPalletCount();
         boolean set = false;
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {

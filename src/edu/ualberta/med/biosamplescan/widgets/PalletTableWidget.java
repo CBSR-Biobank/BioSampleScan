@@ -69,17 +69,14 @@ public class PalletTableWidget extends Composite {
         for (String name : headings) {
             final TableColumn col = new TableColumn(table, SWT.NONE);
             col.setText(name);
-            // if (bounds == null || bounds[index] == -1) {
+            if (index == 0) {
+                col.setWidth(30);
+            }
             // col.pack();
-            // }
-            // else {
-            // col.setWidth(bounds[index]);
-            // }
-            col.pack();
             if (index != 0) col.setResizable(true);
             col.addListener(SWT.SELECTED, new Listener() {
                 public void handleEvent(Event event) {
-                    col.pack();
+                // col.pack();
                 }
             });
             tableColumns[index] = col;
@@ -125,7 +122,7 @@ public class PalletTableWidget extends Composite {
                 Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
                 ScrollBar vBar = table.getVerticalBar();
                 int width = area.width - table.computeTrim(0, 0, 0, 0).width
-                    - vBar.getSize().x;
+                    - vBar.getSize().x - 30;
                 if (size.y > area.height + table.getHeaderHeight()) {
                     // Subtract the scrollbar width from the total column width
                     // if a vertical scrollbar will be required
@@ -133,12 +130,13 @@ public class PalletTableWidget extends Composite {
                     width -= vBarSize.x;
                 }
                 Point oldSize = table.getSize();
+                int colWidth = width / (tableColumns.length - 1);
+
                 if (oldSize.x > area.width) {
                     // table is getting smaller so make the columns
                     // smaller first and then resize the table to
                     // match the client area width
-                    int colWidth = width / tableColumns.length;
-                    for (int i = 0; i < tableColumns.length; ++i) {
+                    for (int i = 1; i < tableColumns.length; ++i) {
                         tableColumns[i].setWidth(colWidth);
                     }
                     table.setSize(area.width, area.height);
@@ -148,8 +146,7 @@ public class PalletTableWidget extends Composite {
                     // bigger first and then make the columns wider
                     // to match the client area width
                     table.setSize(area.width, area.height);
-                    int colWidth = width / tableColumns.length;
-                    for (int i = 0; i < tableColumns.length; ++i) {
+                    for (int i = 1; i < tableColumns.length; ++i) {
                         tableColumns[i].setWidth(colWidth);
                     }
                 }

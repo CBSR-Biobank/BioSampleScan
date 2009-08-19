@@ -34,7 +34,7 @@ public class Pallet {
         return palletBarcode;
     }
 
-    public void setPlateTimestampNOW() {
+    public void setPlateTimestampNow() {
         timestamp = (new Date()).getTime();
     }
 

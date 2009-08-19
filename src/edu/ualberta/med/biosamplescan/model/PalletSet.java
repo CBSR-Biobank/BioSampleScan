@@ -2,7 +2,6 @@
 package edu.ualberta.med.biosamplescan.model;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -13,83 +12,68 @@ public class PalletSet {
 
     public PalletSet() {
         pallets = new Pallet [ConfigSettings.PALLET_NUM];
-        for (int i = 0; i < pallets.length; ++i) {
-            pallets[i] = new Pallet();
-        }
     }
 
     public Pallet getPallet(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         return pallets[id];
     }
 
     public void setPalletId(Integer id, String plateid) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         pallets[id].setPalleteBarcode(plateid);
     }
 
     public String getPalletId(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         return pallets[id].getPlateBarcode();
     }
 
-    public void setPalletTimestampNOW(Integer id) {
+    public void setPalletTimestampNow(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
-        pallets[id].setPlateTimestampNOW();
+        pallets[id].setPlateTimestampNow();
     }
 
     public long getPalletTimestamp(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         return pallets[id].getPlateTimestamp();
-    }
-
-    public void clearPallet(Integer id) {
-        Assert.isTrue((id >= 0) && (id < pallets.length),
-            "invalid pallet number: " + id);
-        pallets[id].clear();
     }
 
     public void loadFromScanlibFile(int id, boolean append) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
         pallets[id].loadFromScanlibFile(append);
     }
 
-    public void saveTables(String fileLocation, boolean [] tables,
-        boolean appendFile) {
+    public void saveTables(String fileLocation, boolean [] tables) {
         Integer [] plateids = new Integer [tables.length]; // wrapper
         for (int i = 0; i < plateids.length; i++) {
+            if (pallets[i] == null) continue;
             if (tables[i]) {
                 plateids[i] = i + 1;
             }
         }
-        savePallets(fileLocation, plateids, appendFile);
+        savePallets(fileLocation, plateids);
     }
 
-    public void savePallets(String fileLocation, Integer [] plateids,
-        boolean appendFile) {
-
-        appendFile = false; // TODO depreciated, remove all references
-
+    public void savePallets(String fileLocation, Integer [] plateids) {
         try {
             BufferedWriter out = null;
-            out = new BufferedWriter(new FileWriter(fileLocation, appendFile));
-            if (appendFile) {
-                if (new File(fileLocation).length() <= 0) {
-                    out.write("#PlateId,Row,Col,Barcode,Date\r\n");
-                }
-            }
-            else {
-                out.write("#PlateId,Row,Col,Barcode,Date\r\n");
-            }
+            out = new BufferedWriter(new FileWriter(fileLocation));
+            out.write("#PlateId,Row,Col,Barcode,Date\r\n");
             for (int pi = 0; pi < plateids.length; pi++) {
+                if (pallets[pi] == null) continue;
                 Pallet pallet = pallets[pi];
-                if (pallet == null) continue;
                 out.write(pallet.toString());
             }
             out.close();
@@ -102,6 +86,7 @@ public class PalletSet {
     public void clearTable(int id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
+        if (pallets[id] == null) return;
         pallets[id].clear();
     }
 }

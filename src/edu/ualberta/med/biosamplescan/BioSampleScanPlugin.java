@@ -157,6 +157,11 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         });
     }
 
+    public PalletSet createNewPelletSet() {
+        palletSet = new PalletSet();
+        return palletSet;
+    }
+
     public PalletSet getPalletSet() {
         return palletSet;
     }
