@@ -140,6 +140,7 @@ public class PalletSetWidget extends ScrolledComposite {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
         List<Integer> palletsToDecode = new ArrayList<Integer>();
+        List<String> palletBarcodes = new ArrayList<String>();
 
         for (Integer pallet : selected) {
 
@@ -152,11 +153,12 @@ public class PalletSetWidget extends ScrolledComposite {
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
                 palletsToDecode.add(pallet);
+                palletBarcodes.add(palletBarcodesWidget.getPalletBarcode(pallet));
             }
         }
 
         if (palletsToDecode.size() > 0) {
-            new DecodeDialog(palletsToDecode, rescan);
+            new DecodeDialog(palletsToDecode, palletBarcodes, rescan);
         }
     }
 
@@ -190,11 +192,5 @@ public class PalletSetWidget extends ScrolledComposite {
 
     public boolean getPalletSelected(int platenum) {
         return palletBarcodesWidget.isSelected(platenum);
-    }
-
-    public String getPalletBarcode(int i) {
-        Assert.isTrue((i >= 0) && (i < ConfigSettings.PALLET_NUM),
-            "invalid pallet number: " + i);
-        return palletBarcodesWidget.getPalletBarcode(i);
     }
 }

@@ -17,7 +17,8 @@ import edu.ualberta.med.scanlib.ScanLib;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
-    public DecodeDialog(final List<Integer> platesToDecode, final boolean rescan) {
+    public DecodeDialog(final List<Integer> palletsToDecode,
+        final List<String> palletBarcodes, final boolean rescan) {
         super(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
         try {
             run(true, true, new IRunnableWithProgress() {
@@ -27,8 +28,9 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             IProgressMonitor.UNKNOWN);
                         ConfigSettings configSettings = ConfigSettings.getInstance();
 
-                        for (Integer plate : platesToDecode) {
-                            final int p = plate;
+                        int count = 0;
+                        for (Integer pallet : palletsToDecode) {
+                            final int p = pallet;
                             int scanlibReturn = ScanLib.getInstance().slDecodePlate(
                                 configSettings.getDpi(), p);
                             if (scanlibReturn != ScanLib.SC_SUCCESS) {
@@ -41,10 +43,13 @@ public class DecodeDialog extends ProgressMonitorDialog {
 
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
+                            palletSet.setPalletBarocode(p - 1,
+                                palletBarcodes.get(count));
 
                             final PalletSetWidget w = BioSampleScanPlugin.getDefault().getPalletSetView().getPalletsWidget();
                             w.updatePalletModel(p - 1);
                         }
+                        ++count;
                     }
                     catch (Exception e) {
                         e.printStackTrace();
