@@ -169,7 +169,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         this.palletSet = palletSet;
     }
 
-    public PlateSetView getPlateSetView() {
+    public PlateSetView getPalletSetView() {
         return plateSetView;
     }
 

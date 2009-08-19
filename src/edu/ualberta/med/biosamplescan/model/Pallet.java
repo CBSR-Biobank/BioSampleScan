@@ -26,8 +26,8 @@ public class Pallet {
         return barcodes[row];
     }
 
-    public void setPalleteBarcode(String plateIdText) {
-        this.palletBarcode = plateIdText;
+    public void setPalleteBarcode(String palletBarcode) {
+        this.palletBarcode = palletBarcode;
     }
 
     public String getPlateBarcode() {
@@ -79,7 +79,7 @@ public class Pallet {
 
                 result.concat(String.format("%s,%s,%d,%s,%s\r\n",
                     palletBarcode, Character.toString((char) ('A' + r)), c,
-                    barcodes[r][c], new SimpleDateFormat(
+                    barcodes[r][c].getValue(), new SimpleDateFormat(
                         "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
             }
         }

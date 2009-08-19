@@ -53,61 +53,40 @@
                   style="push">
             </command>
             <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
+                  commandId="edu.ualberta.med.biosamplescan.commands.savepallets"
                   icon="icons/disk.png"
-                  label="Save Selected Barcodes"
+                  label="Save Pallets"
                   style="push">
             </command>
-             <separator
-                  name="BioSampleScan.separator8"
-                  visible="true">
-            </separator>
-
             <menu
                   icon="icons/page_save.png"
                   id="edu.ualberta.med.biosamplescan.commands.saveallbarcodemenu"
-                  label="Save Barcode...">
+                  label="Save from...">
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate1"
                      icon="icons/tab.png"
-                     label="From Pallet 1"
+                     label="Pallet 1"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate2"
                      icon="icons/tab.png"
-                     label="From Pallet 2"
+                     label="Pallet 2"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate3"
                      icon="icons/tab.png"
-                     label="From Pallet 3"
+                     label="Pallet 3"
                      style="push">
                </command>
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate4"
                      icon="icons/tab.png"
-                     label="From Pallet 4"
+                     label="Pallet 4"
                      style="push">
                </command>
             </menu>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
-                  icon="icons/database_table.png"
-                  label="Save All Barcodes..."
-                  style="push">
-            </command>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
-                  icon="icons/disk_multiple.png"
-                  label="Save Selected Barcodes..."
-                  style="push">
-            </command>
-            <separator
-                  name="BioSampleScan.separator2"
-                  visible="true">
-            </separator>
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.quit"
                   icon="icons/stop.png"
@@ -201,19 +180,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveSelectedBarcodes"
-            id="edu.ualberta.med.biosamplescan.commands.savelelectedbarcodes"
-            name="Save Selected Barcodes">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveAllBarcodes"
-            id="edu.ualberta.med.biosamplescan.commands.saveallbarcodes"
-            name="Save All Barcodes...">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SaveSelectedBarcodesDialog"
-            id="edu.ualberta.med.biosamplescan.commands.saveselectedbarcode2"
-            name="Save Selected Barcodes...">
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.SavePallets"
+            id="edu.ualberta.med.biosamplescan.commands.savepallets"
+            name="Save Pallets">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"

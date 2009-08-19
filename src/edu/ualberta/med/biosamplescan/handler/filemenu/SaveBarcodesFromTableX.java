@@ -52,7 +52,7 @@ public class SaveBarcodesFromTableX {
             }
             tablesCheck[platenum - 1] = true;
 
-            plateSet.saveTables(saveLocation, tablesCheck);
+            plateSet.savePallets(saveLocation);
         }
         return null;
     }

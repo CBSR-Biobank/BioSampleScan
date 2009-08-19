@@ -20,14 +20,14 @@ public class PalletSet {
         return pallets[id];
     }
 
-    public void setPalletId(Integer id, String plateid) {
+    public void setPalletBarocode(Integer id, String palletBarcode) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
         Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
-        pallets[id].setPalleteBarcode(plateid);
+        pallets[id].setPalleteBarcode(palletBarcode);
     }
 
-    public String getPalletId(Integer id) {
+    public String getPalletBarcode(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
         Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
@@ -56,25 +56,13 @@ public class PalletSet {
         pallets[id].loadFromScanlibFile(append);
     }
 
-    public void saveTables(String fileLocation, boolean [] tables) {
-        Integer [] plateids = new Integer [tables.length]; // wrapper
-        for (int i = 0; i < plateids.length; i++) {
-            if (pallets[i] == null) continue;
-            if (tables[i]) {
-                plateids[i] = i + 1;
-            }
-        }
-        savePallets(fileLocation, plateids);
-    }
-
-    public void savePallets(String fileLocation, Integer [] plateids) {
+    public void savePallets(String fileLocation) {
         try {
             BufferedWriter out = null;
             out = new BufferedWriter(new FileWriter(fileLocation));
             out.write("#PlateId,Row,Col,Barcode,Date\r\n");
-            for (int pi = 0; pi < plateids.length; pi++) {
-                if (pallets[pi] == null) continue;
-                Pallet pallet = pallets[pi];
+            for (Pallet pallet : pallets) {
+                if (pallet == null) continue;
                 out.write(pallet.toString());
             }
             out.close();

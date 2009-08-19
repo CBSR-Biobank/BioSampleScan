@@ -17,26 +17,36 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.PlateSetView;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
-public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
+/**
+ * Called to save the decoded bar codes for all pallets.
+ */
+public class SavePallets extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
-        PalletSet plateSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        if (ConfigSettings.getInstance().getLastSaveLocation() == null
-            || ConfigSettings.getInstance().getLastSaveLocation().isEmpty()) {
+        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        ConfigSettings configSettings = ConfigSettings.getInstance();
+
+        if ((configSettings.getLastSaveLocation() == null)
+            || (configSettings.getLastSaveLocation().isEmpty())) {
             FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
             dlg.setFilterExtensions(new String [] { "*.csv", "*.*" });
             dlg.setText(String.format(
                 "Save Barcodes for the Selected Plates, Append:%s",
-                ConfigSettings.getInstance().getAppendSetting()));
+                configSettings.getAppendSetting()));
 
             long largestSaveTime = 0;
             for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-                if (plateSet.getPalletTimestamp(i + 1) > largestSaveTime
-                    && viewComposite.getPlateBtnSelection(i)) {
-                    largestSaveTime = plateSet.getPalletTimestamp(i + 1);
+                Pallet pallet = palletSet.getPallet(i);
+
+                if (pallet == null) continue;
+
+                if ((palletSet.getPalletTimestamp(i) > largestSaveTime)
+                    && viewComposite.getPalletSelected(i)) {
+                    largestSaveTime = palletSet.getPalletTimestamp(i);
                 }
             }
             if (largestSaveTime != 0) {
@@ -46,20 +56,18 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
             }
 
             String saveLocation = dlg.open();
-            if (saveLocation != null) {
-                ConfigSettings.getInstance().setLastSaveLocation(saveLocation);
-            }
-            else {
+            if (saveLocation == null) {
                 return null;
             }
-
+            configSettings.setLastSaveLocation(saveLocation);
         }
-        if (ConfigSettings.getInstance().getLastSaveLocation() == null) {// TODO
-            // remove
-            // later
+
+        if (configSettings.getLastSaveLocation() == null) {
+            // TODO remove later
             return null;
         }
-        if (new File(ConfigSettings.getInstance().getLastSaveLocation()).exists()
+
+        if (new File(configSettings.getLastSaveLocation()).exists()
             && !MessageDialog.openConfirm(
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
                 "Save over existing file?",
@@ -69,10 +77,9 @@ public class SaveSelectedBarcodes extends AbstractHandler implements IHandler {
 
         boolean [] tablesCheck = new boolean [ConfigSettings.PALLET_NUM];
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-            tablesCheck[i] = viewComposite.getPlateBtnSelection(i);
+            tablesCheck[i] = viewComposite.getPalletSelected(i);
         }
-        plateSet.saveTables(ConfigSettings.getInstance().getLastSaveLocation(),
-            tablesCheck);
+        palletSet.savePallets(configSettings.getLastSaveLocation());
         return null;
     }
 

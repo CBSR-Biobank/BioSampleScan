@@ -125,6 +125,7 @@ public class PalletSetWidget extends ScrolledComposite {
 
     public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
         List<Integer> selected = new ArrayList<Integer>();
+
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
             if (palletBarcodesWidget.isSelected(i)) {
                 selected.add(i + 1);
@@ -136,10 +137,12 @@ public class PalletSetWidget extends ScrolledComposite {
             return;
         }
 
+        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
         List<Integer> palletsToDecode = new ArrayList<Integer>();
 
         for (Integer pallet : selected) {
+
             PalletScanCoordinates coords = configSettings.getPallet(pallet);
 
             if (coords == null) {
@@ -169,7 +172,9 @@ public class PalletSetWidget extends ScrolledComposite {
     public void clearPallets() {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
-            palletSet.getPallet(p).clear();
+            Pallet pallet = palletSet.getPallet(p);
+            if (pallet == null) continue;
+            pallet.clear();
             updatePalletModel(p);
         }
     }
@@ -183,8 +188,13 @@ public class PalletSetWidget extends ScrolledComposite {
         }
     }
 
-    public boolean getPlateBtnSelection(int platenum) {
+    public boolean getPalletSelected(int platenum) {
         return palletBarcodesWidget.isSelected(platenum);
     }
 
+    public String getPalletBarcode(int i) {
+        Assert.isTrue((i >= 0) && (i < ConfigSettings.PALLET_NUM),
+            "invalid pallet number: " + i);
+        return palletBarcodesWidget.getPalletBarcode(i);
+    }
 }
