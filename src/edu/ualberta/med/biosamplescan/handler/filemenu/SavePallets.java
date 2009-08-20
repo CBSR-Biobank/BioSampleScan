@@ -40,6 +40,8 @@ public class SavePallets extends AbstractHandler implements IHandler {
                 palletSet.savePallet(saveDir, pallet);
             }
         }
+        BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
+            "Files saved.");
         return null;
     }
 

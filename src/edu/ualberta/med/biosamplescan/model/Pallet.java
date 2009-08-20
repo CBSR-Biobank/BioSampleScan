@@ -14,8 +14,6 @@ public class Pallet {
     private String palletBarcode;
     private long timestamp;
 
-    // TODO place all properties into a hash map
-
     public Pallet(int id) {
         this.id = id;
         barcodes = null;

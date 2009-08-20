@@ -1,6 +1,7 @@
 
 package edu.ualberta.med.biosamplescan;
 
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
@@ -26,6 +27,11 @@ public class PlateSetView extends ViewPart {
     @Override
     public void setFocus() {
         allPalletsWidget.setFocus();
+    }
+
+    public void updateStatusBar(String msg) {
+        IStatusLineManager statusLine = getViewSite().getActionBars().getStatusLineManager();
+        statusLine.setMessage(msg);
     }
 
 }
