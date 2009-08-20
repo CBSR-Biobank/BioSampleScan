@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import java.util.List;
@@ -11,7 +12,6 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.CalibrateDialog;
 import edu.ualberta.med.biosamplescan.dialogs.ConfigDialog;
-import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class ScannerSettings extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -23,13 +23,12 @@ public class ScannerSettings extends AbstractHandler implements IHandler {
             }
 
             BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-            plugin.setPalletSet(new PalletSet());
+            plugin.createNewPelletSet();
             plugin.getPalletSetView().getPalletSetWidget().clearPallets();
         }
 
-        ConfigDialog configDialog =
-            new ConfigDialog(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getShell());
+        ConfigDialog configDialog = new ConfigDialog(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
         configDialog.open();
 
         String osname = System.getProperty("os.name");

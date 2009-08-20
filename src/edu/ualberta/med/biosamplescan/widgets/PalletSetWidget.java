@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.widgets;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletBarcodesWidget palletBarcodesWidget;
-    private PalletWidget[] palletWidgets;
+    private PalletWidget [] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -43,7 +44,7 @@ public class PalletSetWidget extends ScrolledComposite {
         createTopButtonsSection(composite);
         palletBarcodesWidget = new PalletBarcodesWidget(composite, SWT.NONE);
 
-        palletWidgets = new PalletWidget[ConfigSettings.PALLET_NUM];
+        palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
 
         ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
@@ -65,8 +66,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private void createTopButtonsSection(Composite parent) {
         Composite section = new Composite(parent, SWT.NONE);
         section.setLayout(new GridLayout(4, false));
-        section
-            .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        section.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         clearPlateBtn.setText("Clear Selected");
@@ -106,8 +106,7 @@ public class PalletSetWidget extends ScrolledComposite {
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
             String palletBarcode = palletBarcodesWidget.getPalletBarcode(i);
 
-            if (palletBarcode.length() == 0)
-                continue;
+            if (palletBarcode.length() == 0) continue;
 
             if (selected.containsKey(palletBarcode)) {
                 BioSampleScanPlugin.openError("Duplicate Pallet Barcodes",
@@ -139,8 +138,8 @@ public class PalletSetWidget extends ScrolledComposite {
             }
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
-                palletsToDecode.put(pallet, palletBarcodesWidget
-                    .getPalletBarcode(pallet - 1));
+                palletsToDecode.put(pallet,
+                    palletBarcodesWidget.getPalletBarcode(pallet - 1));
             }
         }
 
@@ -168,7 +167,7 @@ public class PalletSetWidget extends ScrolledComposite {
 
     public void clearPallets() {
         BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-        plugin.setPalletSet(new PalletSet());
+        plugin.createNewPelletSet();
 
         for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
             palletBarcodesWidget.clearText();

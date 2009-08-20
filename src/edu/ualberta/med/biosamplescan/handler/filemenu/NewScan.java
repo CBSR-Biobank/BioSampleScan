@@ -10,7 +10,6 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.PalletSetView;
-import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class NewScan extends AbstractHandler implements IHandler {
@@ -20,8 +19,7 @@ public class NewScan extends AbstractHandler implements IHandler {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
             "New Scan", "Do you want to clear all the tables?")) {
             viewComposite.clearPallets();
-            PalletSet palletSet = new PalletSet();
-            BioSampleScanPlugin.getDefault().setPalletSet(palletSet);
+            BioSampleScanPlugin.getDefault().createNewPelletSet();
         }
 
         return null;

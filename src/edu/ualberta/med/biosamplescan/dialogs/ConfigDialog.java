@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.dialogs;
 
 import java.io.File;
@@ -36,16 +37,16 @@ public class ConfigDialog extends Dialog {
     private Text textContrast;
     private Text platesText[][];
 
-    private Button[] buttonEdit;
-    private Button[] buttonClear;
-    private Button[] ratioBtns;
+    private Button [] buttonEdit;
+    private Button [] buttonClear;
+    private Button [] ratioBtns;
     private Button twainBtn;
     private Button wiaBtn;
 
     private Label labels[];
     private Label platelabels[];
 
-    private Group[] groups;
+    private Group [] groups;
 
     private List<Integer> platesToCalibrate;
 
@@ -67,21 +68,21 @@ public class ConfigDialog extends Dialog {
 
         int label_it = 0;
         int groups_it = 0;
-        groups = new Group[ConfigSettings.PALLET_NUM + 6];
-        platesText = new Text[ConfigSettings.PALLET_NUM + 1][4];// left,top,right,bottom
-        labels = new Label[ConfigSettings.PALLET_NUM * 5 + 11];
-        platelabels = new Label[ConfigSettings.PALLET_NUM * 4];
-        buttonEdit = new Button[4];
-        buttonClear = new Button[4];
+        groups = new Group [ConfigSettings.PALLET_NUM + 6];
+        platesText = new Text [ConfigSettings.PALLET_NUM + 1] [4];// left,top,right,bottom
+        labels = new Label [ConfigSettings.PALLET_NUM * 5 + 11];
+        platelabels = new Label [ConfigSettings.PALLET_NUM * 4];
+        buttonEdit = new Button [ConfigSettings.PALLET_NUM];
+        buttonClear = new Button [ConfigSettings.PALLET_NUM];
 
         contents.setLayout(new GridLayout(1, false));
 
-        ratioBtns = new Button[ConfigSettings.PALLET_NUM];
+        ratioBtns = new Button [ConfigSettings.PALLET_NUM];
         {
 
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            RowLayout group1Layout =
-                new RowLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            RowLayout group1Layout = new RowLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             groups[groups_it].setLayout(group1Layout);
             GridData group1LData = new GridData();
             group1LData.widthHint = 180;
@@ -90,8 +91,8 @@ public class ConfigDialog extends Dialog {
             groups[groups_it].setText("Set Plate Mode:");
             {
                 for (int i = 0; i < ratioBtns.length; i++) {
-                    ratioBtns[i] =
-                        new Button(groups[groups_it], SWT.RADIO | SWT.LEFT);
+                    ratioBtns[i] = new Button(groups[groups_it], SWT.RADIO
+                        | SWT.LEFT);
                     RowData button1LData = new RowData();
                     ratioBtns[i].setLayoutData(button1LData);
                     ratioBtns[i].setText(String.valueOf(i + 1));
@@ -106,15 +107,14 @@ public class ConfigDialog extends Dialog {
                     });
                 }
                 if (ConfigSettings.getInstance().getPalletCount() > 0) {
-                    ratioBtns[ConfigSettings.getInstance().getPalletCount() - 1]
-                        .setSelection(true);
+                    ratioBtns[ConfigSettings.getInstance().getPalletCount() - 1].setSelection(true);
                 }
             }
         }
         {
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            RowLayout group1Layout =
-                new RowLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            RowLayout group1Layout = new RowLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             groups[groups_it].setLayout(group1Layout);
             GridData group1LData = new GridData();
             group1LData.widthHint = 140;
@@ -154,8 +154,8 @@ public class ConfigDialog extends Dialog {
         }
         {
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            FillLayout group1Layout =
-                new FillLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            FillLayout group1Layout = new FillLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             GridData group1LData = new GridData();
             group1LData.widthHint = 421;
             group1LData.heightHint = 16;
@@ -205,8 +205,8 @@ public class ConfigDialog extends Dialog {
             groups[groups_it].setText(String.format("Plate %d Position",
                 plate + 1));
             {
-                platelabels[4 * plate + 0] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 0] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 0].setText("Top:");
                 platelabels[4 * plate + 0].setAlignment(SWT.RIGHT);
             }
@@ -219,8 +219,8 @@ public class ConfigDialog extends Dialog {
 
             }
             {
-                platelabels[4 * plate + 1] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 1] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 1].setText("Left:");
                 platelabels[4 * plate + 1].setAlignment(SWT.RIGHT);
             }
@@ -230,8 +230,8 @@ public class ConfigDialog extends Dialog {
                 platesText[plate][0].setTextLimit(6);
             }
             {
-                platelabels[4 * plate + 2] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 2] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 2].setText("Bottom:");
                 platelabels[4 * plate + 2].setAlignment(SWT.RIGHT);
             }
@@ -241,8 +241,8 @@ public class ConfigDialog extends Dialog {
                 platesText[plate][3].setTextLimit(6);
             }
             {
-                platelabels[4 * plate + 3] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 3] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 3].setText("Right:");
                 platelabels[4 * plate + 3].setAlignment(SWT.RIGHT);
             }
@@ -283,8 +283,7 @@ public class ConfigDialog extends Dialog {
     private void readPlatesTextToArray(double plateArray[][]) {
         for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
             for (int side = 0; side < 4; side++) {
-                plateArray[plate][side] =
-                    Double.valueOf(platesText[plate][side].getText());
+                plateArray[plate][side] = Double.valueOf(platesText[plate][side].getText());
             }
         }
     }
@@ -299,11 +298,10 @@ public class ConfigDialog extends Dialog {
     }
 
     private void buttonClearPlateText(int plate) {
-        if (MessageDialog
-            .openConfirm(
-                getShell(),
-                "Save over existing file?",
-                "A file already exists at the selected location are you sure you want to save over it?")) {
+        if (MessageDialog.openConfirm(
+            getShell(),
+            "Save over existing file?",
+            "A file already exists at the selected location are you sure you want to save over it?")) {
 
             for (int side = 0; side < 4; side++) {
                 if (platesText[plate - 1][side].getEditable()) {
@@ -377,8 +375,8 @@ public class ConfigDialog extends Dialog {
         if (plateMode > 0 && plateMode <= ConfigSettings.PALLET_NUM) {
             for (int i = 0; i < 4; i++) {
                 if (plate >= plateMode) {
-                    platesText[plate][i].setBackground(new Color(Display
-                        .getDefault(), 0, 0, 0));
+                    platesText[plate][i].setBackground(new Color(
+                        Display.getDefault(), 0, 0, 0));
                     platesText[plate][i].setEnabled(false);
                     buttonEdit[plate].setEnabled(false);
                     buttonClear[plate].setEnabled(false);
@@ -400,12 +398,11 @@ public class ConfigDialog extends Dialog {
             return;
         }
 
-        double nplates[][] = new double[ConfigSettings.PALLET_NUM][4];
+        double nplates[][] = new double [ConfigSettings.PALLET_NUM] [4];
         readPlatesTextToArray(nplates);
-        boolean msgDlg =
-            MessageDialog
-                .openConfirm(getShell(), "Re-Scan Plate Image?",
-                    "If you have moved the plates since the last calibration press OK.");
+        boolean msgDlg = MessageDialog.openConfirm(getShell(),
+            "Re-Scan Plate Image?",
+            "If you have moved the plates since the last calibration press OK.");
         if (!(new File(PalletImageDialog.alignFile).exists()) || msgDlg) {
             ScanLib.getInstance().slScanImage((int) PalletImageDialog.alignDpi,
                 0, 0, 0, 0, PalletImageDialog.alignFile);
@@ -431,8 +428,8 @@ public class ConfigDialog extends Dialog {
                 break;
         }
 
-        double plateset[] =
-            pid.open(nplates[plate - 1], twainBtn.getSelection(), c);
+        double plateset[] = pid.open(nplates[plate - 1],
+            twainBtn.getSelection(), c);
 
         for (int i = 0; i < 4; i++) {
             platesText[plate - 1][i].setText(String.valueOf(plateset[i]));
@@ -501,16 +498,14 @@ public class ConfigDialog extends Dialog {
         /* =================Set DPI ================ */
 
         /* =================Set Brightness ================ */
-        configSettingsReturn =
-            configSettings.setBrightness(textBrightness.getText());
+        configSettingsReturn = configSettings.setBrightness(textBrightness.getText());
         switch (configSettingsReturn) {
             case (ConfigSettings.SUCCESS):
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigScannerBrightness(
-                        configSettings.getBrightness());
+                int scanlibReturn = ScanLib.getInstance().slConfigScannerBrightness(
+                    configSettings.getBrightness());
                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                    BioSampleScanPlugin.openError("Set Brightness", ScanLib
-                        .getErrMsg(scanlibReturn));
+                    BioSampleScanPlugin.openError("Set Brightness",
+                        ScanLib.getErrMsg(scanlibReturn));
                     getShell().dispose();
                 }
                 break;
@@ -526,16 +521,14 @@ public class ConfigDialog extends Dialog {
         /* =================Set Brightness ================ */
 
         /* =================Set Contrast ================ */
-        configSettingsReturn =
-            configSettings.setContrast(textContrast.getText());
+        configSettingsReturn = configSettings.setContrast(textContrast.getText());
         switch (configSettingsReturn) {
             case (ConfigSettings.SUCCESS):
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigScannerContrast(
-                        configSettings.getContrast());
+                int scanlibReturn = ScanLib.getInstance().slConfigScannerContrast(
+                    configSettings.getContrast());
                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                    BioSampleScanPlugin.openError("Set Contrast", ScanLib
-                        .getErrMsg(scanlibReturn));
+                    BioSampleScanPlugin.openError("Set Contrast",
+                        ScanLib.getErrMsg(scanlibReturn));
                     getShell().dispose();
 
                 }
@@ -552,25 +545,23 @@ public class ConfigDialog extends Dialog {
         /* =================Set Contrast ================ */
 
         /* =================Set Plate Settings ================ */
-        double nplates[][] = new double[ConfigSettings.PALLET_NUM][4];
+        double nplates[][] = new double [ConfigSettings.PALLET_NUM] [4];
         readPlatesTextToArray(nplates); /* Reads Plate Config Settings */
 
         for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
-            int setPlateReturn =
-                configSettings.setPallet(plate + 1, nplates[plate][0],
-                    nplates[plate][1], nplates[plate][2], nplates[plate][3]);
+            int setPlateReturn = configSettings.setPallet(plate + 1,
+                nplates[plate][0], nplates[plate][1], nplates[plate][2],
+                nplates[plate][3]);
             if (setPlateReturn == ConfigSettings.SUCCESS
                 || setPlateReturn == ConfigSettings.CLEARDATA) {
 
-                PalletScanCoordinates coords =
-                    configSettings.getPallet(plate + 1);
+                PalletScanCoordinates coords = configSettings.getPallet(plate + 1);
 
-                if (coords == null)
-                    continue;
+                if (coords == null) continue;
 
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigPlateFrame(plate + 1,
-                        coords.left, coords.top, coords.right, coords.bottom);
+                int scanlibReturn = ScanLib.getInstance().slConfigPlateFrame(
+                    plate + 1, coords.left, coords.top, coords.right,
+                    coords.bottom);
                 if (scanlibReturn == ScanLib.SC_SUCCESS) {
                     if (setPlateReturn == ConfigSettings.SUCCESS) {
                         platesToCalibrate.add(plate + 1);
@@ -582,8 +573,8 @@ public class ConfigDialog extends Dialog {
                          */
                     }
                     else {
-                        BioSampleScanPlugin.openError("Plate Settings", ScanLib
-                            .getErrMsg(scanlibReturn));
+                        BioSampleScanPlugin.openError("Plate Settings",
+                            ScanLib.getErrMsg(scanlibReturn));
                         getShell().dispose();
                     }
                 }
