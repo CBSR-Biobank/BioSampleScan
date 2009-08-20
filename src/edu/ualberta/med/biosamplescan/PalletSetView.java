@@ -7,12 +7,12 @@ import org.eclipse.ui.part.ViewPart;
 
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
-public class PlateSetView extends ViewPart {
+public class PalletSetView extends ViewPart {
 
     private PalletSetWidget palletSetWidget;
 
     public static final String ID =
-        "edu.ualberta.med.biosamplescan.views.plateset";
+        "edu.ualberta.med.biosamplescan.views.palletset";
 
     @Override
     public void createPartControl(Composite parent) {
@@ -20,7 +20,7 @@ public class PlateSetView extends ViewPart {
         palletSetWidget = new PalletSetWidget(parent, SWT.NONE);
     }
 
-    public PalletSetWidget getPalletsWidget() {
+    public PalletSetWidget getPalletSetWidget() {
         return palletSetWidget;
     }
 

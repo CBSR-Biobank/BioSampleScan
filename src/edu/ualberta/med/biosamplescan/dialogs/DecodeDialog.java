@@ -12,7 +12,6 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class DecodeDialog extends ProgressMonitorDialog {
@@ -53,10 +52,8 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             palletSet.setPalletBarocode(p - 1, palletsToDecode
                                 .get(pallet));
 
-                            final PalletSetWidget w =
-                                BioSampleScanPlugin.getDefault()
-                                    .getPalletSetView().getPalletsWidget();
-                            w.updatePalletModel(p - 1);
+                            BioSampleScanPlugin.getDefault().getPalletSetView()
+                                .getPalletSetWidget().updatePalletModel(p - 1);
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {

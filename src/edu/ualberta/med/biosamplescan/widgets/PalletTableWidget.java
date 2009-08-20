@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
 import java.util.ArrayList;
@@ -26,8 +25,8 @@ import edu.ualberta.med.scanlib.ScanCell;
 
 public class PalletTableWidget extends Composite {
 
-    private static final String [] headings = {
-        "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+    private static final String[] headings =
+        { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
     private List<PalletModel> model;
 
@@ -35,7 +34,7 @@ public class PalletTableWidget extends Composite {
 
     private Table table;
 
-    private TableColumn [] tableColumns;
+    private TableColumn[] tableColumns;
 
     private int firstColWidth;
 
@@ -45,8 +44,9 @@ public class PalletTableWidget extends Composite {
         setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         setLayout(new GridLayout(1, false));
 
-        tableViewer = new TableViewer(this, SWT.BORDER | SWT.H_SCROLL
-            | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.VIRTUAL);
+        tableViewer =
+            new TableViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.MULTI
+                | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.VIRTUAL);
         tableViewer.setLabelProvider(new PalletLabelProvider());
         tableViewer.setContentProvider(new ArrayContentProvider());
 
@@ -56,7 +56,7 @@ public class PalletTableWidget extends Composite {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        tableColumns = new TableColumn [headings.length];
+        tableColumns = new TableColumn[headings.length];
 
         GC gc = new GC(parent);
         FontMetrics fm = gc.getFontMetrics();
@@ -72,7 +72,8 @@ public class PalletTableWidget extends Composite {
             else {
                 col.pack();
             }
-            if (index != 0) col.setResizable(true);
+            if (index != 0)
+                col.setResizable(true);
             tableColumns[index] = col;
             index++;
         }
@@ -90,8 +91,9 @@ public class PalletTableWidget extends Composite {
                 Rectangle area = PalletTableWidget.this.getClientArea();
                 Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
                 ScrollBar vBar = table.getVerticalBar();
-                int width = area.width - table.computeTrim(0, 0, 0, 0).width
-                    - vBar.getSize().x - firstColWidth;
+                int width =
+                    area.width - table.computeTrim(0, 0, 0, 0).width
+                        - vBar.getSize().x - firstColWidth;
                 if (size.y > area.height + table.getHeaderHeight()) {
                     // Subtract the scrollbar width from the total column width
                     // if a vertical scrollbar will be required
@@ -128,18 +130,23 @@ public class PalletTableWidget extends Composite {
     }
 
     public void setPalletBarcodes(final Pallet pallet) {
-        if (pallet == null) return;
-
         Thread t = new Thread() {
             @Override
             public void run() {
-                if (getTableViewer().getTable().isDisposed()) return;
+                if (getTableViewer().getTable().isDisposed())
+                    return;
 
                 PalletModel modelItem;
 
                 for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
                     modelItem = model.get(r);
-                    modelItem.o = pallet.getBarcodesRow(r);
+
+                    if (pallet == null) {
+                        modelItem.o = null;
+                    }
+                    else {
+                        modelItem.o = pallet.getBarcodesRow(r);
+                    }
                 }
 
                 getTableViewer().getTable().getDisplay().asyncExec(

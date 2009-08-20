@@ -73,7 +73,7 @@ public class PalletSetWidget extends ScrolledComposite {
         // clearPlateBtn.setBounds(488, 6, 90, 40);
         clearPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
-                clearPalletBtnWidgetSelected(evt);
+                confirmClearPallets(evt);
             }
         });
 
@@ -98,19 +98,6 @@ public class PalletSetWidget extends ScrolledComposite {
 
     private boolean confirmMsg(String title, String msg) {
         return MessageDialog.openConfirm(getShell(), title, msg);
-    }
-
-    public void clearPalletBtnWidgetSelected(SelectionEvent evt) {
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        if (confirmMsg("Clear Pallets",
-            "Do you want to clear the selected pallets?")) {
-            for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
-                palletSet.clearTable(p);
-                palletBarcodesWidget.clearText();
-                updatePalletModel(p);
-            }
-            ConfigSettings.getInstance().setLastSaveDir("");
-        }
     }
 
     public void scanPalletBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
@@ -168,18 +155,24 @@ public class PalletSetWidget extends ScrolledComposite {
             "invalid pallet number: " + palletNum);
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         Pallet pallet = palletSet.getPallet(palletNum);
-        if (pallet != null)
-            palletWidgets[palletNum].setPalletBarcodes(pallet);
+        palletWidgets[palletNum].setPalletBarcodes(pallet);
+    }
+
+    public void confirmClearPallets(SelectionEvent evt) {
+        if (confirmMsg("Clear Pallets",
+            "Do you want to clear the selected pallets?")) {
+            ConfigSettings.getInstance().setLastSaveDir("");
+            clearPallets();
+        }
     }
 
     public void clearPallets() {
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
+        plugin.setPalletSet(new PalletSet());
+
         for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
-            Pallet pallet = palletSet.getPallet(p);
-            if (pallet == null)
-                continue;
-            pallet.clear();
-            updatePalletModel(p);
+            palletBarcodesWidget.clearText();
+            palletWidgets[p].setPalletBarcodes(null);
         }
     }
 
@@ -194,6 +187,7 @@ public class PalletSetWidget extends ScrolledComposite {
             palletBarcodesWidget.setEnabled(table, isSet);
             palletWidgets[table].setEnabled(isSet);
         }
+        layout(true);
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 }

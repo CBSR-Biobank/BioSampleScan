@@ -23,12 +23,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.PlateSetView;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
+import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class ConfigDialog extends Dialog {
@@ -278,6 +277,11 @@ public class ConfigDialog extends Dialog {
         }
         this.loadFromConfigSettings();
         contents.pack();
+
+        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
+        plugin.setPalletSet(new PalletSet());
+        plugin.getPalletSetView().getPalletSetWidget().clearPallets();
+
         return contents;
     }
 
@@ -407,12 +411,12 @@ public class ConfigDialog extends Dialog {
             MessageDialog
                 .openConfirm(getShell(), "Re-Scan Plate Image?",
                     "If you have moved the plates since the last calibration press OK.");
-        if (!(new File(PlateImageDialog.alignFile).exists()) || msgDlg) {
-            ScanLib.getInstance().slScanImage((int) PlateImageDialog.alignDpi,
-                0, 0, 0, 0, PlateImageDialog.alignFile);
+        if (!(new File(PalletImageDialog.alignFile).exists()) || msgDlg) {
+            ScanLib.getInstance().slScanImage((int) PalletImageDialog.alignDpi,
+                0, 0, 0, 0, PalletImageDialog.alignFile);
         }
 
-        PlateImageDialog pid = new PlateImageDialog(getShell(), SWT.NONE);
+        PalletImageDialog pid = new PalletImageDialog(getShell(), SWT.NONE);
         Color c;
         switch (plate - 1) {
             case (0):
@@ -598,8 +602,9 @@ public class ConfigDialog extends Dialog {
         }
         /* =================Set Plate Settings ================ */
 
-        ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-            .getActivePage().getActivePart()).refresh();
+        // reset our model since pallet set may have changed
+        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
+        plugin.getPalletSetView().refresh();
 
         getShell().dispose();
         super.okPressed();

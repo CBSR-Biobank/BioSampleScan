@@ -15,6 +15,16 @@ public class PalletSet {
         pallets = new Pallet[ConfigSettings.PALLET_NUM];
     }
 
+    public int getPalletCount() {
+        int result = 0;
+        for (int i = 0; i < pallets.length; ++i) {
+            if (pallets[i] != null) {
+                ++result;
+            }
+        }
+        return result;
+    }
+
     public Pallet getPallet(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);

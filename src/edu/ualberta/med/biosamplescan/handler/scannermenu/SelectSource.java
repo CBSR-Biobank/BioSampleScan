@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -14,8 +13,8 @@ public class SelectSource extends AbstractHandler implements IHandler {
         int scanlibReturn = ScanLib.getInstance().slSelectSourceAsDefault();
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
-            BioSampleScanPlugin.openAsyncError("Source Selection Error",
-                ScanLib.getErrMsg(scanlibReturn));
+            BioSampleScanPlugin.openError("Source Selection Error", ScanLib
+                .getErrMsg(scanlibReturn));
         }
         return null;
     }

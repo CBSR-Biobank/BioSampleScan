@@ -28,7 +28,7 @@
             targetID="edu.ualberta.med.biosamplescan.rcp.perspective">
          <view
                closeable="false"
-               id="edu.ualberta.med.biosamplescan.views.plateset"
+               id="edu.ualberta.med.biosamplescan.views.palletset"
                minimized="false"
                moveable="false"
                relationship="left"
@@ -289,9 +289,9 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            class="edu.ualberta.med.biosamplescan.PlateSetView"
-            id="edu.ualberta.med.biosamplescan.views.plateset"
-            name="PlateSet View"
+            class="edu.ualberta.med.biosamplescan.PalletSetView"
+            id="edu.ualberta.med.biosamplescan.views.palletset"
+            name="Pallet Set View"
             restorable="true">
       </view>
    </extension>

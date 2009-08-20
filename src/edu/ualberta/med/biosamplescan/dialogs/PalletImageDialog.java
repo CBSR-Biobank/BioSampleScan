@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class PlateImageDialog extends Dialog {
+public class PalletImageDialog extends Dialog {
 
 	private Shell dialogShell;
 	private Canvas canvas;
@@ -32,7 +32,7 @@ public class PlateImageDialog extends Dialog {
 	// pointTopLeft: Used to determine which point the user is currently
 	// adjusting.The point is either top-left or bottom-right.
 
-	public PlateImageDialog(Shell parent, int style) {
+	public PalletImageDialog(Shell parent, int style) {
 		super(parent, style);
 	}
 

@@ -10,6 +10,7 @@ import edu.ualberta.med.biosamplescan.model.Pallet;
 
 public class PalletWidget extends Composite {
 
+    @SuppressWarnings("unused")
     private int palletId;
 
     private Label label;
@@ -35,9 +36,6 @@ public class PalletWidget extends Composite {
     public void setEnabled(boolean enabled) {
         setVisible(enabled);
         gridData.exclude = !enabled;
-        System.out.println("setEnabled: palletId/" + palletId + " enabled/"
-            + enabled + "gd.exclude/" + gridData.exclude);
-        layout(true);
     }
 
     public void setPalletBarcodes(Pallet pallet) {

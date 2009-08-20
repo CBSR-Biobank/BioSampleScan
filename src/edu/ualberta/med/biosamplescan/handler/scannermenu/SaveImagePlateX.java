@@ -8,7 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.PlateSetView;
+import edu.ualberta.med.biosamplescan.PalletSetView;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
@@ -16,7 +16,7 @@ import edu.ualberta.med.scanlib.ScanLib;
 public class SaveImagePlateX {
     public static final Object execute(ExecutionEvent event, int platenum)
         throws ExecutionException {
-        PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite = ((PalletSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletSetWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (configSettings.getPalletCount() < platenum) {
