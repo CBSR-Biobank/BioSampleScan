@@ -4,6 +4,8 @@ package edu.ualberta.med.biosamplescan.model;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -51,20 +53,23 @@ public class PalletSet {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
         if (pallets[id] == null) {
-            pallets[id] = new Pallet();
+            pallets[id] = new Pallet(id);
         }
         pallets[id].loadFromScanlibFile(append);
     }
 
-    public void savePallets(String fileLocation) {
+    public void savePallet(String fileLocation, Pallet pallet) {
         try {
-            BufferedWriter out = null;
-            out = new BufferedWriter(new FileWriter(fileLocation));
+            String filename = fileLocation
+                + "/"
+                + pallet.getPlateBarcode()
+                + "_"
+                + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(new Date())
+                + ".csv";
+
+            BufferedWriter out = new BufferedWriter(new FileWriter(filename));
             out.write("#PlateId,Row,Col,Barcode,Date\r\n");
-            for (Pallet pallet : pallets) {
-                if (pallet == null) continue;
-                out.write(pallet.toString());
-            }
+            out.write(pallet.toString());
             out.close();
         }
         catch (IOException e) {

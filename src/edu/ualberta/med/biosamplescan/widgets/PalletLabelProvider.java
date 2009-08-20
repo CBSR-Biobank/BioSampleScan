@@ -31,6 +31,9 @@ public class PalletLabelProvider extends LabelProvider implements
 
             Assert.isTrue(columnIndex <= rowBarcodes.length,
                 "Invalid size for row barcodes: " + rowBarcodes.length);
+            if (rowBarcodes[columnIndex - 1] == null) {
+                return "";
+            }
             return rowBarcodes[columnIndex - 1].getValue();
         }
         else {

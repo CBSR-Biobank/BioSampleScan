@@ -2,7 +2,9 @@
 package edu.ualberta.med.biosamplescan.widgets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -73,8 +75,7 @@ public class PalletSetWidget extends ScrolledComposite {
         // clearPlateBtn.setBounds(488, 6, 90, 40);
         clearPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
-                clearPlateBtnWidgetSelected(evt);
-
+                clearPalletBtnWidgetSelected(evt);
             }
         });
 
@@ -83,7 +84,7 @@ public class PalletSetWidget extends ScrolledComposite {
         // reScanPlateBtn.setBounds(596, 6, 90, 40);
         reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
-                scanPlateBtnWidgetSelected(evt, true);
+                scanPalletBtnWidgetSelected(evt, true);
             }
         });
 
@@ -91,7 +92,7 @@ public class PalletSetWidget extends ScrolledComposite {
         scanPlateBtn.setText("Scan Selected");
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent evt) {
-                scanPlateBtnWidgetSelected(evt, false);
+                scanPalletBtnWidgetSelected(evt, false);
             }
         });
 
@@ -111,19 +112,20 @@ public class PalletSetWidget extends ScrolledComposite {
         }
     }
 
-    public void clearPlateBtnWidgetSelected(SelectionEvent evt) {
+    public void clearPalletBtnWidgetSelected(SelectionEvent evt) {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        if (confirmMsg("Clear Table(s)",
-            "Do you want to clear the selected tables?")) {
+        if (confirmMsg("Clear Pallets",
+            "Do you want to clear the selected pallets?")) {
             for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
                 palletSet.clearTable(p);
                 palletBarcodesWidget.clearText();
                 updatePalletModel(p);
             }
+            ConfigSettings.getInstance().setLastSaveDir("");
         }
     }
 
-    public void scanPlateBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
+    public void scanPalletBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
         List<Integer> selected = new ArrayList<Integer>();
 
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
@@ -137,28 +139,26 @@ public class PalletSetWidget extends ScrolledComposite {
             return;
         }
 
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
-        List<Integer> palletsToDecode = new ArrayList<Integer>();
-        List<String> palletBarcodes = new ArrayList<String>();
+        Map<Integer, String> palletsToDecode = new HashMap<Integer, String>();
 
         for (Integer pallet : selected) {
 
             PalletScanCoordinates coords = configSettings.getPallet(pallet);
 
             if (coords == null) {
-                errorMsg("Pallete " + pallet + " not calibrated", 0);
+                errorMsg("Pallete " + pallet + " not configured", 0);
                 return;
             }
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
-                palletsToDecode.add(pallet);
-                palletBarcodes.add(palletBarcodesWidget.getPalletBarcode(pallet));
+                palletsToDecode.put(pallet,
+                    palletBarcodesWidget.getPalletBarcode(pallet - 1));
             }
         }
 
         if (palletsToDecode.size() > 0) {
-            new DecodeDialog(palletsToDecode, palletBarcodes, rescan);
+            new DecodeDialog(palletsToDecode, rescan);
         }
     }
 

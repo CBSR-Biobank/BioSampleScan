@@ -26,8 +26,7 @@ public class ConfigSettings {
     private PalletScanCoordinates [] palletScanCoordinates;
     private int palletMode = PALLET_NUM;
     private String driverType = "TWAIN";
-    private String appendSetting = "FALSE";
-    private String lastSaveLocation = null;
+    private String lastSaveDir = null;
 
     public static final int SUCCESS = 0;
     public static final int NOCHANGE = 1;
@@ -233,14 +232,11 @@ public class ConfigSettings {
             String palletcount = section.get("palletcount");
             if (palletcount != null) setPalletCount(palletcount);
 
-            String lastsavelocation = section.get("lastsavelocation");
-            if (lastsavelocation != null) setLastSaveLocation(lastsavelocation);
-
-            String appendsetting = section.get("appendsetting");
-            if (appendsetting != null) setDriverType(appendsetting);
+            String lastsavedir = section.get("lastsavedir");
+            if (lastsavedir != null) setLastSaveDir(lastsavedir);
 
             String drivertype = section.get("drivertype");
-            if (drivertype != null) setAppendSetting(drivertype);
+            if (drivertype != null) setDriverType(drivertype);
         }
 
         return SUCCESS;
@@ -262,13 +258,13 @@ public class ConfigSettings {
         return palletMode;
     }
 
-    public int setLastSaveLocation(String lastSaveLocation) {
-        this.lastSaveLocation = lastSaveLocation;
-        return saveToIni("settings", "lastSaveLocation", lastSaveLocation);
+    public int setLastSaveDir(String lastSaveDir) {
+        this.lastSaveDir = lastSaveDir;
+        return saveToIni("settings", "lastSaveDir", lastSaveDir);
     }
 
-    public String getLastSaveLocation() {
-        return lastSaveLocation;
+    public String getLastSaveDir() {
+        return lastSaveDir;
     }
 
     public int setDriverType(String driverType) {
@@ -282,18 +278,5 @@ public class ConfigSettings {
 
     public String getDriverType() {
         return driverType;
-    }
-
-    public int setAppendSetting(String appendSetting) {
-        if (appendSetting == null) appendSetting = "";
-        if (appendSetting.equals("TRUE") || appendSetting.equals("FALSE")) {
-            this.appendSetting = appendSetting;
-            return saveToIni("settings", "appendsetting", appendSetting);
-        }
-        return INVALID_INPUT;
-    }
-
-    public boolean getAppendSetting() {
-        return appendSetting.equals("TRUE");
     }
 }

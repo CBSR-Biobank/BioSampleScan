@@ -2,7 +2,7 @@
 package edu.ualberta.med.biosamplescan.dialogs;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -17,8 +17,8 @@ import edu.ualberta.med.scanlib.ScanLib;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
-    public DecodeDialog(final List<Integer> palletsToDecode,
-        final List<String> palletBarcodes, final boolean rescan) {
+    public DecodeDialog(final Map<Integer, String> palletsToDecode,
+        final boolean rescan) {
         super(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
         try {
             run(true, true, new IRunnableWithProgress() {
@@ -29,22 +29,27 @@ public class DecodeDialog extends ProgressMonitorDialog {
                         ConfigSettings configSettings = ConfigSettings.getInstance();
 
                         int count = 0;
-                        for (Integer pallet : palletsToDecode) {
+                        for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
-                            int scanlibReturn = ScanLib.getInstance().slDecodePlate(
-                                configSettings.getDpi(), p);
-                            if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                                BioSampleScanPlugin.openAsyncError(
-                                    "Decoding Error",
-                                    ScanLib.getErrMsg(scanlibReturn));
-                                return;
+
+                            String osname = System.getProperty("os.name");
+                            if (osname.startsWith("Windows")) {
+                                int scanlibReturn = ScanLib.getInstance().slDecodePlate(
+                                    configSettings.getDpi(), p);
+                                if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                                    BioSampleScanPlugin.openAsyncError(
+                                        "Decoding Error",
+                                        ScanLib.getErrMsg(scanlibReturn));
+                                    return;
+                                }
                             }
+
                             PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
 
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
                             palletSet.setPalletBarocode(p - 1,
-                                palletBarcodes.get(count));
+                                palletsToDecode.get(pallet));
 
                             final PalletSetWidget w = BioSampleScanPlugin.getDefault().getPalletSetView().getPalletsWidget();
                             w.updatePalletModel(p - 1);

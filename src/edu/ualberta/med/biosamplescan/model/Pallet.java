@@ -9,14 +9,20 @@ import org.eclipse.core.runtime.Assert;
 import edu.ualberta.med.scanlib.ScanCell;
 
 public class Pallet {
+    private int id;
     private ScanCell [][] barcodes;
     private String palletBarcode;
     private long timestamp;
 
     // TODO place all properties into a hash map
 
-    public Pallet() {
+    public Pallet(int id) {
+        this.id = id;
         barcodes = null;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ScanCell [] getBarcodesRow(int row) {
@@ -48,7 +54,16 @@ public class Pallet {
 
     public void loadFromScanlibFile(boolean append) {
         try {
-            ScanCell [][] readBarcodes = ScanCell.getScanLibResults();
+            ScanCell [][] readBarcodes;
+
+            String osname = System.getProperty("os.name");
+            if (osname.startsWith("Windows")) {
+                readBarcodes = ScanCell.getScanLibResults();
+            }
+            else {
+                readBarcodes = ScanCell.getRandom();
+            }
+
             if ((barcodes == null) || !append) {
                 barcodes = readBarcodes;
                 return;
@@ -77,7 +92,7 @@ public class Pallet {
             for (int c = 0; c < barcodes[0].length; ++c) {
                 if (barcodes[r][c] == null) continue;
 
-                result.concat(String.format("%s,%s,%d,%s,%s\r\n",
+                result = result.concat(String.format("%s,%s,%d,%s,%s\r\n",
                     palletBarcode, Character.toString((char) ('A' + r)), c + 1,
                     barcodes[r][c].getValue(), new SimpleDateFormat(
                         "E dd/MM/yyyy HH:mm:ss").format(timestamp)));

@@ -61,7 +61,7 @@
             <menu
                   icon="icons/page_save.png"
                   id="edu.ualberta.med.biosamplescan.commands.saveallbarcodemenu"
-                  label="Save from...">
+                  label="Save...">
                <command
                      commandId="edu.ualberta.med.biosamplescan.commands.savefromplate1"
                      icon="icons/tab.png"
@@ -188,11 +188,6 @@
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"
             id="edu.ualberta.med.biosamplescan.commands.quit"
             name="Quit">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.optionsmenu.AppendSetting"
-            id="edu.ualberta.med.biosamplescan.commands.appendsetting"
-            name="Append Setting">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScannerSettings"

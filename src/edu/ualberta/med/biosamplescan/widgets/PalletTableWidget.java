@@ -29,9 +29,6 @@ public class PalletTableWidget extends Composite {
     private static final String [] headings = {
         "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
 
-    // private static final int [] bounds = {
-    // 10, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
-
     private List<PalletModel> model;
 
     private TableViewer tableViewer;
