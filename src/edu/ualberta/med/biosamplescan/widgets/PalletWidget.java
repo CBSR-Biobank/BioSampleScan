@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.swt.SWT;
@@ -11,25 +10,34 @@ import edu.ualberta.med.biosamplescan.model.Pallet;
 
 public class PalletWidget extends Composite {
 
+    private int palletId;
+
+    private Label label;
+
     private PalletTableWidget tableWidget;
 
-    public PalletWidget(Composite parent, int style, int palletNum) {
+    private GridData gridData;
+
+    public PalletWidget(Composite parent, int style, int palletId) {
         super(parent, style);
 
-        setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        this.palletId = palletId;
+
         setLayout(new GridLayout(1, false));
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
+        setLayoutData(gridData);
 
-        Composite subSection = new Composite(this, SWT.NONE);
-        subSection.setLayout(new GridLayout(4, false));
-
-        Label l = new Label(subSection, SWT.NONE);
-        l.setText("Pallet " + (palletNum + 1));
+        label = new Label(this, SWT.NONE);
+        label.setText("Pallet " + (palletId + 1));
         tableWidget = new PalletTableWidget(this, SWT.NONE);
     }
 
     public void setEnabled(boolean enabled) {
-        tableWidget.getTableViewer().getTable().setEnabled(enabled);
-        tableWidget.getTableViewer().getTable().setVisible(enabled);
+        setVisible(enabled);
+        gridData.exclude = !enabled;
+        System.out.println("setEnabled: palletId/" + palletId + " enabled/"
+            + enabled + "gd.exclude/" + gridData.exclude);
+        layout(true);
     }
 
     public void setPalletBarcodes(Pallet pallet) {

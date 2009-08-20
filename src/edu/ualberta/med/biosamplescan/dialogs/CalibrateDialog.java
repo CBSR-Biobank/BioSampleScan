@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.dialogs;
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,17 +22,19 @@ public class CalibrateDialog extends ProgressMonitorDialog {
                     try {
                         monitor.beginTask("Configuring pallet position...",
                             IProgressMonitor.UNKNOWN);
-                        ConfigSettings configSettings = ConfigSettings.getInstance();
+                        ConfigSettings configSettings =
+                            ConfigSettings.getInstance();
 
                         for (Integer plate : platesToCalibrate) {
                             int p = plate;
-                            int scanlibReturn = ScanLib.getInstance().slCalibrateToPlate(
-                                configSettings.getDpi(), p);
+                            int scanlibReturn =
+                                ScanLib.getInstance().slCalibrateToPlate(
+                                    configSettings.getDpi(), p);
 
                             if (scanlibReturn != ScanLib.SC_SUCCESS) {
                                 BioSampleScanPlugin.openAsyncError(
-                                    "Calibration Error",
-                                    ScanLib.getErrMsg(scanlibReturn));
+                                    "Calibration Error", ScanLib
+                                        .getErrMsg(scanlibReturn));
                                 ScanLib.getInstance().slConfigPlateFrame(p, 0,
                                     0, 0, 0);
                             }

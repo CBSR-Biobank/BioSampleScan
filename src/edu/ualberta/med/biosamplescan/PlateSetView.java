@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan;
 
 import org.eclipse.jface.action.IStatusLineManager;
@@ -10,28 +9,34 @@ import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class PlateSetView extends ViewPart {
 
-    private PalletSetWidget allPalletsWidget;
+    private PalletSetWidget palletSetWidget;
 
-    public static final String ID = "edu.ualberta.med.biosamplescan.views.plateset";
+    public static final String ID =
+        "edu.ualberta.med.biosamplescan.views.plateset";
 
     @Override
     public void createPartControl(Composite parent) {
         BioSampleScanPlugin.getDefault().setPlateSetView(this);
-        allPalletsWidget = new PalletSetWidget(parent, SWT.NONE);
+        palletSetWidget = new PalletSetWidget(parent, SWT.NONE);
     }
 
     public PalletSetWidget getPalletsWidget() {
-        return allPalletsWidget;
+        return palletSetWidget;
     }
 
     @Override
     public void setFocus() {
-        allPalletsWidget.setFocus();
+        palletSetWidget.setFocus();
     }
 
     public void updateStatusBar(String msg) {
-        IStatusLineManager statusLine = getViewSite().getActionBars().getStatusLineManager();
+        IStatusLineManager statusLine =
+            getViewSite().getActionBars().getStatusLineManager();
         statusLine.setMessage(msg);
+    }
+
+    public void refresh() {
+        palletSetWidget.refresh();
     }
 
 }

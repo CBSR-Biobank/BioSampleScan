@@ -23,6 +23,8 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class PalletSetWidget extends ScrolledComposite {
 
+    private Composite composite;
+
     private Button reScanPlateBtn;
     private Button scanPlateBtn;
     private Button clearPlateBtn;
@@ -33,29 +35,27 @@ public class PalletSetWidget extends ScrolledComposite {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
         setExpandHorizontal(true);
         setExpandVertical(true);
-        this.getVerticalBar().setIncrement(10);
-        this.getHorizontalBar().setIncrement(10);
 
-        Composite top = new Composite(this, SWT.NONE);
-        top.setLayout(new GridLayout(1, false));
-        top.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        composite = new Composite(this, SWT.NONE);
+        composite.setLayout(new GridLayout(1, false));
+        composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        createTopButtonsSection(top);
-        palletBarcodesWidget = new PalletBarcodesWidget(top, SWT.NONE);
+        createTopButtonsSection(composite);
+        palletBarcodesWidget = new PalletBarcodesWidget(composite, SWT.NONE);
 
         palletWidgets = new PalletWidget[ConfigSettings.PALLET_NUM];
 
+        ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
-            palletWidgets[table] = new PalletWidget(top, SWT.NONE, table);
+            palletWidgets[table] = new PalletWidget(composite, SWT.NONE, table);
+            palletWidgets[table].setEnabled(config.palletIsSet(table + 1));
         }
 
-        setPlateCount();
-        top.layout();
-        top.pack();
-        setContent(top);
+        // composite.pack();
+        composite.layout();
+        setContent(composite);
 
-        setMinWidth(top.getBounds().width);
-        setMinHeight(top.getBounds().height);
+        setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 
     public boolean setFocus() {
@@ -100,16 +100,6 @@ public class PalletSetWidget extends ScrolledComposite {
         return MessageDialog.openConfirm(getShell(), title, msg);
     }
 
-    private void errorMsg(String Identifier, int code) {
-        if (code != 0) {
-            MessageDialog.openError(getShell(), "Error", String.format(
-                "%s\nReturned Error Code: %d\n", Identifier, code));
-        }
-        else {
-            MessageDialog.openError(getShell(), "Error", Identifier);
-        }
-    }
-
     public void clearPalletBtnWidgetSelected(SelectionEvent evt) {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         if (confirmMsg("Clear Pallets",
@@ -144,7 +134,7 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (selected.size() == 0) {
-            errorMsg("No Pallets Selected", 0);
+            BioSampleScanPlugin.openError("Error", "No Pallets Selected");
             return;
         }
 
@@ -156,7 +146,8 @@ public class PalletSetWidget extends ScrolledComposite {
             PalletScanCoordinates coords = configSettings.getPallet(pallet);
 
             if (coords == null) {
-                errorMsg("Pallete " + pallet + " not configured", 0);
+                BioSampleScanPlugin.openError("Configuration Error", "Pallet "
+                    + pallet + " not configured");
                 return;
             }
 
@@ -192,16 +183,17 @@ public class PalletSetWidget extends ScrolledComposite {
         }
     }
 
-    public void setPlateCount() {
-        int platecount = ConfigSettings.getInstance().getPalletCount();
-        boolean set = false;
-        for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
-            set = (table < platecount);
-            palletWidgets[table].setEnabled(set);
-        }
-    }
-
     public boolean getPalletSelected(int platenum) {
         return palletBarcodesWidget.isSelected(platenum);
+    }
+
+    public void refresh() {
+        ConfigSettings config = ConfigSettings.getInstance();
+        for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
+            boolean isSet = config.palletIsSet(table + 1);
+            palletBarcodesWidget.setEnabled(table, isSet);
+            palletWidgets[table].setEnabled(isSet);
+        }
+        setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 }

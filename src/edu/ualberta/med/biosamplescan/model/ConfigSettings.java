@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.model;
 
 import java.io.File;
@@ -23,8 +22,8 @@ public class ConfigSettings {
     private int brightness = 0;
     private int contrast = 0;
     private int dpi = ScanLib.DPI_300;
-    private PalletScanCoordinates [] palletScanCoordinates;
-    private int palletMode = PALLET_NUM;
+    private PalletScanCoordinates[] palletScanCoordinates;
+    private int palletsMax = PALLET_NUM;
     private String driverType = "TWAIN";
     private String lastSaveDir = null;
 
@@ -38,12 +37,13 @@ public class ConfigSettings {
 
     private ConfigSettings() {
         saveFileName = null;
-        palletScanCoordinates = new PalletScanCoordinates [PALLET_NUM];
+        palletScanCoordinates = new PalletScanCoordinates[PALLET_NUM];
         loadFromFile();
     }
 
     public static ConfigSettings getInstance() {
-        if (instance != null) return instance;
+        if (instance != null)
+            return instance;
         instance = new ConfigSettings();
         return instance;
     }
@@ -84,7 +84,8 @@ public class ConfigSettings {
     }
 
     public int setBrightness(String strBrightness) {
-        if (strBrightness == null || strBrightness.isEmpty()) return INVALID_INPUT;
+        if (strBrightness == null || strBrightness.isEmpty())
+            return INVALID_INPUT;
         int intBrightness = Integer.parseInt(strBrightness);
         if (intBrightness > 1000 || intBrightness < -1000) {
             return INVALID_INPUT;
@@ -101,7 +102,8 @@ public class ConfigSettings {
     }
 
     public int setContrast(String strContrast) {
-        if (strContrast == null || strContrast.isEmpty()) return INVALID_INPUT;
+        if (strContrast == null || strContrast.isEmpty())
+            return INVALID_INPUT;
         int intContrast = Integer.parseInt(strContrast);
         if (intContrast > 1000 || intContrast < -1000) {
             return INVALID_INPUT;
@@ -118,7 +120,8 @@ public class ConfigSettings {
     }
 
     public int setDpi(String strDpi) {
-        if (strDpi == null || strDpi.isEmpty()) return INVALID_INPUT;
+        if (strDpi == null || strDpi.isEmpty())
+            return INVALID_INPUT;
         int intDpi = Integer.parseInt(strDpi);
 
         if (intDpi > 0 && intDpi <= 600) {
@@ -136,9 +139,9 @@ public class ConfigSettings {
     }
 
     public boolean palletIsSet(int pallet) {
-        for (int i = 0; i < 4; i++)
-            if (this.palletScanCoordinates[pallet - 1] != null) return true;
-        return false;
+        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+            "invalid pallet number: " + pallet);
+        return (palletScanCoordinates[pallet - 1] != null);
     }
 
     public int setPallet(int pallet, double left, double top, double right,
@@ -157,6 +160,12 @@ public class ConfigSettings {
 
         --pallet;
 
+        if ((left == 0) && (top == 0) && (right == 0) && (bottom == 0)) {
+            if (palletScanCoordinates[pallet] != null)
+                palletScanCoordinates[pallet] = null;
+            return CLEARDATA;
+        }
+
         if ((palletScanCoordinates[pallet] != null)
             && (left == palletScanCoordinates[pallet].left)
             && (top == palletScanCoordinates[pallet].top)
@@ -165,12 +174,8 @@ public class ConfigSettings {
             return NOCHANGE;
         }
 
-        palletScanCoordinates[pallet] = new PalletScanCoordinates(pallet + 1,
-            left, top, right, bottom);
-
-        if (left == top && top == right && right == bottom && bottom == 0) {
-            return CLEARDATA;
-        }
+        palletScanCoordinates[pallet] =
+            new PalletScanCoordinates(pallet + 1, left, top, right, bottom);
         return SUCCESS;
     }
 
@@ -203,13 +208,16 @@ public class ConfigSettings {
             String brightness = section.get("brightness");
             String contrast = section.get("contrast");
 
-            if (brightness != null) setBrightness(brightness);
-            if (contrast != null) setContrast(contrast);
+            if (brightness != null)
+                setBrightness(brightness);
+            if (contrast != null)
+                setContrast(contrast);
         }
 
         for (int pallet = 1; pallet <= ConfigSettings.PALLET_NUM; pallet++) {
             section = ini.get("plate-" + pallet);
-            if (section == null) continue;
+            if (section == null)
+                continue;
 
             Double left = section.get("left", Double.class);
             Double top = section.get("top", Double.class);
@@ -219,43 +227,40 @@ public class ConfigSettings {
             if ((left != null) && (top != null) && (right != null)
                 && (bottom != null)) {
 
-                setPallet(pallet, left.doubleValue(), top.doubleValue(),
-                    right.doubleValue(), bottom.doubleValue());
+                setPallet(pallet, left.doubleValue(), top.doubleValue(), right
+                    .doubleValue(), bottom.doubleValue());
             }
         }
 
         section = ini.get("settings");
         if (section != null) {
             String dpi = section.get("dpi");
-            if (dpi != null) setDpi(dpi);
+            if (dpi != null)
+                setDpi(dpi);
 
-            String palletcount = section.get("palletcount");
-            if (palletcount != null) setPalletCount(palletcount);
+            Integer palletcount = section.get("palletcount", Integer.class);
+            if (palletcount != null)
+                setPalletCount(palletcount);
 
             String lastsavedir = section.get("lastsavedir");
-            if (lastsavedir != null) setLastSaveDir(lastsavedir);
+            if (lastsavedir != null)
+                setLastSaveDir(lastsavedir);
 
             String drivertype = section.get("drivertype");
-            if (drivertype != null) setDriverType(drivertype);
+            if (drivertype != null)
+                setDriverType(drivertype);
         }
 
         return SUCCESS;
     }
 
-    public int setPalletCount(String platemode) { // TODO handle return values
-        if (platemode == null || platemode.isEmpty()
-            || Integer.parseInt(platemode) < 1
-            || Integer.parseInt(platemode) > ConfigSettings.PALLET_NUM) {
-            return INVALID_INPUT;
-        }
-        else {
-            palletMode = Integer.parseInt(platemode);
-            return saveToIni("settings", "platemode", platemode);
-        }
+    public int setPalletCount(int palletcount) {
+        palletsMax = palletcount;
+        return saveToIni("settings", "palletcount", palletsMax);
     }
 
     public int getPalletCount() {
-        return palletMode;
+        return palletsMax;
     }
 
     public int setLastSaveDir(String lastSaveDir) {
@@ -268,7 +273,8 @@ public class ConfigSettings {
     }
 
     public int setDriverType(String driverType) {
-        if (driverType == null) driverType = "";
+        if (driverType == null)
+            driverType = "";
         if (driverType.equals("TWAIN") || driverType.equals("WIA")) {
             this.driverType = driverType;
             return saveToIni("settings", "drivertype", driverType);

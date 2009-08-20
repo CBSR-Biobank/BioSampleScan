@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import java.util.List;
@@ -14,9 +13,16 @@ import edu.ualberta.med.biosamplescan.dialogs.ConfigDialog;
 
 public class ScannerSettings extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        ConfigDialog configDialog = new ConfigDialog(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+        ConfigDialog configDialog =
+            new ConfigDialog(PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getShell());
         configDialog.open();
+
+        String osname = System.getProperty("os.name");
+        if (!osname.startsWith("Windows")) {
+            return null;
+        }
+
         List<Integer> platesToCalibrate = configDialog.getPlatesToCalibrate();
         if (platesToCalibrate.size() > 0) {
             new CalibrateDialog(platesToCalibrate);
