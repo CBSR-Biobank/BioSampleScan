@@ -13,6 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/ini4j-0.5.1.jar,
  lib/scanlib.jar,
- lib/jopt-simple-3.1.jar
+ lib/jopt-simple-3.1.jar,
+ lib/commons-lang-2.4.jar
 Export-Package: edu.ualberta.med.biosamplescan,
  edu.ualberta.med.biosamplescan.rcp

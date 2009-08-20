@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.dialogs;
 
 import java.lang.reflect.InvocationTargetException;
@@ -7,6 +6,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
@@ -26,35 +26,53 @@ public class DecodeDialog extends ProgressMonitorDialog {
                     try {
                         monitor.beginTask("Decoding plates...",
                             IProgressMonitor.UNKNOWN);
-                        ConfigSettings configSettings = ConfigSettings.getInstance();
+                        ConfigSettings configSettings =
+                            ConfigSettings.getInstance();
 
-                        int count = 0;
                         for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
 
                             String osname = System.getProperty("os.name");
                             if (osname.startsWith("Windows")) {
-                                int scanlibReturn = ScanLib.getInstance().slDecodePlate(
-                                    configSettings.getDpi(), p);
+                                int scanlibReturn =
+                                    ScanLib.getInstance().slDecodePlate(
+                                        configSettings.getDpi(), p);
                                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
                                     BioSampleScanPlugin.openAsyncError(
-                                        "Decoding Error",
-                                        ScanLib.getErrMsg(scanlibReturn));
+                                        "Decoding Error", ScanLib
+                                            .getErrMsg(scanlibReturn));
                                     return;
                                 }
                             }
 
-                            PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+                            PalletSet palletSet =
+                                BioSampleScanPlugin.getDefault().getPalletSet();
 
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
-                            palletSet.setPalletBarocode(p - 1,
-                                palletsToDecode.get(pallet));
+                            palletSet.setPalletBarocode(p - 1, palletsToDecode
+                                .get(pallet));
 
-                            final PalletSetWidget w = BioSampleScanPlugin.getDefault().getPalletSetView().getPalletsWidget();
+                            final PalletSetWidget w =
+                                BioSampleScanPlugin.getDefault()
+                                    .getPalletSetView().getPalletsWidget();
                             w.updatePalletModel(p - 1);
                         }
-                        ++count;
+
+                        Display.getDefault().asyncExec(new Runnable() {
+                            public void run() {
+                                String msg;
+                                if (rescan) {
+                                    msg = "Pallets re-scanned and decoded.";
+                                }
+                                else {
+                                    msg = "Pallets scanned and decoded.";
+                                }
+
+                                BioSampleScanPlugin.getDefault()
+                                    .getPalletSetView().updateStatusBar(msg);
+                            }
+                        });
                     }
                     catch (Exception e) {
                         e.printStackTrace();
@@ -73,5 +91,4 @@ public class DecodeDialog extends ProgressMonitorDialog {
             e.printStackTrace();
         }
     }
-
 }

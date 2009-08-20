@@ -1,9 +1,6 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
@@ -30,7 +27,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletBarcodesWidget palletBarcodesWidget;
-    private PalletWidget [] palletWidgets;
+    private PalletWidget[] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -46,7 +43,7 @@ public class PalletSetWidget extends ScrolledComposite {
         createTopButtonsSection(top);
         palletBarcodesWidget = new PalletBarcodesWidget(top, SWT.NONE);
 
-        palletWidgets = new PalletWidget [ConfigSettings.PALLET_NUM];
+        palletWidgets = new PalletWidget[ConfigSettings.PALLET_NUM];
 
         for (int table = 0; table < ConfigSettings.PALLET_NUM; table++) {
             palletWidgets[table] = new PalletWidget(top, SWT.NONE, table);
@@ -68,7 +65,8 @@ public class PalletSetWidget extends ScrolledComposite {
     private void createTopButtonsSection(Composite parent) {
         Composite section = new Composite(parent, SWT.NONE);
         section.setLayout(new GridLayout(4, false));
-        section.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        section
+            .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         clearPlateBtn.setText("Clear Selected");
@@ -126,11 +124,22 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void scanPalletBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
-        List<Integer> selected = new ArrayList<Integer>();
+        Map<String, Integer> selected = new HashMap<String, Integer>();
 
         for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
-            if (palletBarcodesWidget.isSelected(i)) {
-                selected.add(i + 1);
+            String palletBarcode = palletBarcodesWidget.getPalletBarcode(i);
+
+            if (palletBarcode.length() == 0)
+                continue;
+
+            if (selected.containsKey(palletBarcode)) {
+                BioSampleScanPlugin.openError("Duplicate Pallet Barcodes",
+                    "Pallets " + selected.get(palletBarcode) + " and "
+                        + (i + 1) + " have the same barcodes");
+                return;
+            }
+            else {
+                selected.put(palletBarcode, i + 1);
             }
         }
 
@@ -142,7 +151,7 @@ public class PalletSetWidget extends ScrolledComposite {
         ConfigSettings configSettings = ConfigSettings.getInstance();
         Map<Integer, String> palletsToDecode = new HashMap<Integer, String>();
 
-        for (Integer pallet : selected) {
+        for (Integer pallet : selected.values()) {
 
             PalletScanCoordinates coords = configSettings.getPallet(pallet);
 
@@ -152,8 +161,8 @@ public class PalletSetWidget extends ScrolledComposite {
             }
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
-                palletsToDecode.put(pallet,
-                    palletBarcodesWidget.getPalletBarcode(pallet - 1));
+                palletsToDecode.put(pallet, palletBarcodesWidget
+                    .getPalletBarcode(pallet - 1));
             }
         }
 
@@ -168,14 +177,16 @@ public class PalletSetWidget extends ScrolledComposite {
             "invalid pallet number: " + palletNum);
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         Pallet pallet = palletSet.getPallet(palletNum);
-        if (pallet != null) palletWidgets[palletNum].setPalletBarcodes(pallet);
+        if (pallet != null)
+            palletWidgets[palletNum].setPalletBarcodes(pallet);
     }
 
     public void clearPallets() {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         for (int p = 0; p < ConfigSettings.PALLET_NUM; p++) {
             Pallet pallet = palletSet.getPallet(p);
-            if (pallet == null) continue;
+            if (pallet == null)
+                continue;
             pallet.clear();
             updatePalletModel(p);
         }
