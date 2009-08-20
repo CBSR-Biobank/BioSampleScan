@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.model;
 
 import java.io.BufferedWriter;
@@ -10,10 +9,10 @@ import java.util.Date;
 import org.eclipse.core.runtime.Assert;
 
 public class PalletSet {
-    private Pallet [] pallets;
+    private Pallet[] pallets;
 
     public PalletSet() {
-        pallets = new Pallet [ConfigSettings.PALLET_NUM];
+        pallets = new Pallet[ConfigSettings.PALLET_NUM];
     }
 
     public Pallet getPallet(Integer id) {
@@ -58,29 +57,33 @@ public class PalletSet {
         pallets[id].loadFromScanlibFile(append);
     }
 
-    public void savePallet(String fileLocation, Pallet pallet) {
+    public String savePallet(String fileLocation, Pallet pallet) {
         try {
-            String filename = fileLocation
-                + "/"
-                + pallet.getPlateBarcode()
-                + "_"
-                + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(new Date())
-                + ".csv";
+            String filename =
+                fileLocation
+                    + "/"
+                    + pallet.getPlateBarcode()
+                    + "_"
+                    + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
+                        .format(new Date()) + ".csv";
 
             BufferedWriter out = new BufferedWriter(new FileWriter(filename));
             out.write("#PlateId,Row,Col,Barcode,Date\r\n");
             out.write(pallet.toString());
             out.close();
+            return filename;
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void clearTable(int id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
-        if (pallets[id] == null) return;
+        if (pallets[id] == null)
+            return;
         pallets[id].clear();
     }
 }

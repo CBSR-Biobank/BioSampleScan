@@ -1,5 +1,7 @@
-
 package edu.ualberta.med.biosamplescan.handler.filemenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -21,27 +23,43 @@ import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
  */
 public class SavePallets extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        PalletSetWidget viewComposite = ((PlateSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletsWidget();
+        PalletSetWidget viewComposite =
+            ((PlateSetView) PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage().getActivePart())
+                .getPalletsWidget();
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
-        DirectoryDialog dlg = new DirectoryDialog(viewComposite.getShell(),
-            SWT.SAVE);
+        DirectoryDialog dlg =
+            new DirectoryDialog(viewComposite.getShell(), SWT.SAVE);
         dlg.setText("Directory to save pallet decode information");
         dlg.setMessage("Select a directory");
         dlg.setFilterPath(configSettings.getLastSaveDir());
         String saveDir = dlg.open();
 
+        List<String> filenames = new ArrayList<String>();
+
         if (saveDir != null) {
             configSettings.setLastSaveDir(saveDir);
             for (int i = 0; i < ConfigSettings.PALLET_NUM; ++i) {
                 Pallet pallet = palletSet.getPallet(i);
-                if (pallet == null) continue;
-                palletSet.savePallet(saveDir, pallet);
+                if (pallet == null)
+                    continue;
+                filenames.add(palletSet.savePallet(saveDir, pallet));
             }
         }
-        BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
-            "Files saved.");
+
+        String msg = new String();
+
+        if (filenames.size() == 1) {
+            msg = "File " + filenames.get(0) + " saved.";
+        }
+        else {
+
+        }
+
+        BioSampleScanPlugin.getDefault().getPalletSetView()
+            .updateStatusBar(msg);
         return null;
     }
 
