@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletScanCoordinates;
-import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class ConfigDialog extends Dialog {
@@ -277,10 +276,6 @@ public class ConfigDialog extends Dialog {
         }
         this.loadFromConfigSettings();
         contents.pack();
-
-        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-        plugin.setPalletSet(new PalletSet());
-        plugin.getPalletSetView().getPalletSetWidget().clearPallets();
 
         return contents;
     }

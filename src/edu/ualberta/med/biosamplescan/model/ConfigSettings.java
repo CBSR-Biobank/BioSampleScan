@@ -8,6 +8,7 @@ import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.scanlib.ScanLib;
 
 /**
@@ -39,6 +40,25 @@ public class ConfigSettings {
         saveFileName = null;
         palletScanCoordinates = new PalletScanCoordinates[PALLET_NUM];
         loadFromFile();
+
+        String msg = new String();
+        if (getPalletCount() == 0) {
+            msg = "Please configure scanner.";
+        }
+        else {
+            msg = "Configuration loaded.";
+        }
+        BioSampleScanPlugin.getDefault().getPalletSetView()
+            .updateStatusBar(msg);
+    }
+
+    public int getPalletCount() {
+        int result = 0;
+        for (int i = 0; i < palletScanCoordinates.length; ++i) {
+            if (palletScanCoordinates[i] != null)
+                ++result;
+        }
+        return result;
     }
 
     public static ConfigSettings getInstance() {
@@ -259,7 +279,7 @@ public class ConfigSettings {
         return saveToIni("settings", "palletcount", palletsMax);
     }
 
-    public int getPalletCount() {
+    public int getPalletMax() {
         return palletsMax;
     }
 
