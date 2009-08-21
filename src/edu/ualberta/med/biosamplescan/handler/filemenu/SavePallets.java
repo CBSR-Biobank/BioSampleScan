@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import java.io.File;
@@ -28,6 +27,9 @@ public class SavePallets extends AbstractHandler implements IHandler {
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
+        if (singlePalletSave())
+            return null;
+
         String saveDir = dirDialog().open();
         List<String> filenames = new ArrayList<String>();
 
@@ -35,8 +37,10 @@ public class SavePallets extends AbstractHandler implements IHandler {
             configSettings.setLastSaveDir(saveDir);
             for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; ++i) {
                 Pallet pallet = palletSet.getPallet(i);
-                if (pallet == null) continue;
-                filenames.add(new File(palletSet.savePallet(saveDir, pallet)).getName());
+                if (pallet == null)
+                    continue;
+                filenames.add(new File(palletSet.savePalletToDir(saveDir,
+                    pallet)).getName());
             }
 
             String msg = new String();
@@ -51,20 +55,40 @@ public class SavePallets extends AbstractHandler implements IHandler {
                 Assert.isTrue(false, "no files saved");
             }
 
-            BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
-                msg);
+            BioSampleScanPlugin.getDefault().getPalletSetView()
+                .updateStatusBar(msg);
         }
         return null;
     }
 
     public static DirectoryDialog dirDialog() {
-        DirectoryDialog dlg = new DirectoryDialog(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            SWT.SAVE);
+        DirectoryDialog dlg =
+            new DirectoryDialog(PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getShell(), SWT.SAVE);
         dlg.setText("Directory to save pallet decode information");
         dlg.setMessage("Select a directory");
         dlg.setFilterPath(ConfigSettings.getInstance().getLastSaveDir());
         return dlg;
+    }
+
+    /**
+     * Returns true if application was started to scan only a single pallet.
+     */
+    public static boolean singlePalletSave() {
+        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        String filename = ConfigSettings.getInstance().getSaveFileName();
+
+        if (filename == null)
+            return false;
+
+        Pallet pallet = palletSet.getPallet(0);
+        Assert.isNotNull(pallet, "pallet is null");
+        palletSet.savePalletToFile(filename, pallet);
+
+        String msg = "File " + filename + " saved.";
+        BioSampleScanPlugin.getDefault().getPalletSetView()
+            .updateStatusBar(msg);
+        return true;
     }
 
 }

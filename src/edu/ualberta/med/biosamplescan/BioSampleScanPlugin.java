@@ -70,9 +70,13 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
         ConfigSettings c = ConfigSettings.getInstance();
 
-        String fileName = (String) parser.getOptionValue(outputOpt);
-        if (fileName != null) {
-            c.setSaveFileName(fileName);
+        String filename = (String) parser.getOptionValue(outputOpt);
+        if (filename != null) {
+            if (filename.length() == 0) {
+                System.err.println("Invalid save location");
+                System.exit(3);
+            }
+            c.setSaveFileName(filename);
         }
 
         Integer palletsMax = (Integer) parser.getOptionValue(palletsMaxOpt);
@@ -84,6 +88,12 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                 System.exit(3);
             }
             c.setPalletsMax(palletsMax);
+        }
+
+        if ((filename != null) && (palletsMax != null) && (palletsMax != 1)) {
+            System.err
+                .println("palletsmax should be 1 when using --output option");
+            System.exit(3);
         }
     }
 

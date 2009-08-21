@@ -68,26 +68,28 @@ public class PalletSet {
         pallets[id].loadFromScanlibFile(append);
     }
 
-    public String savePallet(String fileLocation, Pallet pallet) {
-        try {
-            String filename =
-                fileLocation
-                    + "/"
-                    + pallet.getPlateBarcode()
-                    + "_"
-                    + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
-                        .format(new Date()) + ".csv";
+    public String savePalletToDir(String dir, Pallet pallet) {
+        String filename =
+            dir
+                + "/"
+                + pallet.getPlateBarcode()
+                + "_"
+                + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
+                    .format(new Date()) + ".csv";
+        savePalletToFile(filename, pallet);
+        return filename;
+    }
 
+    public void savePalletToFile(String filename, Pallet pallet) {
+        try {
             BufferedWriter out = new BufferedWriter(new FileWriter(filename));
             out.write("#PlateId,Row,Col,Barcode,Date\r\n");
             out.write(pallet.toString());
             out.close();
-            return filename;
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public void clearTable(int id) {

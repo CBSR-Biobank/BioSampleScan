@@ -15,11 +15,14 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 public class SaveBarcodesFromTableX {
     public static final Object execute(ExecutionEvent event, int palletId)
         throws ExecutionException {
-        if (palletId >= ConfigSettings.getInstance().getPalletMax()) {
+        if (palletId > ConfigSettings.getInstance().getPalletMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");
             return null;
         }
+
+        if (SavePallets.singlePalletSave())
+            return null;
 
         PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
 
@@ -40,7 +43,7 @@ public class SaveBarcodesFromTableX {
             Pallet pallet = palletSet.getPallet(palletId - 1);
             Assert.isNotNull(pallet, "No pallet for pallet id: " + palletId);
 
-            String filename = palletSet.savePallet(saveDir, pallet);
+            String filename = palletSet.savePalletToDir(saveDir, pallet);
             BioSampleScanPlugin.getDefault().getPalletSetView()
                 .updateStatusBar("File " + filename + " saved.");
         }

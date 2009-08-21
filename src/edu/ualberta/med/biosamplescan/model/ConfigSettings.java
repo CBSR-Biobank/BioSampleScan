@@ -45,11 +45,13 @@ public class ConfigSettings {
     /**
      * This value can be assigned form the command line.
      * 
-     * @param palletcount
+     * @param max
      *            A number between 1 and PALLET_NUM.
      */
-    public void setPalletsMax(int palletcount) {
-        palletsMax = palletcount;
+    public void setPalletsMax(int max) {
+        Assert.isTrue((max > 0) && (max <= palletsMax),
+            "invalid number for max pallets: " + max);
+        palletsMax = max;
     }
 
     public int getPalletMax() {
