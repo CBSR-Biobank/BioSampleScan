@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import java.util.List;
@@ -13,23 +12,28 @@ import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.CalibrateDialog;
 import edu.ualberta.med.biosamplescan.dialogs.ConfigDialog;
 
-public class ScannerSettings extends AbstractHandler implements IHandler {
+public class ScannerConfiguration extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
-        if (BioSampleScanPlugin.getDefault().getPalletSet().getPalletCount() > 0) {
+        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
+
+        if (plugin.getPalletSet().getPalletCount() > 0) {
             if (!BioSampleScanPlugin.openConfirm("Pallet Decode Information",
                 "Erase decode information and proceed to configuration?")) {
                 return null;
             }
 
-            BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-            plugin.createNewPelletSet();
             plugin.getPalletSetView().getPalletSetWidget().clearPallets();
         }
 
-        ConfigDialog configDialog = new ConfigDialog(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+        ConfigDialog configDialog =
+            new ConfigDialog(PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getShell());
         configDialog.open();
+
+        // reset our model since pallet set may have changed
+        plugin.createNewPelletSet();
+        plugin.getPalletSetView().refresh();
 
         String osname = System.getProperty("os.name");
         if (!osname.startsWith("Windows")) {

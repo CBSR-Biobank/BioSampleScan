@@ -35,6 +35,7 @@ public class PalletWidget extends Composite {
 
     public void setEnabled(boolean enabled) {
         setVisible(enabled);
+        label.setVisible(enabled);
         gridData.exclude = !enabled;
     }
 

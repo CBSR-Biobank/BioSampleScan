@@ -202,7 +202,7 @@
             name="Quit">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScannerSettings"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScannerConfiguration"
             id="edu.ualberta.med.biosamplescan.commands.scannersettings"
             name="Scanner Settings">
       </command>

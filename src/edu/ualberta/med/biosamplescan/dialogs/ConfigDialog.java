@@ -603,10 +603,6 @@ public class ConfigDialog extends Dialog {
         }
         /* =================Set Plate Settings ================ */
 
-        // reset our model since pallet set may have changed
-        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-        plugin.getPalletSetView().refresh();
-
         getShell().dispose();
         super.okPressed();
     }

@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan;
 
 import jargs.gnu.CmdLineParser;
@@ -78,6 +77,12 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
         Integer palletsMax = (Integer) parser.getOptionValue(palletsMaxOpt);
         if (palletsMax != null) {
+            if ((palletsMax <= 0) || (palletsMax > ConfigSettings.PALLET_NUM)) {
+                System.err
+                    .println("Invalid value. palletsmax should be between 1 and "
+                        + ConfigSettings.PALLET_NUM);
+                System.exit(3);
+            }
             c.setPalletsMax(palletsMax);
         }
     }
@@ -97,7 +102,8 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                 registry.put(key, desc);
             }
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+        }
     }
 
     /*
@@ -138,27 +144,24 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
      * Display an information message
      */
     public static void openMessage(String title, String message) {
-        MessageDialog.openInformation(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            title, message);
+        MessageDialog.openInformation(PlatformUI.getWorkbench()
+            .getActiveWorkbenchWindow().getShell(), title, message);
     }
 
     /**
      * Display an error message
      */
     public static void openError(String title, String message) {
-        MessageDialog.openError(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            title, message);
+        MessageDialog.openError(PlatformUI.getWorkbench()
+            .getActiveWorkbenchWindow().getShell(), title, message);
     }
 
     /**
      * Display an information message
      */
     public static boolean openConfirm(String title, String message) {
-        return MessageDialog.openConfirm(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            title, message);
+        return MessageDialog.openConfirm(PlatformUI.getWorkbench()
+            .getActiveWorkbenchWindow().getShell(), title, message);
     }
 
     /**
@@ -167,9 +170,8 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     public static void openAsyncError(final String title, final String message) {
         Display.getDefault().asyncExec(new Runnable() {
             public void run() {
-                MessageDialog.openError(
-                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    title, message);
+                MessageDialog.openError(PlatformUI.getWorkbench()
+                    .getActiveWorkbenchWindow().getShell(), title, message);
             }
         });
     }
@@ -204,6 +206,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                     msg = "Configuration loaded.";
                 }
                 plateSetView.updateStatusBar(msg);
+                plateSetView.refresh();
             }
         });
     }

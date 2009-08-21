@@ -49,7 +49,12 @@ public class PalletSetWidget extends ScrolledComposite {
         ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < palletsMax; table++) {
             palletWidgets[table] = new PalletWidget(composite, SWT.NONE, table);
-            palletWidgets[table].setEnabled(config.palletIsSet(table + 1));
+
+            /*
+             * can't call palletWidgets[table].setEnabled() since want widget to
+             * actually be layed out
+             */
+            palletWidgets[table].setVisible(config.palletIsSet(table + 1));
         }
 
         // composite.pack();

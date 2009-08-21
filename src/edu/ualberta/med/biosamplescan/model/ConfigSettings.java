@@ -42,9 +42,14 @@ public class ConfigSettings {
         loadFromFile();
     }
 
-    public int setPalletsMax(int palletcount) {
+    /**
+     * This value can be assigned form the command line.
+     * 
+     * @param palletcount
+     *            A number between 1 and PALLET_NUM.
+     */
+    public void setPalletsMax(int palletcount) {
         palletsMax = palletcount;
-        return saveToIni("settings", "palletcount", palletsMax);
     }
 
     public int getPalletMax() {
@@ -256,10 +261,6 @@ public class ConfigSettings {
             String dpi = section.get("dpi");
             if (dpi != null)
                 setDpi(dpi);
-
-            Integer palletcount = section.get("palletcount", Integer.class);
-            if (palletcount != null)
-                setPalletsMax(palletcount);
 
             String lastsavedir = section.get("lastsavedir");
             if (lastsavedir != null)
