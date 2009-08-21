@@ -27,6 +27,8 @@ public class ConfigSettings {
     private String driverType = "TWAIN";
     private String lastSaveDir = null;
 
+    private boolean simulateScanning;
+
     public static final int SUCCESS = 0;
     public static final int NOCHANGE = 1;
     public static final int CLEARDATA = 2;
@@ -297,5 +299,13 @@ public class ConfigSettings {
 
     public String getDriverType() {
         return driverType;
+    }
+
+    public void setSimulateScanning(boolean enable) {
+        simulateScanning = enable;
+    }
+
+    public boolean getSimulateScanning() {
+        return simulateScanning;
     }
 }

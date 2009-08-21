@@ -11,6 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.CalibrateDialog;
 import edu.ualberta.med.biosamplescan.dialogs.ConfigDialog;
+import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 
 public class ScannerConfiguration extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -35,10 +36,8 @@ public class ScannerConfiguration extends AbstractHandler implements IHandler {
         plugin.createNewPelletSet();
         plugin.getPalletSetView().refresh();
 
-        String osname = System.getProperty("os.name");
-        if (!osname.startsWith("Windows")) {
+        if (ConfigSettings.getInstance().getSimulateScanning())
             return null;
-        }
 
         List<Integer> platesToCalibrate = configDialog.getPlatesToCalibrate();
         if (platesToCalibrate.size() > 0) {

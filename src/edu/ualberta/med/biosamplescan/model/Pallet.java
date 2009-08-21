@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.model;
 
 import java.text.SimpleDateFormat;
@@ -10,7 +9,7 @@ import edu.ualberta.med.scanlib.ScanCell;
 
 public class Pallet {
     private int id;
-    private ScanCell [][] barcodes;
+    private ScanCell[][] barcodes;
     private String palletBarcode;
     private long timestamp;
 
@@ -23,8 +22,9 @@ public class Pallet {
         return id;
     }
 
-    public ScanCell [] getBarcodesRow(int row) {
-        if (barcodes == null) return null;
+    public ScanCell[] getBarcodesRow(int row) {
+        if (barcodes == null)
+            return null;
         Assert.isTrue(((row >= 0) && (row < barcodes.length)), "invalid row: "
             + row);
         return barcodes[row];
@@ -52,10 +52,9 @@ public class Pallet {
 
     public void loadFromScanlibFile(boolean append) {
         try {
-            ScanCell [][] readBarcodes;
+            ScanCell[][] readBarcodes;
 
-            String osname = System.getProperty("os.name");
-            if (osname.startsWith("Windows")) {
+            if (!ConfigSettings.getInstance().getSimulateScanning()) {
                 readBarcodes = ScanCell.getScanLibResults();
             }
             else {
@@ -88,12 +87,14 @@ public class Pallet {
         String result = new String();
         for (int r = 0; r < barcodes.length; ++r) {
             for (int c = 0; c < barcodes[0].length; ++c) {
-                if (barcodes[r][c] == null) continue;
+                if (barcodes[r][c] == null)
+                    continue;
 
-                result = result.concat(String.format("%s,%s,%d,%s,%s\r\n",
-                    palletBarcode, Character.toString((char) ('A' + r)), c + 1,
-                    barcodes[r][c].getValue(), new SimpleDateFormat(
-                        "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
+                result =
+                    result.concat(String.format("%s,%s,%d,%s,%s\r\n",
+                        palletBarcode, Character.toString((char) ('A' + r)),
+                        c + 1, barcodes[r][c].getValue(), new SimpleDateFormat(
+                            "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
             }
         }
         return result;

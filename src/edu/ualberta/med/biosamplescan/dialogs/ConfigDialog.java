@@ -398,13 +398,13 @@ public class ConfigDialog extends Dialog {
     }
 
     private void buttonPlateImageDialog(int plate) {
+        ConfigSettings config = ConfigSettings.getInstance();
 
-        String osname = System.getProperty("os.name");
-        if (!osname.startsWith("Windows")) {
+        if (config.getSimulateScanning()) {
             return;
         }
 
-        int maxPallets = ConfigSettings.getInstance().getPalletMax();
+        int maxPallets = config.getPalletMax();
         double nplates[][] = new double[maxPallets][4];
         readPlatesTextToArray(nplates);
         boolean msgDlg =

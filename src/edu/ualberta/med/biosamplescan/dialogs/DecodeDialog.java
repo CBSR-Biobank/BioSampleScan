@@ -31,8 +31,8 @@ public class DecodeDialog extends ProgressMonitorDialog {
                         for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
 
-                            String osname = System.getProperty("os.name");
-                            if (osname.startsWith("Windows")) {
+                            if (!ConfigSettings.getInstance()
+                                .getSimulateScanning()) {
                                 int scanlibReturn =
                                     ScanLib.getInstance().slDecodePlate(
                                         configSettings.getDpi(), p);

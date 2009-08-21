@@ -6,6 +6,8 @@ import jargs.gnu.CmdLineParser.OptionException;
 
 import java.net.URL;
 
+import org.eclipse.core.commands.Command;
+import org.eclipse.core.commands.State;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -14,19 +16,23 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.services.ISourceProviderService;
 import org.osgi.framework.BundleContext;
 
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
+import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
 
 /**
  * The activator class controls the plug-in life cycle
  */
 public class BioSampleScanPlugin extends AbstractUIPlugin {
     // The plug-in ID
-    public static final String PLUGIN_ID = "biosamplescan2";
+    public static final String PLUGIN_ID = "BioSampleScan";
 
     public static final String IMG_FORM_BG = "formBg";
 
@@ -205,6 +211,28 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
     public void setPlateSetView(PalletSetView plateSetEditor) {
         plateSetView = plateSetEditor;
+
+        IWorkbenchWindow window =
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        ISourceProviderService service =
+            (ISourceProviderService) window
+                .getService(ISourceProviderService.class);
+
+        DebugState debugStateSourceProvider =
+            (DebugState) service.getSourceProvider(DebugState.SESSION_STATE);
+        debugStateSourceProvider.setState(BioSampleScanPlugin.getDefault()
+            .isDebugging());
+
+        // reads the persisted state for the menu contribution
+        ICommandService cmdService =
+            (ICommandService) PlatformUI.getWorkbench().getService(
+                ICommandService.class);
+        Command command =
+            cmdService
+                .getCommand("edu.ualberta.med.biosamplescan.menu.debug.simulateScanning");
+        State state = command.getState("org.eclipse.ui.commands.toggleState");
+        ConfigSettings.getInstance().setSimulateScanning(
+            (Boolean) state.getValue());
 
         Display.getDefault().asyncExec(new Runnable() {
             public void run() {

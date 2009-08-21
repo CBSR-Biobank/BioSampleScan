@@ -4,10 +4,8 @@
 
    <extension
          id="BioSampleScan"
-         name="BioSampleScan"
          point="org.eclipse.core.runtime.applications">
-      <application
-            visible="true">
+      <application>
          <run
                class="edu.ualberta.med.biosamplescan.rcp.Application">
          </run>
@@ -175,6 +173,21 @@
                   style="push">
             </command>
          </menu>
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.debug"
+               label="**Debug**">
+            <visibleWhen
+                  checkEnabled="true">
+               <reference
+                     definitionId="biosamplescan.debugState">
+               </reference>
+            </visibleWhen>
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.menu.debug.simulateScanning"
+                  label="Simulate Scanning"
+                  style="toggle">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
@@ -276,6 +289,15 @@
             id="edu.ualberta.med.biosamplescan.commands.newview"
             name="New Scan">
       </command>
+      <command
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.debug.SimulateScannng"
+            id="edu.ualberta.med.biosamplescan.menu.debug.simulateScanning"
+            name="Simulate Scanning">
+            <state
+            class="org.eclipse.ui.handlers.RegistryToggleState:false"
+            id="org.eclipse.ui.commands.toggleState">
+            </state> 
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.startup">
@@ -283,8 +305,7 @@
             class="edu.ualberta.med.biosamplescan.Startup"></startup>
    </extension>
    <extension
-         id="product"
-         name="BioSampleScan"
+         id="BioSampleScan"
          point="org.eclipse.core.runtime.products">
       <product
             application="BioSampleScan.application"
@@ -292,18 +313,6 @@
          <property
                name="appName"
                value="BioSampleScan">
-         </property>
-      </product>
-   </extension>
-   <extension
-         id="product1"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="BioSampleScan.BioSampleScan"
-            name="BioSasmpleScan">
-         <property
-               name="appName"
-               value="BioSasmpleScan">
          </property>
       </product>
    </extension>
@@ -316,6 +325,37 @@
             name="Pallet Set View"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="edu.ualberta.med.biosamplescan.sourceproviders.DebugState">
+         <variable
+               name="edu.ualberta.med.biosamplescan.sourceprovider.debugState"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+        id="biosamplescan.debugState">
+         <with
+               variable="edu.ualberta.med.biosamplescan.sourceprovider.debugState">
+            <equals
+                  value="debug">
+            </equals>
+         </with>
+      </definition>
+      <definition
+            id="biosamplescan.nonDebugState">
+         <with
+               variable="edu.ualberta.med.biosamplescan.sourceprovider.debugState">
+            <equals
+                  value="nonDebug">
+            </equals>
+         </with>
+      </definition>
    </extension>
 
 </plugin>
