@@ -15,7 +15,9 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 public class SaveBarcodesFromTableX {
     public static final Object execute(ExecutionEvent event, int palletId)
         throws ExecutionException {
-        if (ConfigSettings.getInstance().getPalletCount() < palletId) {
+        if (palletId >= ConfigSettings.getInstance().getPalletMax()) {
+            BioSampleScanPlugin.openError("Error",
+                "Not configured for this pallet");
             return null;
         }
 
