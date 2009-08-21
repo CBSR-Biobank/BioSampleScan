@@ -239,7 +239,7 @@ public class ConfigSettings {
             if (dpi != null) setDpi(dpi);
 
             Integer palletcount = section.get("palletcount", Integer.class);
-            if (palletcount != null) setPalletCount(palletcount);
+            if (palletcount != null) setPalletsMax(palletcount);
 
             String lastsavedir = section.get("lastsavedir");
             if (lastsavedir != null) setLastSaveDir(lastsavedir);
@@ -251,7 +251,7 @@ public class ConfigSettings {
         return SUCCESS;
     }
 
-    public int setPalletCount(int palletcount) {
+    public int setPalletsMax(int palletcount) {
         palletsMax = palletcount;
         return saveToIni("settings", "palletcount", palletsMax);
     }

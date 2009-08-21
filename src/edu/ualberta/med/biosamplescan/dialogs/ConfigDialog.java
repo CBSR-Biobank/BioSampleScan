@@ -444,7 +444,7 @@ public class ConfigDialog extends Dialog {
         /* =================Set Plate Mode================ */
         int plateMode = getActivePlateMode();
         if (plateMode > 0 && plateMode <= ConfigSettings.PALLET_NUM) {
-            ConfigSettings.getInstance().setPalletCount(plateMode);
+            ConfigSettings.getInstance().setPalletsMax(plateMode);
         }
         /* =================Set Plate Mode================ */
 

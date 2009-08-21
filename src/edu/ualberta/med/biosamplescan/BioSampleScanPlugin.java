@@ -1,10 +1,11 @@
 
 package edu.ualberta.med.biosamplescan;
 
-import java.net.URL;
+import jargs.gnu.CmdLineParser;
+import jargs.gnu.CmdLineParser.Option;
+import jargs.gnu.CmdLineParser.OptionException;
 
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
+import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -55,21 +56,29 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     }
 
     private void parseCommandLine() {
-        OptionParser parser = new OptionParser("o:");
-        parser.accepts("output").withRequiredArg();
-        OptionSet options = parser.parse(Platform.getApplicationArgs());
+        CmdLineParser parser = new CmdLineParser();
+        Option outputOpt = parser.addStringOption('o', "output");
+        Option palletsMaxOpt = parser.addIntegerOption('p', "palletsmax");
 
-        String fileName = null;
-        if (options.hasArgument("o")) {
-            fileName = (String) options.valueOf("o");
+        try {
+            parser.parse(Platform.getApplicationArgs());
         }
-        else if (options.hasArgument("output")) {
-            fileName = (String) options.valueOf("output");
+        catch (OptionException e) {
+            System.err.println(e.getMessage());
+            // printUsage();
+            System.exit(2);
         }
 
+        ConfigSettings c = ConfigSettings.getInstance();
+
+        String fileName = (String) parser.getOptionValue(outputOpt);
         if (fileName != null) {
-            ConfigSettings c = ConfigSettings.getInstance();
             c.setSaveFileName(fileName);
+        }
+
+        Integer palletsMax = (Integer) parser.getOptionValue(palletsMaxOpt);
+        if (palletsMax != null) {
+            c.setPalletsMax(palletsMax);
         }
     }
 
