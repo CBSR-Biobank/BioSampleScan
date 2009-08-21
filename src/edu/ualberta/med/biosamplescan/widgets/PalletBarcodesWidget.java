@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.core.runtime.Assert;
@@ -14,7 +15,7 @@ import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 
 public class PalletBarcodesWidget extends Composite {
 
-    private Text[] textPlateId;
+    private Text [] textPlateId;
 
     public PalletBarcodesWidget(Composite parent, int style) {
         super(parent, style);
@@ -22,13 +23,15 @@ public class PalletBarcodesWidget extends Composite {
         setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         setLayout(new GridLayout(1, false));
 
+        int palletsMax = ConfigSettings.getInstance().getPalletMax();
+
         Group g = new Group(this, SWT.NONE);
         g.setText("Pallet bar codes");
         g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        g.setLayout(new GridLayout(2 * ConfigSettings.PALLET_NUM, false));
+        g.setLayout(new GridLayout(2 * palletsMax, false));
 
-        textPlateId = new Text[ConfigSettings.PALLET_NUM];
-        for (int i = 0; i < ConfigSettings.PALLET_NUM; ++i) {
+        textPlateId = new Text [palletsMax];
+        for (int i = 0; i < palletsMax; ++i) {
             Label l = new Label(g, SWT.NONE);
             l.setText("Pallet " + (i + 1) + ":");
             textPlateId[i] = new Text(g, SWT.BORDER);

@@ -24,7 +24,7 @@ public class ConfigSettings {
     private int contrast = 0;
     private int dpi = ScanLib.DPI_300;
     private PalletScanCoordinates [] palletScanCoordinates;
-    private int palletsMax = PALLET_NUM;
+    private int palletsMax;
     private String driverType = "TWAIN";
     private String lastSaveDir = null;
 
@@ -38,8 +38,18 @@ public class ConfigSettings {
 
     private ConfigSettings() {
         saveFileName = null;
-        palletScanCoordinates = new PalletScanCoordinates [PALLET_NUM];
+        palletsMax = PALLET_NUM;
+        palletScanCoordinates = new PalletScanCoordinates [palletsMax];
         loadFromFile();
+    }
+
+    public int setPalletsMax(int palletcount) {
+        palletsMax = palletcount;
+        return saveToIni("settings", "palletcount", palletsMax);
+    }
+
+    public int getPalletMax() {
+        return palletsMax;
     }
 
     public int getPalletCount() {
@@ -144,14 +154,14 @@ public class ConfigSettings {
     }
 
     public boolean palletIsSet(int pallet) {
-        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+        Assert.isTrue((pallet > 0) && (pallet <= palletsMax),
             "invalid pallet number: " + pallet);
         return (palletScanCoordinates[pallet - 1] != null);
     }
 
     public int setPallet(int pallet, double left, double top, double right,
         double bottom) {
-        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+        Assert.isTrue((pallet > 0) && (pallet <= palletsMax),
             "invalid pallet number: " + pallet);
         if ((left < 0) || (right < 0) || (top < 0) || (bottom < 0)) {
             return INVALID_INPUT;
@@ -184,7 +194,7 @@ public class ConfigSettings {
     }
 
     public PalletScanCoordinates getPallet(int pallet) {
-        Assert.isTrue((pallet > 0) && (pallet <= PALLET_NUM),
+        Assert.isTrue((pallet > 0) && (pallet <= palletsMax),
             "invalid pallet number: " + pallet);
         return palletScanCoordinates[pallet - 1];
     }
@@ -216,7 +226,7 @@ public class ConfigSettings {
             if (contrast != null) setContrast(contrast);
         }
 
-        for (int pallet = 1; pallet <= ConfigSettings.PALLET_NUM; pallet++) {
+        for (int pallet = 1, n = ConfigSettings.getInstance().getPalletMax(); pallet < n; pallet++) {
             section = ini.get("plate-" + pallet);
             if (section == null) continue;
 
@@ -249,15 +259,6 @@ public class ConfigSettings {
         }
 
         return SUCCESS;
-    }
-
-    public int setPalletsMax(int palletcount) {
-        palletsMax = palletcount;
-        return saveToIni("settings", "palletcount", palletsMax);
-    }
-
-    public int getPalletMax() {
-        return palletsMax;
     }
 
     public int setLastSaveDir(String lastSaveDir) {

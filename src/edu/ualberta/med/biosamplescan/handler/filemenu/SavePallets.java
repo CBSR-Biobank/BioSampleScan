@@ -1,3 +1,4 @@
+
 package edu.ualberta.med.biosamplescan.handler.filemenu;
 
 import java.io.File;
@@ -32,12 +33,10 @@ public class SavePallets extends AbstractHandler implements IHandler {
 
         if (saveDir != null) {
             configSettings.setLastSaveDir(saveDir);
-            for (int i = 0; i < ConfigSettings.PALLET_NUM; ++i) {
+            for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; ++i) {
                 Pallet pallet = palletSet.getPallet(i);
-                if (pallet == null)
-                    continue;
-                filenames.add(new File(palletSet.savePallet(saveDir, pallet))
-                    .getName());
+                if (pallet == null) continue;
+                filenames.add(new File(palletSet.savePallet(saveDir, pallet)).getName());
             }
 
             String msg = new String();
@@ -52,16 +51,16 @@ public class SavePallets extends AbstractHandler implements IHandler {
                 Assert.isTrue(false, "no files saved");
             }
 
-            BioSampleScanPlugin.getDefault().getPalletSetView()
-                .updateStatusBar(msg);
+            BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
+                msg);
         }
         return null;
     }
 
     public static DirectoryDialog dirDialog() {
-        DirectoryDialog dlg =
-            new DirectoryDialog(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getShell(), SWT.SAVE);
+        DirectoryDialog dlg = new DirectoryDialog(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            SWT.SAVE);
         dlg.setText("Directory to save pallet decode information");
         dlg.setMessage("Select a directory");
         dlg.setFilterPath(ConfigSettings.getInstance().getLastSaveDir());

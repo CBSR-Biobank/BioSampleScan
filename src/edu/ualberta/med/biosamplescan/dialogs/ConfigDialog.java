@@ -66,18 +66,20 @@ public class ConfigDialog extends Dialog {
         Composite parentComposite = (Composite) super.createDialogArea(parent);
         Composite contents = new Composite(parentComposite, SWT.NONE);
 
+        final int maxPallets = ConfigSettings.getInstance().getPalletMax();
+
         int label_it = 0;
         int groups_it = 0;
-        groups = new Group [ConfigSettings.PALLET_NUM + 6];
-        platesText = new Text [ConfigSettings.PALLET_NUM + 1] [4];// left,top,right,bottom
-        labels = new Label [ConfigSettings.PALLET_NUM * 5 + 11];
-        platelabels = new Label [ConfigSettings.PALLET_NUM * 4];
-        buttonEdit = new Button [ConfigSettings.PALLET_NUM];
-        buttonClear = new Button [ConfigSettings.PALLET_NUM];
+        groups = new Group [maxPallets + 6];
+        platesText = new Text [maxPallets + 1] [4];// left,top,right,bottom
+        labels = new Label [maxPallets * 5 + 11];
+        platelabels = new Label [maxPallets * 4];
+        buttonEdit = new Button [maxPallets];
+        buttonClear = new Button [maxPallets];
 
         contents.setLayout(new GridLayout(1, false));
 
-        ratioBtns = new Button [ConfigSettings.PALLET_NUM];
+        ratioBtns = new Button [maxPallets];
         {
 
             groups[++groups_it] = new Group(contents, SWT.NONE);
@@ -100,7 +102,7 @@ public class ConfigDialog extends Dialog {
                     ratioBtns[i].addMouseListener(new MouseAdapter() {
                         @Override
                         public void mouseUp(MouseEvent evt) {
-                            for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+                            for (int i = 0; i < maxPallets; i++) {
                                 setPlateTextSettings(i);
                             }
                         }
@@ -130,7 +132,7 @@ public class ConfigDialog extends Dialog {
                 twainBtn.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseUp(MouseEvent evt) {
-                        for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+                        for (int i = 0; i < maxPallets; i++) {
                             platelabels[4 * i + 2].setText("Bottom:");
                             platelabels[4 * i + 3].setText("Right:");
                         }
@@ -144,7 +146,7 @@ public class ConfigDialog extends Dialog {
                 wiaBtn.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseUp(MouseEvent evt) {
-                        for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+                        for (int i = 0; i < maxPallets; i++) {
                             platelabels[4 * i + 2].setText("Height:");
                             platelabels[4 * i + 3].setText("Width:");
                         }
@@ -194,7 +196,7 @@ public class ConfigDialog extends Dialog {
                 textContrast.setBounds(153, 22, 35, 20);
             }
         }
-        for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
+        for (int plate = 0; plate < maxPallets; plate++) {
             groups[++groups_it] = new Group(contents, SWT.HORIZONTAL);
             FillLayout group2Layout = new FillLayout(SWT.HORIZONTAL);
             groups[groups_it].setLayout(group2Layout);
@@ -281,7 +283,8 @@ public class ConfigDialog extends Dialog {
     }
 
     private void readPlatesTextToArray(double plateArray[][]) {
-        for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
+        int maxPallets = ConfigSettings.getInstance().getPalletMax();
+        for (int plate = 0; plate < maxPallets; plate++) {
             for (int side = 0; side < 4; side++) {
                 plateArray[plate][side] = Double.valueOf(platesText[plate][side].getText());
             }
@@ -314,12 +317,13 @@ public class ConfigDialog extends Dialog {
     private int loadFromConfigSettings() {
         ConfigSettings configSettings = ConfigSettings.getInstance();
         configSettings.loadFromFile();
+        int maxPallets = ConfigSettings.getInstance().getPalletMax();
 
         if (configSettings.getDriverType().equals("WIA")) {
             twainBtn.setSelection(false);
             wiaBtn.setSelection(true);
 
-            for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+            for (int i = 0; i < maxPallets; i++) {
                 platelabels[4 * i + 2].setText("Height:");
                 platelabels[4 * i + 3].setText("Width:");
             }
@@ -329,7 +333,7 @@ public class ConfigDialog extends Dialog {
             twainBtn.setSelection(true);
             wiaBtn.setSelection(false);
 
-            for (int i = 0; i < ConfigSettings.PALLET_NUM; i++) {
+            for (int i = 0; i < maxPallets; i++) {
                 platelabels[4 * i + 2].setText("Bottom:");
                 platelabels[4 * i + 3].setText("Right:");
             }
@@ -339,7 +343,7 @@ public class ConfigDialog extends Dialog {
         textBrightness.setText(String.valueOf(configSettings.getBrightness()));
         textContrast.setText(String.valueOf(configSettings.getContrast()));
 
-        for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
+        for (int plate = 0; plate < maxPallets; plate++) {
             PalletScanCoordinates coords = configSettings.getPallet(plate + 1);
             if (coords != null) {
                 platesText[plate][0].setText(String.valueOf(coords.left));
@@ -372,7 +376,8 @@ public class ConfigDialog extends Dialog {
         }
         int plateMode = this.getActivePlateMode();
 
-        if (plateMode > 0 && plateMode <= ConfigSettings.PALLET_NUM) {
+        int maxPallets = ConfigSettings.getInstance().getPalletMax();
+        if (plateMode > 0 && plateMode <= maxPallets) {
             for (int i = 0; i < 4; i++) {
                 if (plate >= plateMode) {
                     platesText[plate][i].setBackground(new Color(
@@ -398,7 +403,8 @@ public class ConfigDialog extends Dialog {
             return;
         }
 
-        double nplates[][] = new double [ConfigSettings.PALLET_NUM] [4];
+        int maxPallets = ConfigSettings.getInstance().getPalletMax();
+        double nplates[][] = new double [maxPallets] [4];
         readPlatesTextToArray(nplates);
         boolean msgDlg = MessageDialog.openConfirm(getShell(),
             "Re-Scan Plate Image?",
@@ -440,10 +446,11 @@ public class ConfigDialog extends Dialog {
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
+        int maxPallets = configSettings.getPalletMax();
 
         /* =================Set Plate Mode================ */
         int plateMode = getActivePlateMode();
-        if (plateMode > 0 && plateMode <= ConfigSettings.PALLET_NUM) {
+        if (plateMode > 0 && plateMode <= maxPallets) {
             ConfigSettings.getInstance().setPalletsMax(plateMode);
         }
         /* =================Set Plate Mode================ */
@@ -545,10 +552,10 @@ public class ConfigDialog extends Dialog {
         /* =================Set Contrast ================ */
 
         /* =================Set Plate Settings ================ */
-        double nplates[][] = new double [ConfigSettings.PALLET_NUM] [4];
+        double nplates[][] = new double [maxPallets] [4];
         readPlatesTextToArray(nplates); /* Reads Plate Config Settings */
 
-        for (int plate = 0; plate < ConfigSettings.PALLET_NUM; plate++) {
+        for (int plate = 0; plate < maxPallets; plate++) {
             int setPlateReturn = configSettings.setPallet(plate + 1,
                 nplates[plate][0], nplates[plate][1], nplates[plate][2],
                 nplates[plate][3]);
