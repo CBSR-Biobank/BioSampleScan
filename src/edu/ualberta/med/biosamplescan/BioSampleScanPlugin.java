@@ -1,8 +1,5 @@
-package edu.ualberta.med.biosamplescan;
 
-import jargs.gnu.CmdLineParser;
-import jargs.gnu.CmdLineParser.Option;
-import jargs.gnu.CmdLineParser.OptionException;
+package edu.ualberta.med.biosamplescan;
 
 import java.net.URL;
 
@@ -11,7 +8,6 @@ import org.eclipse.core.commands.State;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -57,50 +53,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
         palletSet = new PalletSet();
         ConfigSettings.getInstance();
-        parseCommandLine();
-    }
-
-    private void parseCommandLine() {
-        CmdLineParser parser = new CmdLineParser();
-        Option outputOpt = parser.addStringOption('o', "output");
-        Option palletsMaxOpt = parser.addIntegerOption('p', "palletsmax");
-
-        try {
-            parser.parse(Platform.getApplicationArgs());
-        }
-        catch (OptionException e) {
-            System.err.println(e.getMessage());
-            // printUsage();
-            System.exit(2);
-        }
-
-        ConfigSettings c = ConfigSettings.getInstance();
-
-        String filename = (String) parser.getOptionValue(outputOpt);
-        if (filename != null) {
-            if (filename.length() == 0) {
-                System.err.println("Invalid save location");
-                System.exit(3);
-            }
-            c.setSaveFileName(filename);
-        }
-
-        Integer palletsMax = (Integer) parser.getOptionValue(palletsMaxOpt);
-        if (palletsMax != null) {
-            if ((palletsMax <= 0) || (palletsMax > ConfigSettings.PALLET_NUM)) {
-                System.err
-                    .println("Invalid value. palletsmax should be between 1 and "
-                        + ConfigSettings.PALLET_NUM);
-                System.exit(3);
-            }
-            c.setPalletsMax(palletsMax);
-        }
-
-        if ((filename != null) && (palletsMax != null) && (palletsMax != 1)) {
-            System.err
-                .println("palletsmax should be 1 when using --output option");
-            System.exit(3);
-        }
     }
 
     @Override
@@ -118,8 +70,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                 registry.put(key, desc);
             }
         }
-        catch (Exception e) {
-        }
+        catch (Exception e) {}
     }
 
     /*
@@ -160,24 +111,27 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
      * Display an information message
      */
     public static void openMessage(String title, String message) {
-        MessageDialog.openInformation(PlatformUI.getWorkbench()
-            .getActiveWorkbenchWindow().getShell(), title, message);
+        MessageDialog.openInformation(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            title, message);
     }
 
     /**
      * Display an error message
      */
     public static void openError(String title, String message) {
-        MessageDialog.openError(PlatformUI.getWorkbench()
-            .getActiveWorkbenchWindow().getShell(), title, message);
+        MessageDialog.openError(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            title, message);
     }
 
     /**
      * Display an information message
      */
     public static boolean openConfirm(String title, String message) {
-        return MessageDialog.openConfirm(PlatformUI.getWorkbench()
-            .getActiveWorkbenchWindow().getShell(), title, message);
+        return MessageDialog.openConfirm(
+            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+            title, message);
     }
 
     /**
@@ -186,8 +140,9 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     public static void openAsyncError(final String title, final String message) {
         Display.getDefault().asyncExec(new Runnable() {
             public void run() {
-                MessageDialog.openError(PlatformUI.getWorkbench()
-                    .getActiveWorkbenchWindow().getShell(), title, message);
+                MessageDialog.openError(
+                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                    title, message);
             }
         });
     }
@@ -212,24 +167,16 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     public void setPlateSetView(PalletSetView plateSetEditor) {
         plateSetView = plateSetEditor;
 
-        IWorkbenchWindow window =
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        ISourceProviderService service =
-            (ISourceProviderService) window
-                .getService(ISourceProviderService.class);
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        ISourceProviderService service = (ISourceProviderService) window.getService(ISourceProviderService.class);
 
-        DebugState debugStateSourceProvider =
-            (DebugState) service.getSourceProvider(DebugState.SESSION_STATE);
-        debugStateSourceProvider.setState(BioSampleScanPlugin.getDefault()
-            .isDebugging());
+        DebugState debugStateSourceProvider = (DebugState) service.getSourceProvider(DebugState.SESSION_STATE);
+        debugStateSourceProvider.setState(BioSampleScanPlugin.getDefault().isDebugging());
 
         // reads the persisted state for the menu contribution
-        ICommandService cmdService =
-            (ICommandService) PlatformUI.getWorkbench().getService(
-                ICommandService.class);
-        Command command =
-            cmdService
-                .getCommand("edu.ualberta.med.biosamplescan.menu.debug.simulateScanning");
+        ICommandService cmdService = (ICommandService) PlatformUI.getWorkbench().getService(
+            ICommandService.class);
+        Command command = cmdService.getCommand("edu.ualberta.med.biosamplescan.menu.debug.simulateScanning");
         State state = command.getState("org.eclipse.ui.commands.toggleState");
         ConfigSettings.getInstance().setSimulateScanning(
             (Boolean) state.getValue());
