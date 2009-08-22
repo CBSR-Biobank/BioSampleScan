@@ -12,6 +12,12 @@
       </application>
    </extension>
    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="edu.ualberta.med.biosamplescan.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="edu.ualberta.med.biosamplescan.rcp.Perspective"
@@ -164,12 +170,18 @@
             </menu>
          </menu>
          <menu
-               id="edu.ualberta.med.biosamplescan.menu.about"
-               label="About">
+               id="edu.ualberta.med.biosamplescan.menu.help"
+               label="Help">
             <command
-                  commandId="edu.ualberta.med.biosamplescan.menu.credits"
+                  commandId="edu.ualberta.med.biosamplescan.menu.about"
                   icon="icons/ruby.png"
-                  label="Credits..."
+                  label="About..."
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  id="edu.ualberta.med.biobank.menu.preferences"
+                  label="Preferences"
                   style="push">
             </command>
          </menu>
@@ -280,8 +292,8 @@
             name="Save Image to Pallet 5">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.aboutmenu.Credits"
-            id="edu.ualberta.med.biosamplescan.menu.credits"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.help.About"
+            id="edu.ualberta.med.biosamplescan.menu.about"
             name="Credits...">
       </command>
       <command
@@ -357,5 +369,10 @@
          </with>
       </definition>
    </extension>
-
+   <extension point="org.eclipse.ui.preferencePages">
+    <page id="Scanner"
+        name="Scanner"
+            class="edu.ualberta.med.biosamplescan.preferences.Scanner">
+    </page> 
+   </extension>
 </plugin>

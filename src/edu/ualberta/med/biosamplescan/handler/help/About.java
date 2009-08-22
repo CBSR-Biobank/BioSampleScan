@@ -1,5 +1,5 @@
 
-package edu.ualberta.med.biosamplescan.handler.aboutmenu;
+package edu.ualberta.med.biosamplescan.handler.help;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.SimpleSynth;
 import edu.ualberta.med.biosamplescan.dialogs.CreditsDialog;
 
-public class Credits extends AbstractHandler implements IHandler {
+public class About extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         CreditsDialog cd = new CreditsDialog(
             PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
