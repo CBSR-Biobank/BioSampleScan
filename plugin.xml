@@ -12,12 +12,6 @@
       </application>
    </extension>
    <extension
-         point="org.eclipse.core.runtime.preferences">
-      <initializer
-            class="edu.ualberta.med.biosamplescan.preferences.PreferenceInitializer">
-      </initializer>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="edu.ualberta.med.biosamplescan.rcp.Perspective"
@@ -368,11 +362,5 @@
             </equals>
          </with>
       </definition>
-   </extension>
-   <extension point="org.eclipse.ui.preferencePages">
-    <page id="Scanner"
-        name="Scanner"
-            class="edu.ualberta.med.biosamplescan.preferences.Scanner">
-    </page> 
    </extension>
 </plugin>
