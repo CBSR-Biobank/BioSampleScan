@@ -7,9 +7,9 @@ import org.eclipse.core.commands.IHandler;
 
 public class SaveImagePlate1 extends AbstractHandler implements IHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		SaveImagePlateX.execute(event, 1);
-		return null;
-	}
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        SaveImagePlateX.execute(1);
+        return null;
+    }
 
 }

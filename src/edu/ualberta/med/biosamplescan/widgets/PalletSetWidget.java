@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
 import java.util.HashMap;
@@ -30,10 +29,10 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletBarcodesWidget palletBarcodesWidget;
-    private PalletWidget [] palletWidgets;
+    private PalletWidget[] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
-        super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+        super(parent, SWT.H_SCROLL | SWT.V_SCROLL | style);
         setExpandHorizontal(true);
         setExpandVertical(true);
 
@@ -45,7 +44,7 @@ public class PalletSetWidget extends ScrolledComposite {
         palletBarcodesWidget = new PalletBarcodesWidget(composite, SWT.NONE);
 
         int palletsMax = ConfigSettings.getInstance().getPalletMax();
-        palletWidgets = new PalletWidget [palletsMax];
+        palletWidgets = new PalletWidget[palletsMax];
 
         ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < palletsMax; table++) {
@@ -65,6 +64,7 @@ public class PalletSetWidget extends ScrolledComposite {
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 
+    @Override
     public boolean setFocus() {
         return true;
     }
@@ -72,14 +72,16 @@ public class PalletSetWidget extends ScrolledComposite {
     private void createTopButtonsSection(Composite parent) {
         Composite section = new Composite(parent, SWT.NONE);
         section.setLayout(new GridLayout(4, false));
-        section.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        section
+            .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         clearPlateBtn.setText("Clear Selected");
         // clearPlateBtn.setBounds(488, 6, 90, 40);
         clearPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                confirmClearPallets(evt);
+                confirmClearPallets();
             }
         });
 
@@ -87,16 +89,18 @@ public class PalletSetWidget extends ScrolledComposite {
         reScanPlateBtn.setText("Re-Scan Selected");
         // reScanPlateBtn.setBounds(596, 6, 90, 40);
         reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(evt, true);
+                scanPalletBtnWidgetSelected(true);
             }
         });
 
         scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         scanPlateBtn.setText("Scan Selected");
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(evt, false);
+                scanPalletBtnWidgetSelected(false);
             }
         });
 
@@ -106,21 +110,21 @@ public class PalletSetWidget extends ScrolledComposite {
         return MessageDialog.openConfirm(getShell(), title, msg);
     }
 
-    public void scanPalletBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
+    public void scanPalletBtnWidgetSelected(boolean rescan) {
         Map<String, Integer> selected = new HashMap<String, Integer>();
 
         for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; i++) {
             String palletBarcode = palletBarcodesWidget.getPalletBarcode(i);
 
-            if (palletBarcode.length() == 0) continue;
+            if (palletBarcode.length() == 0)
+                continue;
 
             if (selected.containsKey(palletBarcode)) {
                 BioSampleScanPlugin.openError("Duplicate Pallet Barcodes",
                     "Pallets " + selected.get(palletBarcode) + " and "
                         + (i + 1) + " have the same barcodes");
                 return;
-            }
-            else {
+            } else {
                 selected.put(palletBarcode, i + 1);
             }
         }
@@ -144,8 +148,8 @@ public class PalletSetWidget extends ScrolledComposite {
             }
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
-                palletsToDecode.put(pallet,
-                    palletBarcodesWidget.getPalletBarcode(pallet - 1));
+                palletsToDecode.put(pallet, palletBarcodesWidget
+                    .getPalletBarcode(pallet - 1));
             }
         }
 
@@ -163,14 +167,14 @@ public class PalletSetWidget extends ScrolledComposite {
         palletWidgets[palletNum].setPalletBarcodes(pallet);
     }
 
-    public void confirmClearPallets(SelectionEvent evt) {
+    public void confirmClearPallets() {
         if (confirmMsg("Clear Pallets",
             "Do you want to clear the selected pallets?")) {
             ConfigSettings.getInstance().setLastSaveDir("");
             clearPallets();
 
-            BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
-                "Decode information cleared.");
+            BioSampleScanPlugin.getDefault().getPalletSetView()
+                .updateStatusBar("Decode information cleared.");
         }
     }
 

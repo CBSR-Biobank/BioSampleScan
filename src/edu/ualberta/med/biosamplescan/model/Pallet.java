@@ -56,8 +56,7 @@ public class Pallet {
 
             if (!ConfigSettings.getInstance().getSimulateScanning()) {
                 readBarcodes = ScanCell.getScanLibResults();
-            }
-            else {
+            } else {
                 readBarcodes = ScanCell.getRandom();
             }
 
@@ -76,12 +75,12 @@ public class Pallet {
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public String toString() {
         Assert.isNotNull(barcodes, "barcodes is null");
         String result = new String();
@@ -90,11 +89,10 @@ public class Pallet {
                 if (barcodes[r][c] == null)
                     continue;
 
-                result =
-                    result.concat(String.format("%s,%s,%d,%s,%s\r\n",
-                        palletBarcode, Character.toString((char) ('A' + r)),
-                        c + 1, barcodes[r][c].getValue(), new SimpleDateFormat(
-                            "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
+                result = result.concat(String.format("%s,%s,%d,%s,%s\r\n",
+                    palletBarcode, Character.toString((char) ('A' + r)), c + 1,
+                    barcodes[r][c].getValue(), new SimpleDateFormat(
+                        "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
             }
         }
         return result;

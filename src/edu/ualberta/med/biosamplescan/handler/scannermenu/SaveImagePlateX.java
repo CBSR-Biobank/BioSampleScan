@@ -1,7 +1,5 @@
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -14,18 +12,16 @@ import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class SaveImagePlateX {
-    public static final Object execute(ExecutionEvent event, int palletId)
-        throws ExecutionException {
+    public static final Object execute(int palletId) {
         if (palletId >= ConfigSettings.getInstance().getPalletMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");
             return null;
         }
 
-        PalletSetWidget viewComposite =
-            ((PalletSetView) PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getActivePage().getActivePart())
-                .getPalletSetWidget();
+        PalletSetWidget viewComposite = ((PalletSetView) PlatformUI
+            .getWorkbench().getActiveWorkbenchWindow().getActivePage()
+            .getActivePart()).getPalletSetWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (!configSettings.palletIsSet(palletId)) {
@@ -44,9 +40,8 @@ public class SaveImagePlateX {
             return null;
         }
 
-        int scanlibReturn =
-            ScanLib.getInstance().slScanPlate(configSettings.getDpi(),
-                palletId, saveLocation);
+        int scanlibReturn = ScanLib.getInstance().slScanPlate(
+            configSettings.getDpi(), palletId, saveLocation);
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
             MessageDialog.openError(PlatformUI.getWorkbench()

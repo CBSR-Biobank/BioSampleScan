@@ -3,8 +3,6 @@ package edu.ualberta.med.biosamplescan.handler.filemenu;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
@@ -13,8 +11,7 @@ import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class SaveBarcodesFromTableX {
-    public static final Object execute(ExecutionEvent event, int palletId)
-        throws ExecutionException {
+    public static final Object execute(int palletId) {
         if (palletId > ConfigSettings.getInstance().getPalletMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");

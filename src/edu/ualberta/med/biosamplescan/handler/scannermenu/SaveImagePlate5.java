@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -9,7 +8,7 @@ import org.eclipse.core.commands.IHandler;
 public class SaveImagePlate5 extends AbstractHandler implements IHandler {
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        SaveImagePlateX.execute(event, 5);
+        SaveImagePlateX.execute(5);
         return null;
     }
 
