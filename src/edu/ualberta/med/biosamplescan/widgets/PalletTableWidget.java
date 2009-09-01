@@ -25,8 +25,8 @@ import edu.ualberta.med.scanlib.ScanCell;
 
 public class PalletTableWidget extends Composite {
 
-    private static final String[] headings =
-        { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+    private static final String[] headings = { "", "1", "2", "3", "4", "5",
+        "6", "7", "8", "9", "10", "11", "12" };
 
     private List<PalletModel> model;
 
@@ -44,9 +44,8 @@ public class PalletTableWidget extends Composite {
         setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         setLayout(new GridLayout(1, false));
 
-        tableViewer =
-            new TableViewer(this, SWT.BORDER | SWT.H_SCROLL | SWT.MULTI
-                | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.VIRTUAL);
+        tableViewer = new TableViewer(this, SWT.BORDER | SWT.H_SCROLL
+            | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.VIRTUAL);
         tableViewer.setLabelProvider(new PalletLabelProvider());
         tableViewer.setContentProvider(new ArrayContentProvider());
 
@@ -68,8 +67,7 @@ public class PalletTableWidget extends Composite {
             col.setText(name);
             if (index == 0) {
                 col.setWidth(firstColWidth);
-            }
-            else {
+            } else {
                 col.pack();
             }
             if (index != 0)
@@ -87,13 +85,13 @@ public class PalletTableWidget extends Composite {
         tableViewer.setInput(model);
 
         addControlListener(new ControlAdapter() {
+            @Override
             public void controlResized(ControlEvent e) {
                 Rectangle area = PalletTableWidget.this.getClientArea();
                 Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
                 ScrollBar vBar = table.getVerticalBar();
-                int width =
-                    area.width - table.computeTrim(0, 0, 0, 0).width
-                        - vBar.getSize().x - firstColWidth;
+                int width = area.width - table.computeTrim(0, 0, 0, 0).width
+                    - vBar.getSize().x - firstColWidth;
                 if (size.y > area.height + table.getHeaderHeight()) {
                     // Subtract the scrollbar width from the total column width
                     // if a vertical scrollbar will be required
@@ -111,8 +109,7 @@ public class PalletTableWidget extends Composite {
                         tableColumns[i].setWidth(colWidth);
                     }
                     table.setSize(area.width, area.height);
-                }
-                else {
+                } else {
                     // table is getting bigger so make the table
                     // bigger first and then make the columns wider
                     // to match the client area width
@@ -143,8 +140,7 @@ public class PalletTableWidget extends Composite {
 
                     if (pallet == null) {
                         modelItem.o = null;
-                    }
-                    else {
+                    } else {
                         modelItem.o = pallet.getBarcodesRow(r);
                     }
                 }

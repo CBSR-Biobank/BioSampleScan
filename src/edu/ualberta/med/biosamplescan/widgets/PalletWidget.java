@@ -33,6 +33,7 @@ public class PalletWidget extends Composite {
         tableWidget = new PalletTableWidget(this, SWT.NONE);
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         setVisible(enabled);
         label.setVisible(enabled);

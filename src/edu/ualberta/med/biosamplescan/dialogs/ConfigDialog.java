@@ -82,8 +82,8 @@ public class ConfigDialog extends Dialog {
         {
 
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            RowLayout group1Layout =
-                new RowLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            RowLayout group1Layout = new RowLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             groups[groups_it].setLayout(group1Layout);
             GridData group1LData = new GridData();
             group1LData.widthHint = 180;
@@ -92,8 +92,8 @@ public class ConfigDialog extends Dialog {
             groups[groups_it].setText("Set Plate Mode:");
             {
                 for (int i = 0; i < ratioBtns.length; i++) {
-                    ratioBtns[i] =
-                        new Button(groups[groups_it], SWT.RADIO | SWT.LEFT);
+                    ratioBtns[i] = new Button(groups[groups_it], SWT.RADIO
+                        | SWT.LEFT);
                     RowData button1LData = new RowData();
                     ratioBtns[i].setLayoutData(button1LData);
                     ratioBtns[i].setText(String.valueOf(i + 1));
@@ -114,8 +114,8 @@ public class ConfigDialog extends Dialog {
         }
         {
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            RowLayout group1Layout =
-                new RowLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            RowLayout group1Layout = new RowLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             groups[groups_it].setLayout(group1Layout);
             GridData group1LData = new GridData();
             group1LData.widthHint = 140;
@@ -155,8 +155,8 @@ public class ConfigDialog extends Dialog {
         }
         {
             groups[++groups_it] = new Group(contents, SWT.NONE);
-            FillLayout group1Layout =
-                new FillLayout(org.eclipse.swt.SWT.HORIZONTAL);
+            FillLayout group1Layout = new FillLayout(
+                org.eclipse.swt.SWT.HORIZONTAL);
             GridData group1LData = new GridData();
             group1LData.widthHint = 421;
             group1LData.heightHint = 16;
@@ -206,8 +206,8 @@ public class ConfigDialog extends Dialog {
             groups[groups_it].setText(String.format("Plate %d Position",
                 plate + 1));
             {
-                platelabels[4 * plate + 0] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 0] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 0].setText("Top:");
                 platelabels[4 * plate + 0].setAlignment(SWT.RIGHT);
             }
@@ -220,8 +220,8 @@ public class ConfigDialog extends Dialog {
 
             }
             {
-                platelabels[4 * plate + 1] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 1] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 1].setText("Left:");
                 platelabels[4 * plate + 1].setAlignment(SWT.RIGHT);
             }
@@ -231,8 +231,8 @@ public class ConfigDialog extends Dialog {
                 platesText[plate][0].setTextLimit(6);
             }
             {
-                platelabels[4 * plate + 2] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 2] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 2].setText("Bottom:");
                 platelabels[4 * plate + 2].setAlignment(SWT.RIGHT);
             }
@@ -242,8 +242,8 @@ public class ConfigDialog extends Dialog {
                 platesText[plate][3].setTextLimit(6);
             }
             {
-                platelabels[4 * plate + 3] =
-                    new Label(groups[groups_it], SWT.NONE);
+                platelabels[4 * plate + 3] = new Label(groups[groups_it],
+                    SWT.NONE);
                 platelabels[4 * plate + 3].setText("Right:");
                 platelabels[4 * plate + 3].setAlignment(SWT.RIGHT);
             }
@@ -285,8 +285,8 @@ public class ConfigDialog extends Dialog {
         int maxPallets = ConfigSettings.getInstance().getPalletMax();
         for (int plate = 0; plate < maxPallets; plate++) {
             for (int side = 0; side < 4; side++) {
-                plateArray[plate][side] =
-                    Double.valueOf(platesText[plate][side].getText());
+                plateArray[plate][side] = Double
+                    .valueOf(platesText[plate][side].getText());
             }
         }
     }
@@ -329,8 +329,7 @@ public class ConfigDialog extends Dialog {
                 platelabels[4 * i + 3].setText("Width:");
             }
 
-        }
-        else {
+        } else {
             twainBtn.setSelection(true);
             wiaBtn.setSelection(false);
 
@@ -359,21 +358,21 @@ public class ConfigDialog extends Dialog {
     private void setPlateTextSettings(int plate) {
         Color c;
         switch (plate) {
-            case (0):
-                c = new Color(Display.getDefault(), 185, 255, 185);
-                break;
-            case (1):
-                c = new Color(Display.getDefault(), 255, 185, 185);
-                break;
-            case (2):
-                c = new Color(Display.getDefault(), 255, 255, 185);
-                break;
-            case (3):
-                c = new Color(Display.getDefault(), 170, 255, 255);
-                break;
-            default:
-                c = new Color(Display.getDefault(), 255, 255, 255);
-                break;
+        case (0):
+            c = new Color(Display.getDefault(), 185, 255, 185);
+            break;
+        case (1):
+            c = new Color(Display.getDefault(), 255, 185, 185);
+            break;
+        case (2):
+            c = new Color(Display.getDefault(), 255, 255, 185);
+            break;
+        case (3):
+            c = new Color(Display.getDefault(), 170, 255, 255);
+            break;
+        default:
+            c = new Color(Display.getDefault(), 255, 255, 255);
+            break;
         }
         int plateMode = this.getActivePlateMode();
 
@@ -386,8 +385,7 @@ public class ConfigDialog extends Dialog {
                     platesText[plate][i].setEnabled(false);
                     buttonEdit[plate].setEnabled(false);
                     buttonClear[plate].setEnabled(false);
-                }
-                else {
+                } else {
                     platesText[plate][i].setEnabled(true);
                     platesText[plate][i].setBackground(c);
                     buttonEdit[plate].setEnabled(true);
@@ -407,10 +405,9 @@ public class ConfigDialog extends Dialog {
         int maxPallets = config.getPalletMax();
         double nplates[][] = new double[maxPallets][4];
         readPlatesTextToArray(nplates);
-        boolean msgDlg =
-            MessageDialog
-                .openConfirm(getShell(), "Re-Scan Plate Image?",
-                    "If you have moved the plates since the last calibration press OK.");
+        boolean msgDlg = MessageDialog
+            .openConfirm(getShell(), "Re-Scan Plate Image?",
+                "If you have moved the plates since the last calibration press OK.");
         if (!(new File(PalletImageDialog.alignFile).exists()) || msgDlg) {
             ScanLib.getInstance().slScanImage((int) PalletImageDialog.alignDpi,
                 0, 0, 0, 0, PalletImageDialog.alignFile);
@@ -419,25 +416,25 @@ public class ConfigDialog extends Dialog {
         PalletImageDialog pid = new PalletImageDialog(getShell(), SWT.NONE);
         Color c;
         switch (plate - 1) {
-            case (0):
-                c = new Color(Display.getDefault(), 0, 0xFF, 0);
-                break;
-            case (1):
-                c = new Color(Display.getDefault(), 0xFF, 0, 0);
-                break;
-            case (2):
-                c = new Color(Display.getDefault(), 0xFF, 0xFF, 0);
-                break;
-            case (3):
-                c = new Color(Display.getDefault(), 0, 0xFF, 0xFF);
-                break;
-            default:
-                c = new Color(Display.getDefault(), 0xFF, 0xFF, 0xFF);
-                break;
+        case (0):
+            c = new Color(Display.getDefault(), 0, 0xFF, 0);
+            break;
+        case (1):
+            c = new Color(Display.getDefault(), 0xFF, 0, 0);
+            break;
+        case (2):
+            c = new Color(Display.getDefault(), 0xFF, 0xFF, 0);
+            break;
+        case (3):
+            c = new Color(Display.getDefault(), 0, 0xFF, 0xFF);
+            break;
+        default:
+            c = new Color(Display.getDefault(), 0xFF, 0xFF, 0xFF);
+            break;
         }
 
-        double plateset[] =
-            pid.open(nplates[plate - 1], twainBtn.getSelection(), c);
+        double plateset[] = pid.open(nplates[plate - 1], twainBtn
+            .getSelection(), c);
 
         for (int i = 0; i < 4; i++) {
             platesText[plate - 1][i].setText(String.valueOf(plateset[i]));
@@ -445,6 +442,7 @@ public class ConfigDialog extends Dialog {
         getShell().redraw();
     }
 
+    @Override
     protected void okPressed() {
         int configSettingsReturn;
         ConfigSettings configSettings = ConfigSettings.getInstance();
@@ -460,100 +458,92 @@ public class ConfigDialog extends Dialog {
         /* =================Set Driver Type================ */
         if (twainBtn.getSelection()) {
             configSettingsReturn = configSettings.setDriverType("TWAIN");
-        }
-        else if (wiaBtn.getSelection()) {
+        } else if (wiaBtn.getSelection()) {
             configSettingsReturn = configSettings.setDriverType("WIA");
-        }
-        else {
+        } else {
             configSettingsReturn = ConfigSettings.INVALID_INPUT;
         }
         switch (configSettingsReturn) {
-            case (ConfigSettings.SUCCESS):
-                break;
-            case (ConfigSettings.NOCHANGE):
-                break;
-            case (ConfigSettings.INVALID_INPUT):
-                MessageDialog.openError(getShell(),
-                    "configSettings.setDriverType",
-                    "Please enter a valid input");
-                return;
+        case (ConfigSettings.SUCCESS):
+            break;
+        case (ConfigSettings.NOCHANGE):
+            break;
+        case (ConfigSettings.INVALID_INPUT):
+            MessageDialog.openError(getShell(), "configSettings.setDriverType",
+                "Please enter a valid input");
+            return;
 
-            case (ConfigSettings.FILE_ERROR):
-                MessageDialog.openError(getShell(),
-                    "configSettings.setDriverType",
-                    "Could not find scanlib.ini file");
-                getShell().dispose();
-                return;
+        case (ConfigSettings.FILE_ERROR):
+            MessageDialog.openError(getShell(), "configSettings.setDriverType",
+                "Could not find scanlib.ini file");
+            getShell().dispose();
+            return;
         }
         /* =================Set Driver Type================ */
 
         /* =================Set DPI ================ */
         configSettingsReturn = configSettings.setDpi(textDpi.getText());
         switch (configSettingsReturn) {
-            case (ConfigSettings.SUCCESS):
-                break;
-            case (ConfigSettings.FILE_ERROR):
-                MessageDialog.openError(getShell(), "configSettings.setDpi",
-                    "Could not find scanlib.ini file");
-                getShell().dispose();
-                return;
-            case (ConfigSettings.INVALID_INPUT):
-                MessageDialog.openError(getShell(), "configSettings.setDpi",
-                    "Dpi must be greater than 0 and no greater than 600");
-                return;
-            case (ConfigSettings.NOCHANGE):
-                break;
+        case (ConfigSettings.SUCCESS):
+            break;
+        case (ConfigSettings.FILE_ERROR):
+            MessageDialog.openError(getShell(), "configSettings.setDpi",
+                "Could not find scanlib.ini file");
+            getShell().dispose();
+            return;
+        case (ConfigSettings.INVALID_INPUT):
+            MessageDialog.openError(getShell(), "configSettings.setDpi",
+                "Dpi must be greater than 0 and no greater than 600");
+            return;
+        case (ConfigSettings.NOCHANGE):
+            break;
         }
         /* =================Set DPI ================ */
 
         /* =================Set Brightness ================ */
-        configSettingsReturn =
-            configSettings.setBrightness(textBrightness.getText());
+        configSettingsReturn = configSettings.setBrightness(textBrightness
+            .getText());
         switch (configSettingsReturn) {
-            case (ConfigSettings.SUCCESS):
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigScannerBrightness(
-                        configSettings.getBrightness());
-                if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                    BioSampleScanPlugin.openError("Set Brightness", ScanLib
-                        .getErrMsg(scanlibReturn));
-                    getShell().dispose();
-                }
-                break;
-            case (ConfigSettings.INVALID_INPUT):
-                MessageDialog.openError(getShell(),
-                    "configSettings.setBrightness",
-                    "Brightness ranges from -1000 to 1000\n"
-                        + "Please enter a valid input value");
-                return;
-            case (ConfigSettings.NOCHANGE):
-                break;
+        case (ConfigSettings.SUCCESS):
+            int scanlibReturn = ScanLib.getInstance()
+                .slConfigScannerBrightness(configSettings.getBrightness());
+            if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                BioSampleScanPlugin.openError("Set Brightness", ScanLib
+                    .getErrMsg(scanlibReturn));
+                getShell().dispose();
+            }
+            break;
+        case (ConfigSettings.INVALID_INPUT):
+            MessageDialog.openError(getShell(), "configSettings.setBrightness",
+                "Brightness ranges from -1000 to 1000\n"
+                    + "Please enter a valid input value");
+            return;
+        case (ConfigSettings.NOCHANGE):
+            break;
         }
         /* =================Set Brightness ================ */
 
         /* =================Set Contrast ================ */
-        configSettingsReturn =
-            configSettings.setContrast(textContrast.getText());
+        configSettingsReturn = configSettings.setContrast(textContrast
+            .getText());
         switch (configSettingsReturn) {
-            case (ConfigSettings.SUCCESS):
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigScannerContrast(
-                        configSettings.getContrast());
-                if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                    BioSampleScanPlugin.openError("Set Contrast", ScanLib
-                        .getErrMsg(scanlibReturn));
-                    getShell().dispose();
+        case (ConfigSettings.SUCCESS):
+            int scanlibReturn = ScanLib.getInstance().slConfigScannerContrast(
+                configSettings.getContrast());
+            if (scanlibReturn != ScanLib.SC_SUCCESS) {
+                BioSampleScanPlugin.openError("Set Contrast", ScanLib
+                    .getErrMsg(scanlibReturn));
+                getShell().dispose();
 
-                }
-                break;
-            case (ConfigSettings.INVALID_INPUT):
-                MessageDialog.openError(getShell(),
-                    "configSettings.setContrast",
-                    "Contrast ranges from -1000 to 1000\n"
-                        + "Please enter a valid input value");
-                return;
-            case (ConfigSettings.NOCHANGE):
-                break;
+            }
+            break;
+        case (ConfigSettings.INVALID_INPUT):
+            MessageDialog.openError(getShell(), "configSettings.setContrast",
+                "Contrast ranges from -1000 to 1000\n"
+                    + "Please enter a valid input value");
+            return;
+        case (ConfigSettings.NOCHANGE):
+            break;
         }
         /* =================Set Contrast ================ */
 
@@ -562,21 +552,21 @@ public class ConfigDialog extends Dialog {
         readPlatesTextToArray(nplates); /* Reads Plate Config Settings */
 
         for (int plate = 0; plate < maxPallets; plate++) {
-            int setPlateReturn =
-                configSettings.setPallet(plate + 1, nplates[plate][0],
-                    nplates[plate][1], nplates[plate][2], nplates[plate][3]);
+            int setPlateReturn = configSettings.setPallet(plate + 1,
+                nplates[plate][0], nplates[plate][1], nplates[plate][2],
+                nplates[plate][3]);
             if (setPlateReturn == ConfigSettings.SUCCESS
                 || setPlateReturn == ConfigSettings.CLEARDATA) {
 
-                PalletScanCoordinates coords =
-                    configSettings.getPallet(plate + 1);
+                PalletScanCoordinates coords = configSettings
+                    .getPallet(plate + 1);
 
                 if (coords == null)
                     continue;
 
-                int scanlibReturn =
-                    ScanLib.getInstance().slConfigPlateFrame(plate + 1,
-                        coords.left, coords.top, coords.right, coords.bottom);
+                int scanlibReturn = ScanLib.getInstance().slConfigPlateFrame(
+                    plate + 1, coords.left, coords.top, coords.right,
+                    coords.bottom);
                 if (scanlibReturn == ScanLib.SC_SUCCESS) {
                     if (setPlateReturn == ConfigSettings.SUCCESS) {
                         platesToCalibrate.add(plate + 1);
@@ -586,15 +576,13 @@ public class ConfigDialog extends Dialog {
                          * AND they are not all equal to zero AND
                          * slConfigPlateFrame returns SC_SUCCESS
                          */
-                    }
-                    else {
+                    } else {
                         BioSampleScanPlugin.openError("Plate Settings", ScanLib
                             .getErrMsg(scanlibReturn));
                         getShell().dispose();
                     }
                 }
-            }
-            else if (setPlateReturn == ConfigSettings.INVALID_INPUT) {
+            } else if (setPlateReturn == ConfigSettings.INVALID_INPUT) {
                 MessageDialog.openError(getShell(), "configSettings.setPlate",
                     "Please enter a valid input");
                 return;

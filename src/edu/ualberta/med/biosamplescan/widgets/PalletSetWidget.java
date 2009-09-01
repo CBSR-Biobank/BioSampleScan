@@ -32,7 +32,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private PalletWidget[] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
-        super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+        super(parent, SWT.H_SCROLL | SWT.V_SCROLL | style);
         setExpandHorizontal(true);
         setExpandVertical(true);
 
@@ -64,6 +64,7 @@ public class PalletSetWidget extends ScrolledComposite {
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
     }
 
+    @Override
     public boolean setFocus() {
         return true;
     }
@@ -78,8 +79,9 @@ public class PalletSetWidget extends ScrolledComposite {
         clearPlateBtn.setText("Clear Selected");
         // clearPlateBtn.setBounds(488, 6, 90, 40);
         clearPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                confirmClearPallets(evt);
+                confirmClearPallets();
             }
         });
 
@@ -87,16 +89,18 @@ public class PalletSetWidget extends ScrolledComposite {
         reScanPlateBtn.setText("Re-Scan Selected");
         // reScanPlateBtn.setBounds(596, 6, 90, 40);
         reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(evt, true);
+                scanPalletBtnWidgetSelected(true);
             }
         });
 
         scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         scanPlateBtn.setText("Scan Selected");
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(evt, false);
+                scanPalletBtnWidgetSelected(false);
             }
         });
 
@@ -106,7 +110,7 @@ public class PalletSetWidget extends ScrolledComposite {
         return MessageDialog.openConfirm(getShell(), title, msg);
     }
 
-    public void scanPalletBtnWidgetSelected(SelectionEvent evt, boolean rescan) {
+    public void scanPalletBtnWidgetSelected(boolean rescan) {
         Map<String, Integer> selected = new HashMap<String, Integer>();
 
         for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; i++) {
@@ -163,7 +167,7 @@ public class PalletSetWidget extends ScrolledComposite {
         palletWidgets[palletNum].setPalletBarcodes(pallet);
     }
 
-    public void confirmClearPallets(SelectionEvent evt) {
+    public void confirmClearPallets() {
         if (confirmMsg("Clear Pallets",
             "Do you want to clear the selected pallets?")) {
             ConfigSettings.getInstance().setLastSaveDir("");
