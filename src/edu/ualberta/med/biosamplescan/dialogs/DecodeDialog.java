@@ -60,6 +60,9 @@ public class DecodeDialog extends ProgressMonitorDialog {
 
                                 BioSampleScanPlugin.getDefault()
                                     .updateStatusBar(msg);
+
+                                BioSampleScanPlugin.getDefault()
+                                    .getPalletSetEditor().refresh();
                             }
                         });
                     } catch (Exception e) {

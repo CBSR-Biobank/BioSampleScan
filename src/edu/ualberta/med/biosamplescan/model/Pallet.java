@@ -68,7 +68,8 @@ public class Pallet {
             // need to merge current with new
             for (int r = 0; r < barcodes.length; ++r) {
                 for (int c = 0; c < barcodes[0].length; ++c) {
-                    if ((readBarcodes[r][c] != null)
+                    if (((barcodes[r][c] == null) || (barcodes[r][c].getValue() == null))
+                        && (readBarcodes[r][c] != null)
                         && (readBarcodes[r][c].getValue() != null)
                         && (readBarcodes[r][c].getValue().length() > 0)) {
                         barcodes[r][c] = readBarcodes[r][c];

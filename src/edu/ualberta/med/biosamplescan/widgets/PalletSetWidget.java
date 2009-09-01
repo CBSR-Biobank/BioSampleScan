@@ -37,6 +37,8 @@ public class PalletSetWidget extends ScrolledComposite {
         setExpandHorizontal(true);
         setExpandVertical(true);
 
+        palletSet = new PalletSet();
+
         composite = new Composite(this, SWT.NONE);
         composite.setLayout(new GridLayout(1, false));
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -149,8 +151,7 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (palletsToDecode.size() > 0) {
-            DecodeDialog dlg = new DecodeDialog(palletsToDecode, palletSet,
-                rescan);
+            new DecodeDialog(palletsToDecode, palletSet, rescan);
         }
     }
 
@@ -174,7 +175,7 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void clearPallets() {
-        palletSet = null;
+        palletSet = new PalletSet();
 
         for (int p = 0, n = ConfigSettings.getInstance().getPalletMax(); p < n; p++) {
             palletBarcodesWidget.clearText();
@@ -195,6 +196,7 @@ public class PalletSetWidget extends ScrolledComposite {
         }
         layout(true);
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        updatePalletModel();
     }
 
     public PalletSet getPalletSet() {
