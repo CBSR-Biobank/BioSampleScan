@@ -3,7 +3,6 @@ package edu.ualberta.med.biosamplescan.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -24,6 +23,8 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 public class PalletSetWidget extends ScrolledComposite {
 
     private Composite composite;
+
+    private PalletSet palletSet;
 
     private Button reScanPlateBtn;
     private Button scanPlateBtn;
@@ -49,12 +50,7 @@ public class PalletSetWidget extends ScrolledComposite {
         ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < palletsMax; table++) {
             palletWidgets[table] = new PalletWidget(composite, SWT.NONE, table);
-
-            /*
-             * can't call palletWidgets[table].setEnabled() since want widget to
-             * actually be layed out
-             */
-            palletWidgets[table].setVisible(config.palletIsSet(table + 1));
+            palletWidgets[table].setEnabled(config.palletIsSet(table + 1));
         }
 
         // composite.pack();
@@ -87,7 +83,6 @@ public class PalletSetWidget extends ScrolledComposite {
 
         reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         reScanPlateBtn.setText("Re-Scan Selected");
-        // reScanPlateBtn.setBounds(596, 6, 90, 40);
         reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent evt) {
@@ -154,17 +149,17 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (palletsToDecode.size() > 0) {
-            new DecodeDialog(palletsToDecode, rescan);
+            DecodeDialog dlg = new DecodeDialog(palletsToDecode, palletSet,
+                rescan);
         }
     }
 
-    public void updatePalletModel(int palletNum) {
-        Assert.isTrue((palletNum >= 0)
-            && (palletNum < ConfigSettings.getInstance().getPalletMax()),
-            "invalid pallet number: " + palletNum);
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
-        Pallet pallet = palletSet.getPallet(palletNum);
-        palletWidgets[palletNum].setPalletBarcodes(pallet);
+    public void updatePalletModel() {
+        for (int p = 0, n = ConfigSettings.getInstance().getPalletMax(); p < n; p++) {
+            Pallet pallet = palletSet.getPallet(p);
+            if (pallet != null)
+                palletWidgets[p].setPalletBarcodes(pallet);
+        }
     }
 
     public void confirmClearPallets() {
@@ -179,8 +174,7 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void clearPallets() {
-        BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
-        plugin.createNewPelletSet();
+        palletSet = null;
 
         for (int p = 0, n = ConfigSettings.getInstance().getPalletMax(); p < n; p++) {
             palletBarcodesWidget.clearText();
@@ -201,5 +195,9 @@ public class PalletSetWidget extends ScrolledComposite {
         }
         layout(true);
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+    }
+
+    public PalletSet getPalletSet() {
+        return palletSet;
     }
 }

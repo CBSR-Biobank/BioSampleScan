@@ -24,17 +24,6 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
             targetID="edu.ualberta.med.biosamplescan.rcp.perspective">
-         <view
-               closeable="false"
-               id="edu.ualberta.med.biosamplescan.views.palletset"
-               minimized="false"
-               moveable="false"
-               relationship="left"
-               relative="org.eclipse.ui.editorss"
-               showTitle="false"
-               standalone="true"
-               visible="true">
-         </view>
       </perspectiveExtension>
    </extension>
    <extension

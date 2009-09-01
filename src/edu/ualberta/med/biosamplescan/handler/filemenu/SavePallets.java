@@ -24,7 +24,8 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
  */
 public class SavePallets extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        PalletSet palletSet = BioSampleScanPlugin.getDefault()
+            .getPalletSetEditor().getPalletSet();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (singlePalletSave())
@@ -71,7 +72,8 @@ public class SavePallets extends AbstractHandler implements IHandler {
      * Returns true if application was started to scan only a single pallet.
      */
     public static boolean singlePalletSave() {
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        PalletSet palletSet = BioSampleScanPlugin.getDefault()
+            .getPalletSetEditor().getPalletSet();
         String filename = ConfigSettings.getInstance().getSaveFileName();
 
         if (filename == null)

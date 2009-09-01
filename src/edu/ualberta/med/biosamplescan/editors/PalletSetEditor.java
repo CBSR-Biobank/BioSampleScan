@@ -36,7 +36,14 @@ public class PalletSetEditor extends EditorPart {
         setInput(input);
         this.setPartName(new SimpleDateFormat("E dd/MM/yyyy HH:mm:ss")
             .format(new Date()));
+    }
 
+    public void clearPalletSet() {
+        palletSetWidget.clearPallets();
+    }
+
+    public PalletSet getPalletSet() {
+        return palletSetWidget.getPalletSet();
     }
 
     @Override
@@ -52,10 +59,6 @@ public class PalletSetEditor extends EditorPart {
     @Override
     public void createPartControl(Composite parent) {
         palletSetWidget = new PalletSetWidget(parent, SWT.NONE);
-    }
-
-    public PalletSet getPalletSet() {
-        return null;
     }
 
     public PalletSetWidget getPalletSetWidget() {

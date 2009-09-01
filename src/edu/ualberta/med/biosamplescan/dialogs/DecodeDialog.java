@@ -1,6 +1,5 @@
 package edu.ualberta.med.biosamplescan.dialogs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -17,8 +16,9 @@ import edu.ualberta.med.scanlib.ScanLib;
 public class DecodeDialog extends ProgressMonitorDialog {
 
     public DecodeDialog(final Map<Integer, String> palletsToDecode,
-        final boolean rescan) {
+        final PalletSet palletSet, final boolean rescan) {
         super(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+
         try {
             run(true, true, new IRunnableWithProgress() {
                 public void run(IProgressMonitor monitor) {
@@ -43,17 +43,10 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 }
                             }
 
-                            PalletSet palletSet = BioSampleScanPlugin
-                                .getDefault().getPalletSet();
-
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
                             palletSet.setPalletBarocode(p - 1, palletsToDecode
                                 .get(pallet));
-
-                            BioSampleScanPlugin.getDefault()
-                                .getPalletSetEditor().getPalletSetWidget()
-                                .updatePalletModel(p - 1);
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {
@@ -77,9 +70,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
 
                 }
             });
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

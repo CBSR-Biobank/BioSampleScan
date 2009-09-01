@@ -21,7 +21,8 @@ public class NewScan extends AbstractHandler implements IHandler {
             .getActiveWorkbenchWindow().getShell(), "New Scan",
             "Do you want to clear all the tables?")) {
             viewComposite.clearPallets();
-            BioSampleScanPlugin.getDefault().createNewPelletSet();
+            BioSampleScanPlugin.getDefault().getPalletSetEditor()
+                .clearPalletSet();
         }
 
         return null;

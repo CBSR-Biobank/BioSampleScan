@@ -21,7 +21,8 @@ public class SaveBarcodesFromTableX {
         if (SavePallets.singlePalletSave())
             return null;
 
-        PalletSet palletSet = BioSampleScanPlugin.getDefault().getPalletSet();
+        PalletSet palletSet = BioSampleScanPlugin.getDefault()
+            .getPalletSetEditor().getPalletSet();
 
         if (palletSet.getPallet(palletId - 1) == null) {
             BioSampleScanPlugin.openError("Save Error", "Pallet " + palletId

@@ -18,7 +18,7 @@ public class ScannerConfiguration extends AbstractHandler implements IHandler {
 
         BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
 
-        if (plugin.getPalletSet().getPalletCount() > 0) {
+        if (plugin.getPalletSetEditor().getPalletSet().getPalletCount() > 0) {
             if (!BioSampleScanPlugin.openConfirm("Pallet Decode Information",
                 "Erase decode information and proceed to configuration?")) {
                 return null;
@@ -32,8 +32,7 @@ public class ScannerConfiguration extends AbstractHandler implements IHandler {
         configDialog.open();
 
         // reset our model since pallet set may have changed
-        plugin.createNewPelletSet();
-        plugin.getPalletSetEditor().refresh();
+        plugin.getPalletSetEditor().clearPalletSet();
 
         if (ConfigSettings.getInstance().getSimulateScanning())
             return null;
