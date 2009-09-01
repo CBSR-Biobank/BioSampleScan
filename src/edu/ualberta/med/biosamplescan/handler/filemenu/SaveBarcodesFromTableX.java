@@ -44,8 +44,8 @@ public class SaveBarcodesFromTableX {
             Assert.isNotNull(pallet, "No pallet for pallet id: " + palletId);
 
             String filename = palletSet.savePalletToDir(saveDir, pallet);
-            BioSampleScanPlugin.getDefault().getPalletSetView()
-                .updateStatusBar("File " + filename + " saved.");
+            BioSampleScanPlugin.getDefault().updateStatusBar(
+                "File " + filename + " saved.");
         }
         return null;
     }

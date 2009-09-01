@@ -25,17 +25,16 @@ public class DecodeDialog extends ProgressMonitorDialog {
                     try {
                         monitor.beginTask("Decoding plates...",
                             IProgressMonitor.UNKNOWN);
-                        ConfigSettings configSettings =
-                            ConfigSettings.getInstance();
+                        ConfigSettings configSettings = ConfigSettings
+                            .getInstance();
 
                         for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
 
                             if (!ConfigSettings.getInstance()
                                 .getSimulateScanning()) {
-                                int scanlibReturn =
-                                    ScanLib.getInstance().slDecodePlate(
-                                        configSettings.getDpi(), p);
+                                int scanlibReturn = ScanLib.getInstance()
+                                    .slDecodePlate(configSettings.getDpi(), p);
                                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
                                     BioSampleScanPlugin.openAsyncError(
                                         "Decoding Error", ScanLib
@@ -44,16 +43,17 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 }
                             }
 
-                            PalletSet palletSet =
-                                BioSampleScanPlugin.getDefault().getPalletSet();
+                            PalletSet palletSet = BioSampleScanPlugin
+                                .getDefault().getPalletSet();
 
                             palletSet.loadFromScanlibFile(p - 1, rescan);
                             palletSet.setPalletTimestampNow(p - 1);
                             palletSet.setPalletBarocode(p - 1, palletsToDecode
                                 .get(pallet));
 
-                            BioSampleScanPlugin.getDefault().getPalletSetView()
-                                .getPalletSetWidget().updatePalletModel(p - 1);
+                            BioSampleScanPlugin.getDefault()
+                                .getPalletSetEditor().getPalletSetWidget()
+                                .updatePalletModel(p - 1);
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {
@@ -61,30 +61,25 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 String msg;
                                 if (rescan) {
                                     msg = "Pallets re-scanned and decoded.";
-                                }
-                                else {
+                                } else {
                                     msg = "Pallets scanned and decoded.";
                                 }
 
                                 BioSampleScanPlugin.getDefault()
-                                    .getPalletSetView().updateStatusBar(msg);
+                                    .updateStatusBar(msg);
                             }
                         });
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-                    }
-                    finally {
+                    } finally {
                         monitor.done();
                     }
 
                 }
             });
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

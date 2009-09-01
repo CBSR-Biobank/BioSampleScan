@@ -23,6 +23,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.ISourceProviderService;
 import org.osgi.framework.BundleContext;
 
+import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
@@ -40,8 +41,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     private static BioSampleScanPlugin plugin;
 
     private PalletSet palletSet;
-
-    private PalletSetView plateSetView;
 
     public BioSampleScanPlugin() {
         String osname = System.getProperty("os.name");
@@ -156,11 +155,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         this.palletSet = palletSet;
     }
 
-    public PalletSetView getPalletSetView() {
-        return plateSetView;
-    }
-
-    public void setPlateSetView(PalletSetView plateSetEditor) {
+    public void setPlateSetView(final PalletSetEditor palletSetEditor) {
         final String err = parseCommandLine();
         if (err != null) {
             stopApplication("Command Line Arguments", err);
@@ -169,7 +164,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
 
         palletSet = new PalletSet();
         ConfigSettings.getInstance();
-        plateSetView = plateSetEditor;
 
         IWorkbenchWindow window = PlatformUI.getWorkbench()
             .getActiveWorkbenchWindow();
@@ -198,8 +192,8 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                 } else {
                     msg = "Configuration loaded.";
                 }
-                plateSetView.updateStatusBar(msg);
-                plateSetView.refresh();
+                palletSetEditor.updateStatusBar(msg);
+                palletSetEditor.refresh();
             }
         });
     }
@@ -247,5 +241,14 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().close();
             }
         });
+    }
+
+    public void updateStatusBar(String string) {
+        getPalletSetEditor().updateStatusBar(string);
+    }
+
+    public PalletSetEditor getPalletSetEditor() {
+        return (PalletSetEditor) PlatformUI.getWorkbench()
+            .getActiveWorkbenchWindow().getActivePage().getActivePart();
     }
 }

@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button scanPlateBtn;
     private Button clearPlateBtn;
     private PalletBarcodesWidget palletBarcodesWidget;
-    private PalletWidget [] palletWidgets;
+    private PalletWidget[] palletWidgets;
 
     public PalletSetWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL);
@@ -45,7 +44,7 @@ public class PalletSetWidget extends ScrolledComposite {
         palletBarcodesWidget = new PalletBarcodesWidget(composite, SWT.NONE);
 
         int palletsMax = ConfigSettings.getInstance().getPalletMax();
-        palletWidgets = new PalletWidget [palletsMax];
+        palletWidgets = new PalletWidget[palletsMax];
 
         ConfigSettings config = ConfigSettings.getInstance();
         for (int table = 0; table < palletsMax; table++) {
@@ -72,7 +71,8 @@ public class PalletSetWidget extends ScrolledComposite {
     private void createTopButtonsSection(Composite parent) {
         Composite section = new Composite(parent, SWT.NONE);
         section.setLayout(new GridLayout(4, false));
-        section.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+        section
+            .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         clearPlateBtn.setText("Clear Selected");
@@ -112,15 +112,15 @@ public class PalletSetWidget extends ScrolledComposite {
         for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; i++) {
             String palletBarcode = palletBarcodesWidget.getPalletBarcode(i);
 
-            if (palletBarcode.length() == 0) continue;
+            if (palletBarcode.length() == 0)
+                continue;
 
             if (selected.containsKey(palletBarcode)) {
                 BioSampleScanPlugin.openError("Duplicate Pallet Barcodes",
                     "Pallets " + selected.get(palletBarcode) + " and "
                         + (i + 1) + " have the same barcodes");
                 return;
-            }
-            else {
+            } else {
                 selected.put(palletBarcode, i + 1);
             }
         }
@@ -144,8 +144,8 @@ public class PalletSetWidget extends ScrolledComposite {
             }
 
             if (coords.left + coords.top + coords.right + coords.bottom > 0) {
-                palletsToDecode.put(pallet,
-                    palletBarcodesWidget.getPalletBarcode(pallet - 1));
+                palletsToDecode.put(pallet, palletBarcodesWidget
+                    .getPalletBarcode(pallet - 1));
             }
         }
 
@@ -169,7 +169,7 @@ public class PalletSetWidget extends ScrolledComposite {
             ConfigSettings.getInstance().setLastSaveDir("");
             clearPallets();
 
-            BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
+            BioSampleScanPlugin.getDefault().updateStatusBar(
                 "Decode information cleared.");
         }
     }

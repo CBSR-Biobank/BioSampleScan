@@ -51,6 +51,12 @@
                   style="push">
             </command>
             <command
+                  commandId="edu.ualberta.med.biosamplescan.commands.newtab"
+                  icon="icons/application_go.png"
+                  label="New Tab"
+                  style="push">
+            </command>
+            <command
                   commandId="edu.ualberta.med.biosamplescan.commands.savepallets"
                   icon="icons/disk.png"
                   label="Save Pallets"
@@ -295,6 +301,11 @@
             id="edu.ualberta.med.biosamplescan.commands.newview"
             name="New Scan">
       </command>
+      <command 
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewTab"
+            id="edu.ualberta.med.biosamplescan.commands.newtab"
+            name="New Tab">
+      </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.debug.SimulateScannng"
             id="edu.ualberta.med.biosamplescan.menu.debug.simulateScanning"
@@ -323,14 +334,14 @@
       </product>
    </extension>
    <extension
-         point="org.eclipse.ui.views">
-      <view
-            allowMultiple="false"
-            class="edu.ualberta.med.biosamplescan.PalletSetView"
-            id="edu.ualberta.med.biosamplescan.views.palletset"
-            name="Pallet Set View"
-            restorable="true">
-      </view>
+         point="org.eclipse.ui.editors">
+      <editor
+            class="edu.ualberta.med.biosamplescan.editors.PalletSetEditor"
+            default="true"
+            icon="icons/star.png"
+            id="edu.ualberta.med.biosamplescan.editors.plateset"
+            name="PlateSet">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.services">
