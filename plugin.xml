@@ -363,4 +363,16 @@
          </with>
       </definition>
    </extension>
+   <extension
+         id="product1"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="BioSampleScan.BioSampleScan"
+            name="BioSasmpleScan">
+         <property
+               name="appName"
+               value="BioSasmpleScan">
+         </property>
+      </product>
+   </extension>
 </plugin>
