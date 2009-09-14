@@ -44,10 +44,6 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     private PalletSetView plateSetView;
 
     public BioSampleScanPlugin() {
-        String osname = System.getProperty("os.name");
-        if (osname.startsWith("Windows")) {
-            System.loadLibrary("scanlib");
-        }
     }
 
     @Override

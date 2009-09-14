@@ -17,3 +17,4 @@ Bundle-ClassPath: .,
  lib/jargs.jar
 Export-Package: edu.ualberta.med.biosamplescan,
  edu.ualberta.med.biosamplescan.rcp
+Import-Package: edu.ualberta.med.scanlib
