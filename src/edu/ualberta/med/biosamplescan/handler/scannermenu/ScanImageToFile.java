@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -10,18 +9,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
-import edu.ualberta.med.biosamplescan.PalletSetView;
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
 public class ScanImageToFile extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        PalletSetWidget viewComposite = ((PalletSetView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart()).getPalletSetWidget();
+        PalletSetWidget widget = BioSampleScanPlugin.getDefault()
+            .getPalletSetEditor().getPalletSetWidget();
         ConfigSettings configSettings = ConfigSettings.getInstance();
 
-        FileDialog dlg = new FileDialog(viewComposite.getShell(), SWT.SAVE);
-        dlg.setFilterExtensions(new String [] { "*.bmp", "*.*" });
+        FileDialog dlg = new FileDialog(widget.getShell(), SWT.SAVE);
+        dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
         dlg.setText("Scan and Save Image");
         String saveLocation = dlg.open();
         if (saveLocation == null) {
@@ -31,9 +31,9 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
             configSettings.getDpi(), 0, 0, 0, 0, saveLocation);
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
-            MessageDialog.openError(
-                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                "Scanning Error", ScanLib.getErrMsg(scanlibReturn));
+            MessageDialog.openError(PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getShell(), "Scanning Error",
+                ScanLib.getErrMsg(scanlibReturn));
         }
         return null;
     }

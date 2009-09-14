@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
 import java.util.List;
@@ -19,27 +18,26 @@ public class ScannerConfiguration extends AbstractHandler implements IHandler {
 
         BioSampleScanPlugin plugin = BioSampleScanPlugin.getDefault();
 
-        if (plugin.getPalletSet().getPalletCount() > 0) {
+        if (plugin.getPalletSetEditor().getPalletSet().getPalletCount() > 0) {
             if (!BioSampleScanPlugin.openConfirm("Pallet Decode Information",
                 "Erase decode information and proceed to configuration?")) {
                 return null;
             }
 
-            plugin.getPalletSetView().getPalletSetWidget().clearPallets();
+            plugin.getPalletSetEditor().getPalletSetWidget().clearPallets();
         }
 
-        ConfigDialog configDialog = new ConfigDialog(
-            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+        ConfigDialog configDialog = new ConfigDialog(PlatformUI.getWorkbench()
+            .getActiveWorkbenchWindow().getShell());
         configDialog.open();
 
         // reset our model since pallet set may have changed
-        plugin.createNewPelletSet();
-        plugin.getPalletSetView().refresh();
+        plugin.getPalletSetEditor().clearPalletSet();
 
-        if (ConfigSettings.getInstance().getSimulateScanning()) return null;
+        if (ConfigSettings.getInstance().getSimulateScanning())
+            return null;
 
-        BioSampleScanPlugin.getDefault().getPalletSetView().updateStatusBar(
-            "Configuring scanner");
+        BioSampleScanPlugin.getDefault().updateStatusBar("Configuring scanner");
 
         List<Integer> platesToCalibrate = configDialog.getPlatesToCalibrate();
         if (platesToCalibrate.size() > 0) {
