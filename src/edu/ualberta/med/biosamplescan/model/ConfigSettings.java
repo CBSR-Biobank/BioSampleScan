@@ -47,8 +47,7 @@ public class ConfigSettings {
     /**
      * This value can be assigned form the command line.
      * 
-     * @param max
-     *            A number between 1 and PALLET_NUM.
+     * @param max A number between 1 and PALLET_NUM.
      */
     public void setPalletsMax(int max) {
         Assert.isTrue((max > 0) && (max <= palletsMax),
@@ -84,41 +83,13 @@ public class ConfigSettings {
         return saveFileName;
     }
 
-    private int saveToIni(String group, String key, int value) {
-        return this.saveToIni(group, key, String.valueOf(value));
-    }
-
-    private int saveToIni(String group, String key, String value) {
-        try {
-            File f = new File("scanlib.ini");
-            if (!f.exists()) {
-                f.createNewFile();
-            }
-            else {
-                Wini ini = new Wini(f);
-                ini.put(group, key, value);
-                ini.store();
-            }
-        }
-        catch (InvalidFileFormatException e) {
-            e.printStackTrace();
-            return FILE_ERROR;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return FILE_ERROR;
-        }
-        return SUCCESS;
-    }
-
     public int setBrightness(String strBrightness) {
         if (strBrightness == null || strBrightness.isEmpty())
             return INVALID_INPUT;
         int intBrightness = Integer.parseInt(strBrightness);
         if (intBrightness > 1000 || intBrightness < -1000) {
             return INVALID_INPUT;
-        }
-        else if (intBrightness == this.brightness) {
+        } else if (intBrightness == this.brightness) {
             return NOCHANGE;
         }
         this.brightness = intBrightness;
@@ -135,8 +106,7 @@ public class ConfigSettings {
         int intContrast = Integer.parseInt(strContrast);
         if (intContrast > 1000 || intContrast < -1000) {
             return INVALID_INPUT;
-        }
-        else if (intContrast == this.contrast) {
+        } else if (intContrast == this.contrast) {
             return NOCHANGE;
         }
         this.contrast = intContrast;
@@ -202,8 +172,8 @@ public class ConfigSettings {
             return NOCHANGE;
         }
 
-        palletScanCoordinates[pallet] =
-            new PalletScanCoordinates(pallet + 1, left, top, right, bottom);
+        palletScanCoordinates[pallet] = new PalletScanCoordinates(pallet + 1,
+            left, top, right, bottom);
         return SUCCESS;
     }
 
@@ -221,12 +191,10 @@ public class ConfigSettings {
                 f.createNewFile();
             }
             ini = new Wini(f);
-        }
-        catch (InvalidFileFormatException e) {
+        } catch (InvalidFileFormatException e) {
             e.printStackTrace();
             return FILE_ERROR;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return FILE_ERROR;
         }
