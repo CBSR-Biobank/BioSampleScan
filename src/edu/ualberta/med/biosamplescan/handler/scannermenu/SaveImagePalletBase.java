@@ -1,5 +1,9 @@
 package edu.ualberta.med.biosamplescan.handler.scannermenu;
 
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -10,8 +14,12 @@ import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
 
-public class SaveImagePlateX {
-    public static final Object execute(int palletId) {
+public abstract class SaveImagePalletBase extends AbstractHandler implements
+    IHandler {
+    protected int palletId;
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
         if (palletId >= ConfigSettings.getInstance().getPalletMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");

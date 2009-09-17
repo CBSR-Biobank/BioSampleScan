@@ -106,12 +106,6 @@
                   label="Select Source"
                   style="push">
             </command>
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.scannersettings"
-                  icon="icons/image.png"
-                  label="Scanner Configuration... "
-                  style="push">
-            </command>
             <separator
                   name="BioSampleScan.separator5"
                   visible="true">
@@ -216,11 +210,6 @@
             name="Quit">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScannerConfiguration"
-            id="edu.ualberta.med.biosamplescan.commands.scannersettings"
-            name="Scanner Settings">
-      </command>
-      <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SelectSource"
             id="edu.ualberta.med.biosamplescan.commands.selectsource"
             name="Select Source">
@@ -256,27 +245,27 @@
             name="Save From Pallet 5">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate1"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePallet1"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate1"
             name="Save Image to Pallet 1">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate2"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePallet2"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate2"
             name="Save Image to Pallet 2">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate3"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePallet3"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate3"
             name="Save Image to Pallet 3">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate4"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePallet4"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate4"
             name="Save Image to Pallet 4">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePlate5"
+            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SaveImagePallet5"
             id="edu.ualberta.med.biosamplescan.commands.imagefromplate5"
             name="Save Image to Pallet 5">
       </command>
