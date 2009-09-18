@@ -3,6 +3,7 @@ package edu.ualberta.med.biosamplescan.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -176,17 +177,24 @@ public class PalletSetWidget extends ScrolledComposite {
         return palletBarcodesWidget.isSelected(platenum);
     }
 
-    public void refresh() {
-        for (int table = 0, n = BioSampleScanPlugin.getDefault()
-            .getPalletsMax(); table < n; table++) {
-            boolean isSet = BioSampleScanPlugin.getDefault().getPalletEnabled(
-                table + 1);
-            palletBarcodesWidget.setEnabled(table, isSet);
-            palletWidgets[table].setEnabled(isSet);
-        }
-        layout(true);
+    public void refreshPallet(int palletId) {
+        Assert.isTrue((palletId >= 0)
+            && (palletId <= BioSampleScanPlugin.getDefault().getPalletsMax()),
+            "invalid pallet number " + palletId);
+        boolean isSet = BioSampleScanPlugin.getDefault().getPalletEnabled(
+            palletId + 1);
+        palletBarcodesWidget.setEnabled(palletId, isSet);
+        palletWidgets[palletId].setEnabled(isSet);
+        layout(true, true);
         setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         updatePalletModel();
+    }
+
+    public void refresh() {
+        for (int pallet = 0, n = BioSampleScanPlugin.getDefault()
+            .getPalletsMax(); pallet < n; pallet++) {
+            refreshPallet(pallet);
+        }
     }
 
     public PalletSet getPalletSet() {

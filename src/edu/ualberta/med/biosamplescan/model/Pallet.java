@@ -88,7 +88,8 @@ public class Pallet {
         String result = new String();
         for (int r = 0; r < barcodes.length; ++r) {
             for (int c = 0; c < barcodes[0].length; ++c) {
-                if (barcodes[r][c] == null)
+                if ((barcodes[r][c] == null)
+                    || (barcodes[r][c].getValue() == null))
                     continue;
 
                 result = result.concat(String.format("%s,%s,%d,%s,%s\r\n",

@@ -67,15 +67,12 @@ public class SavePallets extends AbstractHandler implements IHandler {
         return dlg;
     }
 
-    /**
-     * Returns true if application was started to scan only a single pallet.
-     */
     public static boolean singlePalletSave() {
         PalletSet palletSet = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSet();
         String filename = BioSampleScanPlugin.getDefault().getSaveFileName();
 
-        if (filename == null)
+        if ((filename == null) || (filename.length() == 0))
             return false;
 
         Pallet pallet = palletSet.getPallet(0);

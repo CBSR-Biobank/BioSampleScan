@@ -8,6 +8,8 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -19,7 +21,8 @@ import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class BioSampleScanPlugin extends AbstractUIPlugin {
+public class BioSampleScanPlugin extends AbstractUIPlugin implements
+    IPropertyChangeListener {
     // The plug-in ID
     public static final String PLUGIN_ID = "BioSampleScan";
 
@@ -44,6 +47,23 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
+
+        ScannerConfigPlugin.getDefault().getPreferenceStore()
+            .addPropertyChangeListener(this);
+    }
+
+    public void propertyChange(PropertyChangeEvent event) {
+        for (int i = 0; i < edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_ENABLED.length; ++i) {
+            if (!event
+                .getProperty()
+                .equals(
+                    edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_ENABLED[i]))
+                continue;
+
+            PalletSetEditor editor = getPalletSetEditor();
+            if (editor != null)
+                editor.getPalletSetWidget().refreshPallet(i);
+        }
     }
 
     @Override

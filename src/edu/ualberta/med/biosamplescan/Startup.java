@@ -50,7 +50,12 @@ public class Startup implements IStartup {
                     return;
                 }
 
-                ScannerConfigPlugin.getDefault().initialize();
+                try {
+                    ScannerConfigPlugin.getDefault().initialize();
+                } catch (Exception e1) {
+                    stopApplication("Ini File Error", e1.getMessage());
+                    return;
+                }
 
                 IWorkbenchWindow window = PlatformUI.getWorkbench()
                     .getActiveWorkbenchWindow();

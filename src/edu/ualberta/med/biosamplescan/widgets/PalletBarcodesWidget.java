@@ -2,6 +2,8 @@ package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,11 +31,16 @@ public class PalletBarcodesWidget extends Composite {
         g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         g.setLayout(new GridLayout(2 * palletsMax, false));
 
+        GC gc = new GC(this);
+        FontMetrics fm = gc.getFontMetrics();
+
         textPlateId = new Text[palletsMax];
         for (int i = 0; i < palletsMax; ++i) {
             Label l = new Label(g, SWT.NONE);
             l.setText("Pallet " + (i + 1) + ":");
             textPlateId[i] = new Text(g, SWT.BORDER);
+            GridData gd = new GridData();
+            gd.widthHint = 15 * fm.getAverageCharWidth();
             textPlateId[i].setTextLimit(15);
             textPlateId[i].addKeyListener(EnterKeyToNextFieldListener.INSTANCE);
             textPlateId[i].setEnabled(BioSampleScanPlugin.getDefault()
