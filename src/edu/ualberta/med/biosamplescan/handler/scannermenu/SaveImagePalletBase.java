@@ -10,9 +10,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public abstract class SaveImagePalletBase extends AbstractHandler implements
     IHandler {
@@ -20,7 +20,7 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        if (palletId >= ConfigSettings.getInstance().getPalletMax()) {
+        if (palletId >= BioSampleScanPlugin.getDefault().getPalletsMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");
             return null;
@@ -28,9 +28,8 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
 
         PalletSetWidget widget = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSetWidget();
-        ConfigSettings configSettings = ConfigSettings.getInstance();
 
-        if (!configSettings.palletIsSet(palletId)) {
+        if (!ScannerConfigPlugin.getDefault().getPalletEnabled(palletId)) {
             // TODO apply this code to all applicable routines
             MessageDialog.openError(PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getShell(), "Error", String.format(
@@ -47,7 +46,7 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
         }
 
         int scanlibReturn = ScanLib.getInstance().slScanPlate(
-            configSettings.getDpi(), palletId, saveLocation);
+            ScannerConfigPlugin.getDefault().getDpi(), palletId, saveLocation);
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
             MessageDialog.openError(PlatformUI.getWorkbench()

@@ -7,7 +7,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 
 public class SimulateScannng extends AbstractHandler implements IHandler {
 
@@ -15,7 +15,7 @@ public class SimulateScannng extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         Command command = event.getCommand();
         boolean oldValue = HandlerUtil.toggleCommandState(command);
-        ConfigSettings.getInstance().setSimulateScanning(!oldValue);
+        BioSampleScanPlugin.getDefault().setSimulateScanning(!oldValue);
         return null;
     }
 }

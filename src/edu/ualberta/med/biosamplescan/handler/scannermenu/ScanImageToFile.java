@@ -10,15 +10,14 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class ScanImageToFile extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         PalletSetWidget widget = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSetWidget();
-        ConfigSettings configSettings = ConfigSettings.getInstance();
 
         FileDialog dlg = new FileDialog(widget.getShell(), SWT.SAVE);
         dlg.setFilterExtensions(new String[] { "*.bmp", "*.*" });
@@ -27,8 +26,9 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
         if (saveLocation == null) {
             return null;
         }
-        int scanlibReturn = ScanLib.getInstance().slScanImage(
-            configSettings.getDpi(), 0, 0, 0, 0, saveLocation);
+        int scanlibReturn = ScanLib.getInstance()
+            .slScanImage(ScannerConfigPlugin.getDefault().getDpi(), 0, 0, 0, 0,
+                saveLocation);
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
             MessageDialog.openError(PlatformUI.getWorkbench()

@@ -18,9 +18,9 @@ import org.eclipse.ui.services.ISourceProviderService;
 
 import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
 import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class Startup implements IStartup {
 
@@ -29,7 +29,7 @@ public class Startup implements IStartup {
         final IWorkbench workbench = PlatformUI.getWorkbench();
         workbench.getDisplay().asyncExec(new Runnable() {
             public void run() {
-                if (ConfigSettings.getInstance().getSimulateScanning())
+                if (BioSampleScanPlugin.getDefault().getSimulateScanning())
                     return;
 
                 String osname = System.getProperty("os.name");
@@ -50,7 +50,7 @@ public class Startup implements IStartup {
                     return;
                 }
 
-                ConfigSettings.getInstance();
+                ScannerConfigPlugin.getDefault().initialize();
 
                 IWorkbenchWindow window = PlatformUI.getWorkbench()
                     .getActiveWorkbenchWindow();
@@ -69,7 +69,7 @@ public class Startup implements IStartup {
                     .getCommand("edu.ualberta.med.biosamplescan.menu.debug.simulateScanning");
                 State state = command
                     .getState("org.eclipse.ui.commands.toggleState");
-                ConfigSettings.getInstance().setSimulateScanning(
+                BioSampleScanPlugin.getDefault().setSimulateScanning(
                     (Boolean) state.getValue());
 
                 try {
@@ -78,7 +78,7 @@ public class Startup implements IStartup {
                             true);
 
                     String msg = new String();
-                    if (ConfigSettings.getInstance().getPalletCount() == 0) {
+                    if (ScannerConfigPlugin.getDefault().getPalletCount() == 0) {
                         msg = "Please configure scanner.";
                     } else {
                         msg = "Configuration loaded.";
@@ -102,23 +102,23 @@ public class Startup implements IStartup {
             return e.getMessage();
         }
 
-        ConfigSettings c = ConfigSettings.getInstance();
-
         String filename = (String) parser.getOptionValue(outputOpt);
         if (filename != null) {
             if (filename.length() == 0) {
                 return "Invalid save location";
             }
-            c.setSaveFileName(filename);
+            BioSampleScanPlugin.getDefault().setSaveFileName(filename);
         }
 
         Integer palletsMax = (Integer) parser.getOptionValue(palletsMaxOpt);
         if (palletsMax != null) {
-            if ((palletsMax <= 0) || (palletsMax > ConfigSettings.PALLET_NUM)) {
-                return "nvalid value. palletsmax should be between 1 and "
-                    + ConfigSettings.PALLET_NUM;
+            if ((palletsMax <= 0)
+                || (palletsMax > BioSampleScanPlugin.getDefault()
+                    .getPalletsMax())) {
+                return "invalid value. palletsmax should be between 1 and "
+                    + ScannerConfigPlugin.getPalletsMax();
             }
-            c.setPalletsMax(palletsMax);
+            BioSampleScanPlugin.getDefault().setPalletsMax(palletsMax);
         }
 
         if ((filename != null) && (palletsMax != null) && (palletsMax != 1)) {

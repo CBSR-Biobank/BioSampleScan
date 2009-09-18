@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.scanlib.ScanCell;
 
 public class Pallet {
@@ -54,7 +55,7 @@ public class Pallet {
         try {
             ScanCell[][] readBarcodes;
 
-            if (!ConfigSettings.getInstance().getSimulateScanning()) {
+            if (!BioSampleScanPlugin.getDefault().getSimulateScanning()) {
                 readBarcodes = ScanCell.getScanLibResults();
             } else {
                 readBarcodes = ScanCell.getRandom();

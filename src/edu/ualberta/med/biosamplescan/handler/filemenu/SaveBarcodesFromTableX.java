@@ -6,13 +6,12 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class SaveBarcodesFromTableX {
     public static final Object execute(int palletId) {
-        if (palletId > ConfigSettings.getInstance().getPalletMax()) {
+        if (palletId > BioSampleScanPlugin.getDefault().getPalletsMax()) {
             BioSampleScanPlugin.openError("Error",
                 "Not configured for this pallet");
             return null;

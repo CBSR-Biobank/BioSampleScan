@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.widgets;
 
 import org.eclipse.core.runtime.Assert;
@@ -10,12 +9,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.listeners.EnterKeyToNextFieldListener;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class PalletBarcodesWidget extends Composite {
 
-    private Text [] textPlateId;
+    private Text[] textPlateId;
 
     public PalletBarcodesWidget(Composite parent, int style) {
         super(parent, style);
@@ -23,22 +23,22 @@ public class PalletBarcodesWidget extends Composite {
         setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         setLayout(new GridLayout(1, false));
 
-        int palletsMax = ConfigSettings.getInstance().getPalletMax();
+        int palletsMax = BioSampleScanPlugin.getDefault().getPalletsMax();
 
         Group g = new Group(this, SWT.NONE);
         g.setText("Pallet bar codes");
         g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         g.setLayout(new GridLayout(2 * palletsMax, false));
 
-        textPlateId = new Text [palletsMax];
+        textPlateId = new Text[palletsMax];
         for (int i = 0; i < palletsMax; ++i) {
             Label l = new Label(g, SWT.NONE);
             l.setText("Pallet " + (i + 1) + ":");
             textPlateId[i] = new Text(g, SWT.BORDER);
             textPlateId[i].setTextLimit(15);
             textPlateId[i].addKeyListener(EnterKeyToNextFieldListener.INSTANCE);
-            textPlateId[i].setEnabled(ConfigSettings.getInstance().palletIsSet(
-                i + 1));
+            textPlateId[i].setEnabled(ScannerConfigPlugin.getDefault()
+                .getPalletEnabled(i + 1));
         }
     }
 

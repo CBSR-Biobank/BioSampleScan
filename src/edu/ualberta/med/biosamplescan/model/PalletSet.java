@@ -8,11 +8,13 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 
+import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
+
 public class PalletSet {
     private Pallet[] pallets;
 
     public PalletSet() {
-        pallets = new Pallet[ConfigSettings.getInstance().getPalletMax()];
+        pallets = new Pallet[BioSampleScanPlugin.getDefault().getPalletsMax()];
     }
 
     public int getPalletCount() {
@@ -69,13 +71,9 @@ public class PalletSet {
     }
 
     public String savePalletToDir(String dir, Pallet pallet) {
-        String filename =
-            dir
-                + "/"
-                + pallet.getPlateBarcode()
-                + "_"
-                + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss")
-                    .format(new Date()) + ".csv";
+        String filename = dir + "/" + pallet.getPlateBarcode() + "_"
+            + new SimpleDateFormat("yyyy-MM-dd_HH_mm_ss").format(new Date())
+            + ".csv";
         savePalletToFile(filename, pallet);
         return filename;
     }
@@ -86,8 +84,7 @@ public class PalletSet {
             out.write("#PlateId,Row,Col,Barcode,Date\r\n");
             out.write(pallet.toString());
             out.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

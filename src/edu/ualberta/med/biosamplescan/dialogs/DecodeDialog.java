@@ -9,9 +9,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
@@ -25,16 +25,16 @@ public class DecodeDialog extends ProgressMonitorDialog {
                     try {
                         monitor.beginTask("Decoding plates...",
                             IProgressMonitor.UNKNOWN);
-                        ConfigSettings configSettings = ConfigSettings
-                            .getInstance();
 
                         for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
 
-                            if (!ConfigSettings.getInstance()
+                            if (!BioSampleScanPlugin.getDefault()
                                 .getSimulateScanning()) {
                                 int scanlibReturn = ScanLib.getInstance()
-                                    .slDecodePlate(configSettings.getDpi(), p);
+                                    .slDecodePlate(
+                                        ScannerConfigPlugin.getDefault()
+                                            .getDpi(), p);
                                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
                                     BioSampleScanPlugin.openAsyncError(
                                         "Decoding Error", ScanLib

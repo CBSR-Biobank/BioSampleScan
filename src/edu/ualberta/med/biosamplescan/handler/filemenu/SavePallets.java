@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.biosamplescan.model.ConfigSettings;
 import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
@@ -26,7 +25,6 @@ public class SavePallets extends AbstractHandler implements IHandler {
     public Object execute(ExecutionEvent event) throws ExecutionException {
         PalletSet palletSet = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSet();
-        ConfigSettings configSettings = ConfigSettings.getInstance();
 
         if (singlePalletSave())
             return null;
@@ -35,8 +33,9 @@ public class SavePallets extends AbstractHandler implements IHandler {
         List<String> filenames = new ArrayList<String>();
 
         if (saveDir != null) {
-            configSettings.setLastSaveDir(saveDir);
-            for (int i = 0, n = ConfigSettings.getInstance().getPalletMax(); i < n; ++i) {
+            BioSampleScanPlugin.getDefault().setLastSaveDir(saveDir);
+            for (int i = 0, n = BioSampleScanPlugin.getDefault()
+                .getPalletsMax(); i < n; ++i) {
                 Pallet pallet = palletSet.getPallet(i);
                 if (pallet == null)
                     continue;
@@ -64,7 +63,7 @@ public class SavePallets extends AbstractHandler implements IHandler {
             .getActiveWorkbenchWindow().getShell(), SWT.SAVE);
         dlg.setText("Directory to save pallet decode information");
         dlg.setMessage("Select a directory");
-        dlg.setFilterPath(ConfigSettings.getInstance().getLastSaveDir());
+        dlg.setFilterPath(BioSampleScanPlugin.getDefault().getLastSaveDir());
         return dlg;
     }
 
@@ -74,7 +73,7 @@ public class SavePallets extends AbstractHandler implements IHandler {
     public static boolean singlePalletSave() {
         PalletSet palletSet = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSet();
-        String filename = ConfigSettings.getInstance().getSaveFileName();
+        String filename = BioSampleScanPlugin.getDefault().getSaveFileName();
 
         if (filename == null)
             return false;

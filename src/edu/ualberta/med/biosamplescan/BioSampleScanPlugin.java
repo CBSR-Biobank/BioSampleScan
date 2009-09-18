@@ -14,6 +14,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -22,12 +23,21 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
     // The plug-in ID
     public static final String PLUGIN_ID = "BioSampleScan";
 
+    private static final String LAST_SAVE_DIR = PLUGIN_ID + ".lastsavedir";
+
+    private static final String SAVE_FILENAME = PLUGIN_ID + ".savefilename";
+
     public static final String IMG_FORM_BG = "formBg";
 
     // The shared instance
     private static BioSampleScanPlugin plugin;
 
+    private int palletsMax;
+
+    private boolean simulateScanning;
+
     public BioSampleScanPlugin() {
+        palletsMax = ScannerConfigPlugin.getPalletsMax();
     }
 
     @Override
@@ -131,4 +141,37 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         return (PalletSetEditor) PlatformUI.getWorkbench()
             .getActiveWorkbenchWindow().getActivePage().getActivePart();
     }
+
+    public String getLastSaveDir() {
+        return getPreferenceStore().getString(LAST_SAVE_DIR);
+    }
+
+    public void setLastSaveDir(String dir) {
+        getPreferenceStore().setValue(LAST_SAVE_DIR, dir);
+    }
+
+    public void setSaveFileName(String filename) {
+        getPreferenceStore().setValue(SAVE_FILENAME, filename);
+    }
+
+    public String getSaveFileName() {
+        return getPreferenceStore().getString(SAVE_FILENAME);
+    }
+
+    public void setSimulateScanning(boolean enable) {
+        simulateScanning = enable;
+    }
+
+    public boolean getSimulateScanning() {
+        return simulateScanning;
+    }
+
+    public int getPalletsMax() {
+        return palletsMax;
+    }
+
+    public void setPalletsMax(int max) {
+        palletsMax = max;
+    }
+
 }
