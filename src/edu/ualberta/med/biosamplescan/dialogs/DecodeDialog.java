@@ -11,7 +11,6 @@ import org.eclipse.ui.PlatformUI;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scanlib.ScanLib;
-import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
@@ -33,7 +32,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 .getSimulateScanning()) {
                                 int scanlibReturn = ScanLib.getInstance()
                                     .slDecodePlate(
-                                        ScannerConfigPlugin.getDefault()
+                                        BioSampleScanPlugin.getDefault()
                                             .getDpi(), p);
                                 if (scanlibReturn != ScanLib.SC_SUCCESS) {
                                     BioSampleScanPlugin.openAsyncError(

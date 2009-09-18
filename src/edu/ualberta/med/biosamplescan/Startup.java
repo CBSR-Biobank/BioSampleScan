@@ -78,7 +78,7 @@ public class Startup implements IStartup {
                             true);
 
                     String msg = new String();
-                    if (ScannerConfigPlugin.getDefault().getPalletCount() == 0) {
+                    if (BioSampleScanPlugin.getDefault().getPalletCount() == 0) {
                         msg = "Please configure scanner.";
                     } else {
                         msg = "Configuration loaded.";
@@ -116,7 +116,7 @@ public class Startup implements IStartup {
                 || (palletsMax > BioSampleScanPlugin.getDefault()
                     .getPalletsMax())) {
                 return "invalid value. palletsmax should be between 1 and "
-                    + ScannerConfigPlugin.getPalletsMax();
+                    + BioSampleScanPlugin.getDefault().getPalletsMax();
             }
             BioSampleScanPlugin.getDefault().setPalletsMax(palletsMax);
         }

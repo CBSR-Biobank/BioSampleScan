@@ -174,4 +174,16 @@ public class BioSampleScanPlugin extends AbstractUIPlugin {
         palletsMax = max;
     }
 
+    public int getPalletCount() {
+        return ScannerConfigPlugin.getDefault().getPalletCount();
+    }
+
+    public boolean getPalletEnabled(int palletId) {
+        return ScannerConfigPlugin.getDefault().getPalletEnabled(palletId);
+    }
+
+    public int getDpi() {
+        return ScannerConfigPlugin.getDefault().getDpi();
+    }
+
 }

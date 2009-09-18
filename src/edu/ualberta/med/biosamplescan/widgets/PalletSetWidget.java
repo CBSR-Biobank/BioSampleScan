@@ -17,7 +17,6 @@ import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class PalletSetWidget extends ScrolledComposite {
 
@@ -50,7 +49,7 @@ public class PalletSetWidget extends ScrolledComposite {
 
         for (int table = 0; table < palletsMax; table++) {
             palletWidgets[table] = new PalletWidget(composite, SWT.NONE, table);
-            palletWidgets[table].setEnabled(ScannerConfigPlugin.getDefault()
+            palletWidgets[table].setEnabled(BioSampleScanPlugin.getDefault()
                 .getPalletEnabled(table + 1));
         }
 
@@ -133,7 +132,7 @@ public class PalletSetWidget extends ScrolledComposite {
         Map<Integer, String> palletsToDecode = new HashMap<Integer, String>();
 
         for (Integer pallet : selected.values()) {
-            if (!ScannerConfigPlugin.getDefault().getPalletEnabled(pallet))
+            if (!BioSampleScanPlugin.getDefault().getPalletEnabled(pallet))
                 continue;
 
             palletsToDecode.put(pallet, palletBarcodesWidget
@@ -180,7 +179,7 @@ public class PalletSetWidget extends ScrolledComposite {
     public void refresh() {
         for (int table = 0, n = BioSampleScanPlugin.getDefault()
             .getPalletsMax(); table < n; table++) {
-            boolean isSet = ScannerConfigPlugin.getDefault().getPalletEnabled(
+            boolean isSet = BioSampleScanPlugin.getDefault().getPalletEnabled(
                 table + 1);
             palletBarcodesWidget.setEnabled(table, isSet);
             palletWidgets[table].setEnabled(isSet);

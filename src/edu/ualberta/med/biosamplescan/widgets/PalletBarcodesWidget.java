@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Text;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.listeners.EnterKeyToNextFieldListener;
-import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class PalletBarcodesWidget extends Composite {
 
@@ -37,7 +36,7 @@ public class PalletBarcodesWidget extends Composite {
             textPlateId[i] = new Text(g, SWT.BORDER);
             textPlateId[i].setTextLimit(15);
             textPlateId[i].addKeyListener(EnterKeyToNextFieldListener.INSTANCE);
-            textPlateId[i].setEnabled(ScannerConfigPlugin.getDefault()
+            textPlateId[i].setEnabled(BioSampleScanPlugin.getDefault()
                 .getPalletEnabled(i + 1));
         }
     }
