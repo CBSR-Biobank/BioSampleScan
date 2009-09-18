@@ -80,4 +80,7 @@ public class PalletSetEditor extends EditorPart {
         palletSetWidget.refresh();
     }
 
+    public void updateModel() {
+        palletSetWidget.updatePalletModel();
+    }
 }

@@ -177,8 +177,8 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void refreshPallet(int palletId) {
-        if ((palletId <= 0)
-            || (palletId > BioSampleScanPlugin.getDefault().getPalletsMax()))
+        if ((palletId < 0)
+            || (palletId >= BioSampleScanPlugin.getDefault().getPalletsMax()))
             return;
 
         boolean isSet = BioSampleScanPlugin.getDefault().getPalletEnabled(
