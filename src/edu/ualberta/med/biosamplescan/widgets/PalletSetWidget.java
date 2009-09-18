@@ -3,7 +3,6 @@ package edu.ualberta.med.biosamplescan.widgets;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -178,9 +177,10 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void refreshPallet(int palletId) {
-        Assert.isTrue((palletId >= 0)
-            && (palletId <= BioSampleScanPlugin.getDefault().getPalletsMax()),
-            "invalid pallet number " + palletId);
+        if ((palletId <= 0)
+            || (palletId > BioSampleScanPlugin.getDefault().getPalletsMax()))
+            return;
+
         boolean isSet = BioSampleScanPlugin.getDefault().getPalletEnabled(
             palletId + 1);
         palletBarcodesWidget.setEnabled(palletId, isSet);
