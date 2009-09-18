@@ -41,6 +41,7 @@ public class PalletBarcodesWidget extends Composite {
             textPlateId[i] = new Text(g, SWT.BORDER);
             GridData gd = new GridData();
             gd.widthHint = 15 * fm.getAverageCharWidth();
+            textPlateId[i].setLayoutData(gd);
             textPlateId[i].setTextLimit(15);
             textPlateId[i].addKeyListener(EnterKeyToNextFieldListener.INSTANCE);
             textPlateId[i].setEnabled(BioSampleScanPlugin.getDefault()
