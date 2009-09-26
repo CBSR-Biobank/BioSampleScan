@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.runtime,
  org.eclipse.ui,
- scannerConfig;bundle-version="1.0.0"
+ scannerConfig;bundle-version="0.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
@@ -18,4 +18,5 @@ Bundle-ClassPath: .,
  lib/jargs.jar
 Export-Package: edu.ualberta.med.biosamplescan,
  edu.ualberta.med.biosamplescan.rcp
-Import-Package: edu.ualberta.med.scanlib
+Import-Package: edu.ualberta.med.scanlib,
+ edu.ualberta.med.scannerconfig
