@@ -206,4 +206,12 @@ public class BioSampleScanPlugin extends AbstractUIPlugin implements
         return ScannerConfigPlugin.getDefault().getDpi();
     }
 
+    public int getBrightness() {
+        return ScannerConfigPlugin.getDefault().getBrightness();
+    }
+
+    public int getContrast() {
+        return ScannerConfigPlugin.getDefault().getContrast();
+    }
+
 }

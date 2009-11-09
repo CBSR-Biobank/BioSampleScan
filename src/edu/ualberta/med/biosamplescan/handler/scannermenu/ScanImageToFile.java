@@ -25,9 +25,9 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
         if (saveLocation == null) {
             return null;
         }
-        int scanlibReturn = ScanLib.getInstance()
-            .slScanImage(BioSampleScanPlugin.getDefault().getDpi(), 0, 0, 0, 0,
-                saveLocation);
+        int scanlibReturn = ScanLib.getInstance().slScanImage(
+            BioSampleScanPlugin.getDefault().getDpi(), 0, 0, 20, 20,
+            saveLocation);
 
         if (scanlibReturn != ScanLib.SC_SUCCESS) {
             MessageDialog.openError(PlatformUI.getWorkbench()

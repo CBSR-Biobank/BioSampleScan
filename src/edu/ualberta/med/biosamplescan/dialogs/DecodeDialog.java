@@ -28,6 +28,26 @@ public class DecodeDialog extends ProgressMonitorDialog {
                         for (Integer pallet : palletsToDecode.keySet()) {
                             final int p = pallet;
 
+                            int res = ScanLib.getInstance()
+                                .slConfigScannerBrightness(
+                                    BioSampleScanPlugin.getDefault()
+                                        .getBrightness());
+                            if (res < ScanLib.SC_SUCCESS) {
+                                BioSampleScanPlugin.openAsyncError(
+                                    "Decoding Error", ScanLib.getErrMsg(res));
+                                return;
+                            }
+
+                            res = ScanLib.getInstance()
+                                .slConfigScannerContrast(
+                                    BioSampleScanPlugin.getDefault()
+                                        .getContrast());
+                            if (res < ScanLib.SC_SUCCESS) {
+                                BioSampleScanPlugin.openAsyncError(
+                                    "Decoding Error", ScanLib.getErrMsg(res));
+                                return;
+                            }
+
                             if (!BioSampleScanPlugin.getDefault()
                                 .getSimulateScanning()) {
                                 int scanlibReturn = ScanLib.getInstance()
