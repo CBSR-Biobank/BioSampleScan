@@ -10,7 +10,8 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
@@ -26,26 +27,14 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             IProgressMonitor.UNKNOWN);
 
                         for (Integer pallet : palletsToDecode.keySet()) {
-                            final int p = pallet;
+                            ScanCell[][] readBarcodes = ScannerConfigPlugin
+                                .scan(pallet);
 
-                            if (!BioSampleScanPlugin.getDefault()
-                                .getSimulateScanning()) {
-                                int scanlibReturn = ScanLib.getInstance()
-                                    .slDecodePlate(
-                                        BioSampleScanPlugin.getDefault()
-                                            .getDpi(), p, 0);
-                                if (scanlibReturn != ScanLib.SC_SUCCESS) {
-                                    BioSampleScanPlugin.openAsyncError(
-                                        "Decoding Error", ScanLib
-                                            .getErrMsg(scanlibReturn));
-                                    return;
-                                }
-                            }
-
-                            palletSet.loadFromScanlibFile(p - 1, rescan);
-                            palletSet.setPalletTimestampNow(p - 1);
-                            palletSet.setPalletBarocode(p - 1, palletsToDecode
-                                .get(pallet));
+                            palletSet.loadFromArray(pallet - 1, readBarcodes,
+                                rescan);
+                            palletSet.setPalletTimestampNow(pallet - 1);
+                            palletSet.setPalletBarocode(pallet - 1,
+                                palletsToDecode.get(pallet));
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {

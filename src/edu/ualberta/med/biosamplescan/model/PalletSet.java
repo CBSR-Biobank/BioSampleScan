@@ -9,6 +9,7 @@ import java.util.Date;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
+import edu.ualberta.med.scanlib.ScanCell;
 
 public class PalletSet {
     private Pallet[] pallets;
@@ -61,13 +62,13 @@ public class PalletSet {
         return pallets[id].getPlateTimestamp();
     }
 
-    public void loadFromScanlibFile(int id, boolean append) {
+    public void loadFromArray(int id, ScanCell[][] readBarcodes, boolean append) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
         if (pallets[id] == null) {
             pallets[id] = new Pallet(id);
         }
-        pallets[id].loadFromScanlibFile(append);
+        pallets[id].loadFromArray(readBarcodes, append);
     }
 
     public String savePalletToDir(String dir, Pallet pallet) {

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 
-import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.scanlib.ScanCell;
 
 public class Pallet {
@@ -51,34 +50,22 @@ public class Pallet {
         barcodes = null;
     }
 
-    public void loadFromScanlibFile(boolean append) {
-        try {
-            ScanCell[][] readBarcodes;
+    public void loadFromArray(ScanCell[][] readBarcodes, boolean append) {
+        if ((barcodes == null) || !append) {
+            barcodes = readBarcodes;
+            return;
+        }
 
-            if (!BioSampleScanPlugin.getDefault().getSimulateScanning()) {
-                readBarcodes = ScanCell.getScanLibResults();
-            } else {
-                readBarcodes = ScanCell.getRandom();
-            }
-
-            if ((barcodes == null) || !append) {
-                barcodes = readBarcodes;
-                return;
-            }
-
-            // need to merge current with new
-            for (int r = 0; r < barcodes.length; ++r) {
-                for (int c = 0; c < barcodes[0].length; ++c) {
-                    if (((barcodes[r][c] == null) || (barcodes[r][c].getValue() == null))
-                        && (readBarcodes[r][c] != null)
-                        && (readBarcodes[r][c].getValue() != null)
-                        && (readBarcodes[r][c].getValue().length() > 0)) {
-                        barcodes[r][c] = readBarcodes[r][c];
-                    }
+        // need to merge current with new
+        for (int r = 0; r < barcodes.length; ++r) {
+            for (int c = 0; c < barcodes[0].length; ++c) {
+                if (((barcodes[r][c] == null) || (barcodes[r][c].getValue() == null))
+                    && (readBarcodes[r][c] != null)
+                    && (readBarcodes[r][c].getValue() != null)
+                    && (readBarcodes[r][c].getValue().length() > 0)) {
+                    barcodes[r][c] = readBarcodes[r][c];
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

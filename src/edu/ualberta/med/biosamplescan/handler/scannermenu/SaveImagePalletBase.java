@@ -11,7 +11,7 @@ import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
-import edu.ualberta.med.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public abstract class SaveImagePalletBase extends AbstractHandler implements
     IHandler {
@@ -44,13 +44,12 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
             return null;
         }
 
-        int scanlibReturn = ScanLib.getInstance().slScanPlate(
-            BioSampleScanPlugin.getDefault().getDpi(), palletId, saveLocation);
-
-        if (scanlibReturn != ScanLib.SC_SUCCESS) {
+        try {
+            ScannerConfigPlugin.scanPlate(palletId, saveLocation);
+        } catch (Exception e) {
             MessageDialog.openError(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getShell(), "Scanning Error",
-                ScanLib.getErrMsg(scanlibReturn));
+                .getActiveWorkbenchWindow().getShell(), "Scanning Error", e
+                .getMessage());
         }
         return null;
     }
