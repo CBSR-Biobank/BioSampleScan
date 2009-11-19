@@ -54,7 +54,8 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             }
                         });
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        BioSampleScanPlugin.openAsyncError("Decode Error", e
+                            .getMessage());
                     } finally {
                         monitor.done();
                     }
