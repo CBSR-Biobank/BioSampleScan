@@ -147,22 +147,6 @@
             </menu>
          </menu>
          <menu
-               id="edu.ualberta.med.biosamplescan.menu.configuration"
-               label="Configuration">
-            <command
-                  commandId="edu.ualberta.med.scannerconfig.commands.selectsource"
-                  icon="icons/selectScanner.png"
-                  label="Select Source"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.eclipse.ui.window.preferences"
-                  id="edu.ualberta.med.biobank.menu.preferences"
-                  label="Preferences"
-                  style="push">
-            </command>
-         </menu>
-         <menu
                id="edu.ualberta.med.biosamplescan.menu.help"
                label="Help">
             <command
