@@ -32,7 +32,9 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
             // TODO apply this code to all applicable routines
             MessageDialog.openError(PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getShell(), "Error", String.format(
-                "plate %d:\n%s", palletId, "Has no dimensions set"));
+                "Pallet %d has no dimensions set. "
+                    + "The dimensions can be defined in the preferences.",
+                palletId));
             return null;
         }
 

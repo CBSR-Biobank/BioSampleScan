@@ -100,12 +100,6 @@
          <menu
                id="edu.ualberta.med.biosamplescan.menu.scanner"
                label="Scanner">
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.selectsource"
-                  icon="icons/image.png"
-                  label="Select Source"
-                  style="push">
-            </command>
             <separator
                   name="BioSampleScan.separator5"
                   visible="true">
@@ -155,6 +149,12 @@
          <menu
                id="edu.ualberta.med.biosamplescan.menu.configuration"
                label="Configuration">
+            <command
+                  commandId="edu.ualberta.med.scannerconfig.commands.selectsource"
+                  icon="icons/selectScanner.png"
+                  label="Select Source"
+                  style="push">
+            </command>
             <command
                   commandId="org.eclipse.ui.window.preferences"
                   id="edu.ualberta.med.biobank.menu.preferences"
@@ -212,11 +212,6 @@
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"
             id="edu.ualberta.med.biosamplescan.commands.quit"
             name="Quit">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SelectSource"
-            id="edu.ualberta.med.biosamplescan.commands.selectsource"
-            name="Select Source">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScanImageToFile"
