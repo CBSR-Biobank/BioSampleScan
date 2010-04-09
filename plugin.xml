@@ -101,16 +101,6 @@
                id="edu.ualberta.med.biosamplescan.menu.scanner"
                label="Scanner">
             <command
-                  commandId="edu.ualberta.med.biosamplescan.commands.selectsource"
-                  icon="icons/image.png"
-                  label="Select Source"
-                  style="push">
-            </command>
-            <separator
-                  name="BioSampleScan.separator5"
-                  visible="true">
-            </separator>
-            <command
                   commandId="edu.ualberta.med.biosamplescan.commands.scanimagetofile"
                   icon="icons/picture_save.png"
                   label="Scan Image to File..."
@@ -212,11 +202,6 @@
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.Quit"
             id="edu.ualberta.med.biosamplescan.commands.quit"
             name="Quit">
-      </command>
-      <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.SelectSource"
-            id="edu.ualberta.med.biosamplescan.commands.selectsource"
-            name="Select Source">
       </command>
       <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.scannermenu.ScanImageToFile"

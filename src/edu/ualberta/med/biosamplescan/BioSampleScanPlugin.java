@@ -40,7 +40,7 @@ public class BioSampleScanPlugin extends AbstractUIPlugin implements
     private boolean simulateScanning;
 
     public BioSampleScanPlugin() {
-        palletsMax = ScannerConfigPlugin.getPalletsMax();
+        palletsMax = ScannerConfigPlugin.getPlatesMax();
     }
 
     @Override
@@ -195,11 +195,11 @@ public class BioSampleScanPlugin extends AbstractUIPlugin implements
     }
 
     public int getPalletCount() {
-        return ScannerConfigPlugin.getDefault().getPalletCount();
+        return ScannerConfigPlugin.getDefault().getPlateCount();
     }
 
     public boolean getPalletEnabled(int palletId) {
-        return ScannerConfigPlugin.getDefault().getPalletEnabled(palletId);
+        return ScannerConfigPlugin.getDefault().getPlateEnabled(palletId);
     }
 
     public int getDpi() {
