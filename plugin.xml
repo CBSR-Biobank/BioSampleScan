@@ -143,16 +143,6 @@
             </menu>
          </menu>
          <menu
-               id="edu.ualberta.med.biosamplescan.menu.help"
-               label="Help">
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.menu.about"
-                  icon="icons/ruby.png"
-                  label="About..."
-                  style="push">
-            </command>
-         </menu>
-         <menu
                id="edu.ualberta.med.biosamplescan.menu.debug"
                label="**Debug**">
             <visibleWhen
@@ -165,6 +155,23 @@
                   commandId="edu.ualberta.med.biosamplescan.menu.debug.simulateScanning"
                   label="Simulate Scanning"
                   style="toggle">
+            </command>
+         </menu>
+         <separator
+              name="edu.ualberta.med.biobank.menu.additions"
+              visible="false">
+         </separator>
+      </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="edu.ualberta.med.biosamplescan.menu.help"
+               label="Help">
+            <command
+                  commandId="edu.ualberta.med.biosamplescan.menu.about"
+                  icon="icons/ruby.png"
+                  label="About..."
+                  style="push">
             </command>
          </menu>
       </menuContribution>
