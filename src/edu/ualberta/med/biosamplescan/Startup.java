@@ -19,8 +19,8 @@ import org.eclipse.ui.services.ISourceProviderService;
 import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
 import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
-import edu.ualberta.med.scanlib.ScanLib;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
+import edu.ualberta.med.scannerconfig.scanlib.ScanLib;
 
 public class Startup implements IStartup {
 

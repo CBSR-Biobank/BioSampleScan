@@ -9,7 +9,7 @@ import java.util.Date;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.scanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.scanlib.ScanCell;
 
 public class PalletSet {
     private Pallet[] pallets;
@@ -42,10 +42,18 @@ public class PalletSet {
         pallets[id].setPalleteBarcode(palletBarcode);
     }
 
+    public int getPalletsStored() {
+        return pallets.length;
+    }
+
+    public boolean getPalletExists(Integer id) {
+        return pallets[id] != null;
+    }
+
     public String getPalletBarcode(Integer id) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
-        Assert.isTrue(pallets[id] != null, "invalid pallet number: " + id);
+        Assert.isNotNull(pallets[id], "invalid pallet number: " + id);
         return pallets[id].getPlateBarcode();
     }
 
@@ -62,13 +70,20 @@ public class PalletSet {
         return pallets[id].getPlateTimestamp();
     }
 
-    public void loadFromArray(int id, ScanCell[][] readBarcodes, boolean append) {
+    // returns false if the user attempts to rescan with a different pallet
+    public boolean loadFromArray(int id, ScanCell[][] readBarcodes,
+        boolean append) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
         if (pallets[id] == null) {
             pallets[id] = new Pallet(id);
         }
-        pallets[id].loadFromArray(readBarcodes, append);
+        if (pallets[id].loadFromArray(readBarcodes, append)) {
+            return true;
+        } else {
+            pallets[id] = null;
+            return false;
+        }
     }
 
     public String savePalletToDir(String dir, Pallet pallet) {

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 
-import edu.ualberta.med.scanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.scanlib.ScanCell;
 
 public class Pallet {
     private int id;
@@ -50,10 +50,30 @@ public class Pallet {
         barcodes = null;
     }
 
-    public void loadFromArray(ScanCell[][] readBarcodes, boolean append) {
+    // returns false if the user attempts to rescan using a different pallet
+    public boolean loadFromArray(ScanCell[][] readBarcodes, boolean append) {
         if ((barcodes == null) || !append) {
             barcodes = readBarcodes;
-            return;
+            return true;
+        }
+        for (int r = 0; r < barcodes.length; ++r) {
+            for (int c = 0; c < barcodes[0].length; ++c) {
+                // both the previous and current bar-code entries exist
+                if ((barcodes[r][c] != null)
+                    && (barcodes[r][c].getValue() != null)
+                    && (barcodes[r][c].getValue().length() > 0)
+                    && (readBarcodes[r][c] != null)
+                    && (readBarcodes[r][c].getValue() != null)
+                    && (readBarcodes[r][c].getValue().length() > 0)) {
+
+                    // entries don't match, user attempted a rescan with
+                    // different plates
+                    if (!barcodes[r][c].getValue().equals(
+                        readBarcodes[r][c].getValue())) {
+                        return false;
+                    }
+                }
+            }
         }
 
         // need to merge current with new
@@ -67,6 +87,7 @@ public class Pallet {
                 }
             }
         }
+        return true;
     }
 
     @Override

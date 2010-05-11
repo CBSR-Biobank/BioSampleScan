@@ -9,9 +9,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
+import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
-import edu.ualberta.med.scanlib.ScanCell;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
+import edu.ualberta.med.scannerconfig.scanlib.ScanCell;
 
 public class DecodeDialog extends ProgressMonitorDialog {
 
@@ -30,11 +31,20 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             ScanCell[][] readBarcodes = ScannerConfigPlugin
                                 .scan(pallet);
 
-                            palletSet.loadFromArray(pallet - 1, readBarcodes,
-                                rescan);
+                            if (!palletSet.loadFromArray(pallet - 1,
+                                readBarcodes, rescan)) {
+                                BioSampleScanPlugin
+                                    .openAsyncError("Different Plate",
+                                        "Error: Attemped to rescan using a different plate!");
+                                continue;
+                            }
                             palletSet.setPalletTimestampNow(pallet - 1);
                             palletSet.setPalletBarocode(pallet - 1,
                                 palletsToDecode.get(pallet));
+
+                            // add barcode to history
+                            PalletBarcodeHistory.getInstance().addBarcode(
+                                palletSet.getPalletBarcode(pallet - 1));
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {

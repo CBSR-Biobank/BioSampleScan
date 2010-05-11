@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.Pallet;
+import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 
 public class PalletSetWidget extends ScrolledComposite {
@@ -95,7 +96,12 @@ public class PalletSetWidget extends ScrolledComposite {
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(false);
+                try {
+                    scanPalletBtnWidgetSelected(false);
+                } catch (Exception e) {
+                    BioSampleScanPlugin.openAsyncError("widget selected", e
+                        .getMessage());
+                }
             }
         });
 
@@ -103,6 +109,10 @@ public class PalletSetWidget extends ScrolledComposite {
 
     private boolean confirmMsg(String title, String msg) {
         return MessageDialog.openConfirm(getShell(), title, msg);
+    }
+
+    private void infoMsg(String title, String msg) {
+        MessageDialog.openInformation(getShell(), title, msg);
     }
 
     public void scanPalletBtnWidgetSelected(boolean rescan) {
@@ -114,10 +124,25 @@ public class PalletSetWidget extends ScrolledComposite {
             if (palletBarcode.length() == 0)
                 continue;
 
+            /* Checks if the barcode has been changed during a new scan */
+
+            if (rescan == false
+                && PalletBarcodeHistory.getInstance().existsBarcode(
+                    palletBarcode)) {
+                if (!confirmMsg("Identical Barcode",
+                    "You are scanning a new pallet (pallet #" + (i + 1)
+                        + ") with a previously used barcode."
+                        + "\nDo you want to continue?")) {
+                    infoMsg("Pallet Ignored", "Pallet #" + (i + 1)
+                        + " has been unselected form the current scan.");
+                    continue;
+                }
+            }
+
             if (selected.containsKey(palletBarcode)) {
                 BioSampleScanPlugin.openError("Duplicate Pallet Barcodes",
-                    "Pallets " + selected.get(palletBarcode) + " and "
-                        + (i + 1) + " have the same barcodes");
+                    "Error: Pallets " + selected.get(palletBarcode) + " and "
+                        + (i + 1) + " have the same barcodes!");
                 return;
             } else {
                 selected.put(palletBarcode, i + 1);
@@ -125,7 +150,8 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (selected.size() == 0) {
-            BioSampleScanPlugin.openError("Error", "No Pallets Selected");
+            BioSampleScanPlugin.openError("Error",
+                "No pallets have been selected.");
             return;
         }
 
