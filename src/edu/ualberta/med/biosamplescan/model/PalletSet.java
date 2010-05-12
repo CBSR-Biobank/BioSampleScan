@@ -46,8 +46,15 @@ public class PalletSet {
         return pallets.length;
     }
 
-    public boolean getPalletExists(Integer id) {
+    public boolean existsPalletObject(Integer id) {
         return pallets[id] != null;
+    }
+
+    public boolean isEmptyPalletBarcode(Integer id) {
+        Assert.isTrue((id >= 0) && (id < pallets.length),
+            "invalid pallet number: " + id);
+        Assert.isNotNull(pallets[id], "invalid pallet number: " + id);
+        return pallets[id].isEmpty();
     }
 
     public String getPalletBarcode(Integer id) {

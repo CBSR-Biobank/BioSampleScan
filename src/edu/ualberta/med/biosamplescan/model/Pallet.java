@@ -50,6 +50,21 @@ public class Pallet {
         barcodes = null;
     }
 
+    // Returns true if barcodes = null or no tubes exist
+    public boolean isEmpty() {
+        for (int r = 0; r < barcodes.length; ++r) {
+            for (int c = 0; c < barcodes[0].length; ++c) {
+                // both the previous and current bar-code entries exist
+                if ((barcodes[r][c] != null)
+                    && (barcodes[r][c].getValue() != null)
+                    && (barcodes[r][c].getValue().length() > 0)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     // returns false if the user attempts to rescan using a different pallet
     public boolean loadFromArray(ScanCell[][] readBarcodes, boolean append) {
         if ((barcodes == null) || !append) {

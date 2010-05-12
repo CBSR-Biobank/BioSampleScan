@@ -43,8 +43,11 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 palletsToDecode.get(pallet));
 
                             // add barcode to history
-                            PalletBarcodeHistory.getInstance().addBarcode(
-                                palletSet.getPalletBarcode(pallet - 1));
+                            // (plate must contain atleast one tube)
+                            if (!palletSet.isEmptyPalletBarcode(pallet - 1)) {
+                                PalletBarcodeHistory.getInstance().addBarcode(
+                                    palletSet.getPalletBarcode(pallet - 1));
+                            }
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {

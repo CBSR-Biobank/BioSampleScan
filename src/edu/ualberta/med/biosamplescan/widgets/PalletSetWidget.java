@@ -125,7 +125,6 @@ public class PalletSetWidget extends ScrolledComposite {
                 continue;
 
             /* Checks if the barcode has been changed during a new scan */
-
             if (rescan == false
                 && PalletBarcodeHistory.getInstance().existsBarcode(
                     palletBarcode)) {
