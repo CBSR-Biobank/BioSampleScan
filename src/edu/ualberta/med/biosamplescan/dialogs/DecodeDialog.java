@@ -31,13 +31,22 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             ScanCell[][] readBarcodes = ScannerConfigPlugin
                                 .scan(pallet);
 
+                            if (monitor.isCanceled()) {
+                                BioSampleScanPlugin.openAsyncInformation(
+                                    "Operation Canceled",
+                                    "Canceled the scan at pallet #" + pallet
+                                        + ".");
+                                break;
+                            }
+
                             if (!palletSet.loadFromArray(pallet - 1,
                                 readBarcodes, rescan)) {
                                 BioSampleScanPlugin
                                     .openAsyncError("Different Plate",
-                                        "Error: Attemped to rescan using a different plate!");
+                                        "Error: Attemped to rescan using a different pallet!");
                                 continue;
                             }
+
                             palletSet.setPalletTimestampNow(pallet - 1);
                             palletSet.setPalletBarocode(pallet - 1,
                                 palletsToDecode.get(pallet));

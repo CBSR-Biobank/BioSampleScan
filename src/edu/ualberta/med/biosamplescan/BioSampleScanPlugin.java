@@ -153,6 +153,16 @@ public class BioSampleScanPlugin extends AbstractUIPlugin implements
         });
     }
 
+    public static void openAsyncInformation(final String title,
+        final String message) {
+        Display.getDefault().asyncExec(new Runnable() {
+            public void run() {
+                MessageDialog.openInformation(PlatformUI.getWorkbench()
+                    .getActiveWorkbenchWindow().getShell(), title, message);
+            }
+        });
+    }
+
     public void updateStatusBar(String string) {
         getPalletSetEditor().updateStatusBar(string);
     }
