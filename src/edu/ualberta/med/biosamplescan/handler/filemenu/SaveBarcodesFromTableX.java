@@ -29,8 +29,6 @@ public class SaveBarcodesFromTableX {
             return null;
         }
 
-        // TODO actually disable menu items
-
         String saveDir = SavePallets.dirDialog().open();
 
         if (saveDir != null) {

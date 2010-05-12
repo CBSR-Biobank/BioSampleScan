@@ -48,7 +48,7 @@
             <command
                   commandId="edu.ualberta.med.biosamplescan.commands.savepallets"
                   icon="icons/disk.png"
-                  label="Save Pallets"
+                  label="Save All"
                   style="push">
             </command>
             <menu
@@ -170,7 +170,7 @@
             <command
                   commandId="edu.ualberta.med.biosamplescan.menu.about"
                   icon="icons/ruby.png"
-                  label="About..."
+                  label="About"
                   style="push">
             </command>
          </menu>
@@ -294,7 +294,7 @@
          <property
                name="appName"
                value="BioSampleScan">
-         </property>
+         </property>d
       </product>
    </extension>
    <extension

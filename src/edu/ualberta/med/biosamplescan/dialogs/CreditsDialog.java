@@ -19,119 +19,126 @@ import org.eclipse.swt.widgets.Shell;
 
 public class CreditsDialog extends Dialog implements KeyListener {
 
-	private Shell dialogShell;
+    private Shell dialogShell;
 
-	public CreditsDialog(Shell parent, int style) {
-		super(parent, style);
-	}
+    public CreditsDialog(Shell parent, int style) {
+        super(parent, style);
+    }
 
-	public void open() {
-		try {
-			Shell parent = getParent();
-			dialogShell = new Shell(parent, SWT.NONE);
+    public void open() {
+        try {
+            Shell parent = getParent();
+            dialogShell = new Shell(parent, SWT.NONE);
 
-			GridLayout dialogShellLayout = new GridLayout();
-			dialogShellLayout.makeColumnsEqualWidth = true;
-			dialogShellLayout.numColumns = 1;
-			dialogShell.setLayout(dialogShellLayout);
-			dialogShell.setText("Credits");
-			dialogShell.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			dialogShell.setAlpha(0xFF);
-			dialogShell.setCursor(new Cursor(Display.getDefault(),
-					SWT.CURSOR_CROSS));
-			dialogShell.setSize(parent.getSize());
+            GridLayout dialogShellLayout = new GridLayout();
+            dialogShellLayout.makeColumnsEqualWidth = true;
+            dialogShellLayout.numColumns = 1;
+            dialogShell.setLayout(dialogShellLayout);
+            dialogShell.setText("Credits");
+            dialogShell.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            dialogShell.setAlpha(0xFF);
+            dialogShell.setCursor(new Cursor(Display.getDefault(),
+                SWT.CURSOR_CROSS));
+            dialogShell.setSize(parent.getSize());
 
-			dialogShell.addKeyListener(this);
-			/*--------------------------------------------------------------*/
-			/*-----------------WARNING READ TERMS BELOW---------------------*/
+            dialogShell.addKeyListener(this);
+            /*--------------------------------------------------------------*/
+            /*-----------------WARNING READ TERMS BELOW---------------------*/
 
-			Label dummy = new Label(dialogShell, SWT.LEFT);
-			dummy.setFont(new Font(Display.getDefault(), "Lucida Console", 10,
-					SWT.NORMAL));
-			dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
-			dummy
-					.setText("       ___                       ___           ___           ___ \n"
-							+ "      /\\  \\          ___        /\\  \\         /\\__\\         /\\__\\\n"
-							+ "     /::\\  \\        /\\  \\      /::\\  \\       /::|  |       /:/  /\n"
-							+ "    /:/\\:\\  \\       \\:\\  \\    /:/\\:\\  \\     /:|:|  |      /:/  / \n"
-							+ "   /::\\~\\:\\  \\      /::\\__\\  /:/  \\:\\  \\   /:/|:|__|__   /:/  /  \n"
-							+ "  /:/\\:\\ \\:\\__\\  __/:/\\/__/ /:/__/ \\:\\__\\ /:/ |::::\\__\\ /:/__/   \n"
-							+ "  \\/__\\:\\/:/  / /\\/:/  /    \\:\\  \\  \\/__/ \\/__/~~/:/  / \\:\\  \\   \n"
-							+ "       \\::/  /  \\::/__/      \\:\\  \\             /:/  /   \\:\\  \\  \n"
-							+ "       /:/  /    \\:\\__\\       \\:\\  \\           /:/  /     \\:\\  \\ \n"
-							+ "      /:/  /      \\/__/        \\:\\__\\         /:/  /       \\:\\__\\\n"
-							+ "      \\/__/                     \\/__/         \\/__/         \\/__/\n");
-			dummy = new Label(dialogShell, SWT.LEFT);
-			dummy.setText("Gui: Thomas Polasek");
-			dummy.setFont(new Font(Display.getDefault(), "Segoe Print", 10,
-					SWT.NORMAL));
-			dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
-			dummy = new Label(dialogShell, SWT.LEFT);
-			dummy.setFont(new Font(Display.getDefault(), "Monotype Corsiva",
-					12, SWT.NORMAL));
-			dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0xFF,
-					0xFF));
-			dummy.setText("Scanlib: Nelson Loyla");
+            Label dummy = new Label(dialogShell, SWT.LEFT);
+            dummy.setFont(new Font(Display.getDefault(), "Lucida Console", 10,
+                SWT.NORMAL));
+            dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
+            dummy
+                .setText("       ___                       ___           ___           ___ \n"
+                    + "      /\\  \\          ___        /\\  \\         /\\__\\         /\\__\\\n"
+                    + "     /::\\  \\        /\\  \\      /::\\  \\       /::|  |       /:/  /\n"
+                    + "    /:/\\:\\  \\       \\:\\  \\    /:/\\:\\  \\     /:|:|  |      /:/  / \n"
+                    + "   /::\\~\\:\\  \\      /::\\__\\  /:/  \\:\\  \\   /:/|:|__|__   /:/  /  \n"
+                    + "  /:/\\:\\ \\:\\__\\  __/:/\\/__/ /:/__/ \\:\\__\\ /:/ |::::\\__\\ /:/__/   \n"
+                    + "  \\/__\\:\\/:/  / /\\/:/  /    \\:\\  \\  \\/__/ \\/__/~~/:/  / \\:\\  \\   \n"
+                    + "       \\::/  /  \\::/__/      \\:\\  \\             /:/  /   \\:\\  \\  \n"
+                    + "       /:/  /    \\:\\__\\       \\:\\  \\           /:/  /     \\:\\  \\ \n"
+                    + "      /:/  /      \\/__/        \\:\\__\\         /:/  /       \\:\\__\\\n"
+                    + "      \\/__/                     \\/__/         \\/__/         \\/__/\n");
+            dummy = new Label(dialogShell, SWT.LEFT);
+            dummy.setText("Nelson Loyla");
+            dummy.setFont(new Font(Display.getDefault(), "Segoe Print", 10,
+                SWT.NORMAL));
+            dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
+            dummy = new Label(dialogShell, SWT.LEFT);
+            dummy.setText("Thomas Polasek");
+            dummy.setFont(new Font(Display.getDefault(), "Segoe Print", 10,
+                SWT.NORMAL));
+            dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
 
-			Link website = new Link(dialogShell, SWT.LEFT);
-			website.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-					| GridData.FILL_HORIZONTAL));
-			website.setText("Icons: Mark James [Hyperlink]");
-			website.setFont(new Font(Display.getDefault(), "Lucida Console", 8,
-					SWT.NORMAL));
-			website.setForeground(new Color(Display.getDefault(), 0x00, 0xFF,
-					0xFF));
-			website.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			website.addMouseListener(new MouseListener() {
-				public void mouseDown(MouseEvent arg0) {
-					Program.launch("http://www.famfamfam.com/lab/icons/silk/");
-					//^^^^^^^^The hyper link above is MANDATORY^^^^^^
-					//SilkIcons license agreement states that a hyper link ( to their web-page) 
-					//must be provided.
-				}
+            dummy = new Label(dialogShell, SWT.LEFT);
+            dummy.setText("Delphine Degris-Dard");
+            dummy.setFont(new Font(Display.getDefault(), "Segoe Print", 10,
+                SWT.NORMAL));
+            dummy.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            dummy.setForeground(new Color(Display.getDefault(), 0xFF, 0, 0));
 
-				@Override
-				public void mouseDoubleClick(MouseEvent e) {
-				}
+            Link website = new Link(dialogShell, SWT.LEFT);
+            website.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+                | GridData.FILL_HORIZONTAL));
 
-				@Override
-				public void mouseUp(MouseEvent e) {
-				}
-			});
-			Label exitmsg = new Label(dialogShell, SWT.LEFT);
-			exitmsg
-					.setText("---------------Press any key to close this dialog---------------\n");
-			exitmsg.setFont(new Font(Display.getDefault(), "Lucida Console", 6,
-					SWT.NORMAL));
-			exitmsg.setBackground(new Color(Display.getDefault(), 0, 0, 0));
-			exitmsg
-					.setForeground(new Color(Display.getDefault(), 0xFF, 0xFF,
-							0));
+            website.setText("Icons: Mark James [Hyperlink]");
+            website.setFont(new Font(Display.getDefault(), "Segoe Print", 10,
+                SWT.NORMAL));
+            website.setForeground(new Color(Display.getDefault(), 0x00, 0xFF,
+                0xFF));
+            website.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            website.addMouseListener(new MouseListener() {
+                public void mouseDown(MouseEvent arg0) {
+                    Program.launch("http://www.famfamfam.com/lab/icons/silk/");
+                    // ^^^^^^^^The hyper link above is MANDATORY^^^^^^
+                    // SilkIcons license agreement states that a hyper link ( to
+                    // their web-page)
+                    // must be provided.
+                }
 
-			dialogShell.layout();
-			dialogShell.pack();
-			dialogShell.setLocation(getParent().toDisplay(0, 0));
-			dialogShell.open();
-			Display display = dialogShell.getDisplay();
-			while (!dialogShell.isDisposed()) {
-				if (!display.readAndDispatch()) display.sleep();
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+                @Override
+                public void mouseDoubleClick(MouseEvent e) {
+                }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-	}
+                @Override
+                public void mouseUp(MouseEvent e) {
+                }
+            });
+            Label exitmsg = new Label(dialogShell, SWT.LEFT);
+            exitmsg
+                .setText("---------------Press any key to close this dialog---------------\n");
+            exitmsg.setFont(new Font(Display.getDefault(), "Lucida Console", 6,
+                SWT.NORMAL));
+            exitmsg.setBackground(new Color(Display.getDefault(), 0, 0, 0));
+            exitmsg
+                .setForeground(new Color(Display.getDefault(), 0xFF, 0xFF, 0));
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		dialogShell.dispose();
+            dialogShell.layout();
+            dialogShell.pack();
+            dialogShell.setLocation(getParent().toDisplay(0, 0));
+            dialogShell.open();
+            Display display = dialogShell.getDisplay();
+            while (!dialogShell.isDisposed()) {
+                if (!display.readAndDispatch())
+                    display.sleep();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	}
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        dialogShell.dispose();
+
+    }
 }

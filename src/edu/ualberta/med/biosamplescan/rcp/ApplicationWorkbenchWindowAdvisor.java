@@ -1,4 +1,3 @@
-
 package edu.ualberta.med.biosamplescan.rcp;
 
 import org.eclipse.jface.action.IStatusLineManager;
@@ -35,7 +34,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     // This is the new method
     @Override
     public void postWindowOpen() {
-        IStatusLineManager statusline = getWindowConfigurer().getActionBarConfigurer().getStatusLineManager();
+        IStatusLineManager statusline = getWindowConfigurer()
+            .getActionBarConfigurer().getStatusLineManager();
         statusline.setMessage(null, "Application ready");
     }
 
