@@ -81,8 +81,8 @@ public class Pallet {
                     && (readBarcodes[r][c].getValue() != null)
                     && (readBarcodes[r][c].getValue().length() > 0)) {
 
-                    // entries don't match, user attempted a rescan with
-                    // different plates
+                    // entries don't match
+                    // user is rescanning with a different plate. (what a dummy)
                     if (!barcodes[r][c].getValue().equals(
                         readBarcodes[r][c].getValue())) {
                         return false;

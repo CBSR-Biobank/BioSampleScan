@@ -43,7 +43,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
                                 readBarcodes, rescan)) {
                                 BioSampleScanPlugin
                                     .openAsyncError("Different Plate",
-                                        "Error: Attemped to rescan using a different pallet!");
+                                        "Error: You must use the same pallet when rescanning a pallet.");
                                 continue;
                             }
 
