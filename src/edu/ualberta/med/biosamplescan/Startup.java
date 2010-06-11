@@ -85,10 +85,13 @@ public class Startup implements IStartup {
                     String msg = new String();
                     if (BioSampleScanPlugin.getDefault().getPalletCount() == 0) {
                         msg = "Please configure scanner.";
+                    } else if ((ScanLib.getInstance().slGetScannerCapability() & ScanLib.CAP_IS_SCANNER) == 0) {
+                        msg = "Please plug in a scanner and select an appropiate driver source.";
                     } else {
                         msg = "Configuration loaded.";
                     }
                     BioSampleScanPlugin.getDefault().updateStatusBar(msg);
+
                 } catch (PartInitException e) {
                     e.printStackTrace();
                 }

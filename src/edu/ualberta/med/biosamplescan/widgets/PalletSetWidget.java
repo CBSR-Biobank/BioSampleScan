@@ -18,6 +18,7 @@ import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
+import edu.ualberta.med.scannerconfig.scanlib.ScanLib;
 
 public class PalletSetWidget extends ScrolledComposite {
 
@@ -116,6 +117,16 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void scanPalletBtnWidgetSelected(boolean rescan) {
+
+        if ((ScanLib.getInstance().slGetScannerCapability() & ScanLib
+            .getInstance().CAP_IS_SCANNER) == 0) {
+            BioSampleScanPlugin
+                .openError(
+                    "Scanner Source Not Found",
+                    "Please plug in your scanner and select an appropiate source form the configuration->preferencs->scanner menu.");
+            return;
+        }
+
         Map<String, Integer> selected = new HashMap<String, Integer>();
 
         for (int i = 0, n = BioSampleScanPlugin.getDefault().getPalletsMax(); i < n; i++) {
