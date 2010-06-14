@@ -29,7 +29,6 @@ public abstract class SaveImagePalletBase extends AbstractHandler implements
             .getPalletSetEditor().getPalletSetWidget();
 
         if (!BioSampleScanPlugin.getDefault().getPalletEnabled(palletId)) {
-            // TODO apply this code to all applicable routines
             MessageDialog.openError(PlatformUI.getWorkbench()
                 .getActiveWorkbenchWindow().getShell(), "Error", String.format(
                 "Pallet %d has no dimensions set. "

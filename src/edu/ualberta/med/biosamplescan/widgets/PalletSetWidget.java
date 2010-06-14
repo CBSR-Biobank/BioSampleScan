@@ -18,6 +18,7 @@ import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
 import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
+import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 import edu.ualberta.med.scannerconfig.scanlib.ScanLib;
 
 public class PalletSetWidget extends ScrolledComposite {
@@ -160,8 +161,22 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (selected.size() == 0) {
-            BioSampleScanPlugin.openError("Error",
-                "No pallets have been selected.");
+
+            boolean anyPlateEnabled = false;
+            for (int i = 0; i < PreferenceConstants.SCANNER_PALLET_ENABLED.length; i++)
+                if (ScannerConfigPlugin.getDefault().getPreferenceStore()
+                    .getBoolean(PreferenceConstants.SCANNER_PALLET_ENABLED[0])) {
+                    anyPlateEnabled = true;
+                    break;
+                }
+            if (anyPlateEnabled) {
+                BioSampleScanPlugin.openError("Error",
+                    "Atleast one enabled pallet must have a barcode.");
+            } else {
+                BioSampleScanPlugin.openError("Error",
+                    "Please configure atleast one pallet before scanning.");
+            }
+
             return;
         }
 
