@@ -19,6 +19,7 @@ import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
+import edu.ualberta.med.scannerconfig.preferences.PreferenceConstants;
 import edu.ualberta.med.scannerconfig.scanlib.ScanLib;
 
 public class PalletSetWidget extends ScrolledComposite {
@@ -101,8 +102,8 @@ public class PalletSetWidget extends ScrolledComposite {
                 try {
                     scanPalletBtnWidgetSelected(false);
                 } catch (Exception e) {
-                    BioSampleScanPlugin.openAsyncError("widget selected", e
-                        .getMessage());
+                    BioSampleScanPlugin.openAsyncError("widget selected",
+                        e.getMessage());
                 }
             }
         });
@@ -186,8 +187,8 @@ public class PalletSetWidget extends ScrolledComposite {
             if (!BioSampleScanPlugin.getDefault().getPalletEnabled(pallet))
                 continue;
 
-            palletsToDecode.put(pallet, palletBarcodesWidget
-                .getPalletBarcode(pallet - 1));
+            palletsToDecode.put(pallet,
+                palletBarcodesWidget.getPalletBarcode(pallet - 1));
         }
 
         if (palletsToDecode.size() > 0) {
