@@ -9,7 +9,7 @@ import java.util.Date;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
-import edu.ualberta.med.scannerconfig.scanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanCell;
 
 public class PalletSet {
     private Pallet[] pallets;

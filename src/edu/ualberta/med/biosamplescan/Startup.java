@@ -20,7 +20,7 @@ import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
 import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
-import edu.ualberta.med.scannerconfig.scanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
 
 public class Startup implements IStartup {
 

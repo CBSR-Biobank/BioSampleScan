@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import edu.ualberta.med.biosamplescan.model.Pallet;
-import edu.ualberta.med.scannerconfig.scanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanCell;
 
 public class PalletWidget extends Composite {
 
@@ -161,6 +161,7 @@ public class PalletWidget extends Composite {
                 }
 
                 tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
+                    @Override
                     public void run() {
                         tableViewer.refresh();
                     }
