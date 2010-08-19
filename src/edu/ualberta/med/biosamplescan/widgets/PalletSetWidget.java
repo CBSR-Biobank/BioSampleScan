@@ -1,5 +1,7 @@
 package edu.ualberta.med.biosamplescan.widgets;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +13,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import edu.ualberta.med.biosamplescan.BioSampleScanPlugin;
 import edu.ualberta.med.biosamplescan.dialogs.DecodeDialog;
@@ -21,6 +25,7 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
 import edu.ualberta.med.scannerconfig.preferences.PreferenceConstants;
+import edu.ualberta.med.scannerconfig.preferences.Profiles;
 
 public class PalletSetWidget extends ScrolledComposite {
 
@@ -33,6 +38,7 @@ public class PalletSetWidget extends ScrolledComposite {
     private Button clearPlateBtn;
     private PalletBarcodesWidget palletBarcodesWidget;
     private PalletWidget[] palletWidgets;
+    Combo profilesCombo;
 
     public PalletSetWidget(Composite parent, int style) {
         super(parent, SWT.H_SCROLL | SWT.V_SCROLL | style);
@@ -71,7 +77,7 @@ public class PalletSetWidget extends ScrolledComposite {
 
     private void createTopButtonsSection(Composite parent) {
         Composite section = new Composite(parent, SWT.NONE);
-        section.setLayout(new GridLayout(4, false));
+        section.setLayout(new GridLayout(5, false));
         section
             .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
@@ -107,7 +113,23 @@ public class PalletSetWidget extends ScrolledComposite {
                 }
             }
         });
+        (new Label(section, SWT.NONE)).setText("Profile: ");
+        profilesCombo = new Combo(section, SWT.DROP_DOWN | SWT.READ_ONLY);
+        loadProfileCombo();
+    }
 
+    public void loadProfileCombo() {
+        profilesCombo.removeAll();
+
+        ArrayList<String> profileList = new ArrayList<String>();
+        for (String element : Profiles.loadProfilesFromString().keySet()) {
+            profileList.add(element);
+        }
+        Collections.sort(profileList); // Alphabetic sort
+        for (String element : profileList) {
+            profilesCombo.add(element);
+        }
+        profilesCombo.select(0);
     }
 
     private boolean confirmMsg(String title, String msg) {
@@ -243,6 +265,7 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void refresh() {
+
         for (int pallet = 0, n = BioSampleScanPlugin.getDefault()
             .getPalletsMax(); pallet < n; pallet++) {
             refreshPallet(pallet);

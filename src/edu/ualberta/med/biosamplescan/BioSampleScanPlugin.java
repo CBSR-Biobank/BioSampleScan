@@ -52,17 +52,27 @@ public class BioSampleScanPlugin extends AbstractUIPlugin implements
             .addPropertyChangeListener(this);
     }
 
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         for (int i = 0; i < edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_ENABLED.length; ++i) {
-            if (!event
+            if (event
                 .getProperty()
                 .equals(
-                    edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_ENABLED[i]))
-                continue;
+                    edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_ENABLED[i])) {
 
-            PalletSetEditor editor = getPalletSetEditor();
-            if (editor != null)
-                editor.getPalletSetWidget().refreshPallet(i);
+                PalletSetEditor editor = getPalletSetEditor();
+                if (editor != null)
+                    editor.getPalletSetWidget().refreshPallet(i);
+            }
+            if (event
+                .getProperty()
+                .equals(
+                    edu.ualberta.med.scannerconfig.preferences.PreferenceConstants.SCANNER_PALLET_PROFILES)) {
+                PalletSetEditor editor = getPalletSetEditor();
+                if (editor != null)
+                    editor.getPalletSetWidget().loadProfileCombo();
+            }
+
         }
     }
 
