@@ -17,7 +17,7 @@ import edu.ualberta.med.scannerconfig.dmscanlib.ScanCell;
 public class DecodeDialog extends ProgressMonitorDialog {
 
     public DecodeDialog(final Map<Integer, String> palletsToDecode,
-        final PalletSet palletSet, final boolean rescan) {
+        final PalletSet palletSet, final boolean rescan, final String profile) {
         super(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
 
         try {
@@ -29,7 +29,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
 
                         for (Integer pallet : palletsToDecode.keySet()) {
                             ScanCell[][] readBarcodes = ScannerConfigPlugin
-                                .scan(pallet);
+                                .scan(pallet, profile);
 
                             if (monitor.isCanceled()) {
                                 BioSampleScanPlugin.openAsyncInformation(
@@ -76,8 +76,8 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             }
                         });
                     } catch (Exception e) {
-                        BioSampleScanPlugin.openAsyncError("Decode Error", e
-                            .getMessage());
+                        BioSampleScanPlugin.openAsyncError("Decode Error",
+                            e.getMessage());
                     } finally {
                         monitor.done();
                     }

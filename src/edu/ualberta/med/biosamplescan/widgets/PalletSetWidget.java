@@ -214,7 +214,8 @@ public class PalletSetWidget extends ScrolledComposite {
         }
 
         if (palletsToDecode.size() > 0) {
-            new DecodeDialog(palletsToDecode, palletSet, rescan);
+            new DecodeDialog(palletsToDecode, palletSet, rescan,
+                profilesCombo.getItem(profilesCombo.getSelectionIndex()));
         }
     }
 
