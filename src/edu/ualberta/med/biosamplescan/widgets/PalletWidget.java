@@ -35,7 +35,7 @@ public class PalletWidget extends Composite {
 
     private List<PalletModel> model;
 
-    private TableViewer tableViewer;
+    public TableViewer tableViewer;
 
     private Table table;
 
@@ -132,6 +132,7 @@ public class PalletWidget extends Composite {
                 }
             }
         });
+
     }
 
     @Override
@@ -142,33 +143,26 @@ public class PalletWidget extends Composite {
     }
 
     public void setPalletBarcodes(final Pallet pallet) {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                if (tableViewer.getTable().isDisposed())
-                    return;
 
-                PalletModel modelItem;
+        if (tableViewer.getTable().isDisposed())
+            return;
 
-                for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
-                    modelItem = model.get(r);
+        PalletModel modelItem;
 
-                    if (pallet == null) {
-                        modelItem.o = null;
-                    } else {
-                        modelItem.o = pallet.getBarcodesRow(r);
-                    }
-                }
+        for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
+            modelItem = model.get(r);
 
-                tableViewer.getTable().getDisplay().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        tableViewer.refresh();
-                    }
-                });
+            if (pallet == null) {
+                modelItem.o = null;
+            } else {
+
+                modelItem.o = pallet.getBarcodesRow(r);
+
             }
-        };
-        t.start();
+        }
+
+        tableViewer.refresh();
+
     }
 
 }

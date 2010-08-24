@@ -10,6 +10,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -26,6 +28,7 @@ import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
 import edu.ualberta.med.scannerconfig.preferences.PreferenceConstants;
 import edu.ualberta.med.scannerconfig.preferences.Profiles;
+import edu.ualberta.med.scannerconfig.preferences.TriIntC;
 
 public class PalletSetWidget extends ScrolledComposite {
 
@@ -62,6 +65,7 @@ public class PalletSetWidget extends ScrolledComposite {
             palletWidgets[table].setEnabled(BioSampleScanPlugin.getDefault()
                 .getPalletEnabled(table + 1));
         }
+        colorTables();
 
         // composite.pack();
         composite.layout();
@@ -113,9 +117,62 @@ public class PalletSetWidget extends ScrolledComposite {
                 }
             }
         });
+
         (new Label(section, SWT.NONE)).setText("Profile: ");
         profilesCombo = new Combo(section, SWT.DROP_DOWN | SWT.READ_ONLY);
+        profilesCombo.addSelectionListener(new SelectionListener() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                colorTables();
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            }
+        });
+
         loadProfileCombo();
+
+    }
+
+    private void colorTables() {
+
+        for (int i = 0; i < palletWidgets.length; i++) {
+            if (palletWidgets[i] != null && profilesCombo.getText() != null) {
+
+                TriIntC profile = Profiles.loadProfilesFromString().get(
+                    profilesCombo.getText());
+
+                if (profile == null)
+                    continue;
+
+                for (int y = 0; y < 8; y++) {
+                    for (int x = 0; x < 12; x++) {
+
+                        /*
+                         * FIXME
+                         * palletWidgets[i].tableViewer.getTable().getItems()[y]
+                         * .getText() needs to be called to prevent erasing
+                         * table entries.
+                         */
+                        palletWidgets[i].tableViewer.getTable().getItems()[y]
+                            .getText();
+                        if (profile.isSetBit(x + y * 12)) {
+
+                            palletWidgets[i].tableViewer.getTable().getItems()[y]
+                                .setBackground(x + 1, new Color(getDisplay(),
+                                    250, 235, 215));
+                        } else {
+                            palletWidgets[i].tableViewer.getTable().getItems()[y]
+                                .setBackground(x + 1, new Color(getDisplay(),
+                                    255, 255, 255));
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
     public void loadProfileCombo() {
@@ -222,9 +279,11 @@ public class PalletSetWidget extends ScrolledComposite {
     public void updatePalletModel() {
         for (int p = 0, n = BioSampleScanPlugin.getDefault().getPalletsMax(); p < n; p++) {
             Pallet pallet = palletSet.getPallet(p);
-            if (pallet != null)
+            if (pallet != null) {
                 palletWidgets[p].setPalletBarcodes(pallet);
+            }
         }
+        colorTables();
     }
 
     public void confirmClearPallets() {
@@ -244,6 +303,7 @@ public class PalletSetWidget extends ScrolledComposite {
         for (int p = 0, n = BioSampleScanPlugin.getDefault().getPalletsMax(); p < n; p++) {
             palletBarcodesWidget.clearText();
             palletWidgets[p].setPalletBarcodes(null);
+            colorTables();
         }
     }
 
