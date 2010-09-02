@@ -161,7 +161,7 @@ INSTALL_CBSRSS_CORE:
   ;Write CbsrSampleScanner registry keys
   WriteRegStr HKLM SOFTWARE\CbsrSampleScanner "Version" "${VERSION_STR}"
   WriteRegStr HKLM SOFTWARE\CbsrSampleScanner "Install_Dir" "$INSTDIR"
-  WriteRegStr HKLM SOFTWARE\CbsrSampleScanner "CbsrSampleScanner" "I do not fear computers. I fear the lack of them."
+  WriteRegStr HKLM SOFTWARE\CbsrSampleScanner "CbsrSampleScanner" "Artificial Intelligence usually beats natural stupidity."
   
   
   ; Write the uninstall keys for Windows
