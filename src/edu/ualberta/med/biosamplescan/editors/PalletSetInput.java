@@ -31,7 +31,7 @@ public class PalletSetInput implements IEditorInput {
         return "Pallet Set";
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     @Override
     public Object getAdapter(Class adapter) {
         return null;

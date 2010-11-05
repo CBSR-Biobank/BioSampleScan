@@ -22,6 +22,7 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
  * Called to save the decoded bar codes for all pallets.
  */
 public class SavePallets extends AbstractHandler implements IHandler {
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         PalletSet palletSet = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSet();

@@ -14,6 +14,7 @@ import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
 import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 
 public class NewScan extends AbstractHandler implements IHandler {
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         // is there an editor open?
         PalletSetEditor editor = BioSampleScanPlugin.getDefault()
@@ -34,8 +35,8 @@ public class NewScan extends AbstractHandler implements IHandler {
             // no editor currently open
             try {
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                    .getActivePage().openEditor(new PalletSetInput(),
-                        PalletSetEditor.ID, true);
+                    .getActivePage()
+                    .openEditor(new PalletSetInput(), PalletSetEditor.ID, true);
             } catch (PartInitException e) {
                 e.printStackTrace();
             }

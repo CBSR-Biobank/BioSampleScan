@@ -14,6 +14,7 @@ import edu.ualberta.med.biosamplescan.widgets.PalletSetWidget;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 
 public class ScanImageToFile extends AbstractHandler implements IHandler {
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         PalletSetWidget widget = BioSampleScanPlugin.getDefault()
             .getPalletSetEditor().getPalletSetWidget();
@@ -29,8 +30,8 @@ public class ScanImageToFile extends AbstractHandler implements IHandler {
             ScannerConfigPlugin.scanImage(0, 0, 20, 20, saveLocation);
         } catch (Exception e) {
             MessageDialog.openError(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow().getShell(), "Scanning Error", e
-                .getMessage());
+                .getActiveWorkbenchWindow().getShell(), "Scanning Error",
+                e.getMessage());
         }
         return null;
     }

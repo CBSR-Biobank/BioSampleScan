@@ -27,8 +27,8 @@ import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
 import edu.ualberta.med.scannerconfig.preferences.PreferenceConstants;
-import edu.ualberta.med.scannerconfig.preferences.profiles.ProfileManager;
-import edu.ualberta.med.scannerconfig.preferences.profiles.TriIntC;
+import edu.ualberta.med.scannerconfig.preferences.scanner.profiles.ProfileManager;
+import edu.ualberta.med.scannerconfig.preferences.scanner.profiles.ProfileSettings;
 
 public class PalletSetWidget extends ScrolledComposite {
 
@@ -141,7 +141,7 @@ public class PalletSetWidget extends ScrolledComposite {
         for (int i = 0; i < palletWidgets.length; i++) {
             if (palletWidgets[i] != null && profilesCombo.getText() != null) {
 
-                TriIntC profile = ProfileManager.instance().getProfile(
+                ProfileSettings profile = ProfileManager.instance().getProfile(
                     profilesCombo.getText());
 
                 if (profile == null)
@@ -158,7 +158,7 @@ public class PalletSetWidget extends ScrolledComposite {
                          */
                         palletWidgets[i].tableViewer.getTable().getItems()[y]
                             .getText();
-                        if (profile.isSetBit(x + y * 12)) {
+                        if (profile.get(x + y * 12)) {
 
                             palletWidgets[i].tableViewer.getTable().getItems()[y]
                                 .setBackground(x + 1, new Color(getDisplay(),

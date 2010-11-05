@@ -28,6 +28,7 @@ public class Startup implements IStartup {
     public void earlyStartup() {
         final IWorkbench workbench = PlatformUI.getWorkbench();
         workbench.getDisplay().asyncExec(new Runnable() {
+            @Override
             public void run() {
                 if (BioSampleScanPlugin.getDefault().getSimulateScanning())
                     return;
@@ -38,8 +39,8 @@ public class Startup implements IStartup {
                     final int result = ScanLib.getInstance()
                         .slIsTwainAvailable();
                     if (result != ScanLib.SC_SUCCESS) {
-                        stopApplication("Driver Error", ScanLib
-                            .getErrMsg(result));
+                        stopApplication("Driver Error",
+                            ScanLib.getErrMsg(result));
                         return;
                     }
                 }
@@ -78,7 +79,9 @@ public class Startup implements IStartup {
                     (Boolean) state.getValue());
 
                 try {
-                    workbench.getActiveWorkbenchWindow().getActivePage()
+                    workbench
+                        .getActiveWorkbenchWindow()
+                        .getActivePage()
                         .openEditor(new PalletSetInput(), PalletSetEditor.ID,
                             true);
 
@@ -137,6 +140,7 @@ public class Startup implements IStartup {
 
     public static void stopApplication(final String title, final String msg) {
         Display.getDefault().asyncExec(new Runnable() {
+            @Override
             public void run() {
                 BioSampleScanPlugin.openError(title, msg);
                 PlatformUI.getWorkbench().getActiveWorkbenchWindow().close();

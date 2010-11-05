@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="BioSasmpleScan" id="BioSampleScan.product1" application="BioSampleScan.BioSampleScan" version="0.3.0" useFeatures="false" includeLaunchers="true">
+<product name="BioSasmpleScan" id="BioSampleScan.product1" application="BioSampleScan.BioSampleScan" version="0.4.0" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>

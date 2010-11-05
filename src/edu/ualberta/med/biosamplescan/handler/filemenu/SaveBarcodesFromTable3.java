@@ -13,6 +13,7 @@ public class SaveBarcodesFromTable3 extends AbstractHandler implements IHandler 
         return BioSampleScanPlugin.getDefault().getPalletEnabled(3);
     }
 
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         SaveBarcodesFromTableX.execute(3);
         return null;

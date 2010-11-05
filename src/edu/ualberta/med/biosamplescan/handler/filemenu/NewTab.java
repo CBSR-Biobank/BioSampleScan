@@ -11,12 +11,13 @@ import edu.ualberta.med.biosamplescan.editors.PalletSetEditor;
 import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
 
 public class NewTab extends AbstractHandler implements IHandler {
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
         try {
             PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-                .getActivePage().openEditor(new PalletSetInput(),
-                    PalletSetEditor.ID, true);
+                .getActivePage()
+                .openEditor(new PalletSetInput(), PalletSetEditor.ID, true);
         } catch (PartInitException e) {
             e.printStackTrace();
         }

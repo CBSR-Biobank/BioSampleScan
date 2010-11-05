@@ -8,6 +8,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 
 public class Quit extends AbstractHandler implements IHandler {
+    @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
         if (MessageDialog.openConfirm(PlatformUI.getWorkbench()
             .getActiveWorkbenchWindow().getShell(), "Quit Confirmination",

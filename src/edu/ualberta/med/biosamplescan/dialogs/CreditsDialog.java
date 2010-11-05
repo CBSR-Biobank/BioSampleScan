@@ -93,6 +93,7 @@ public class CreditsDialog extends Dialog implements KeyListener {
                 0xFF));
             website.setBackground(new Color(Display.getDefault(), 0, 0, 0));
             website.addMouseListener(new MouseListener() {
+                @Override
                 public void mouseDown(MouseEvent arg0) {
                     Program.launch("http://www.famfamfam.com/lab/icons/silk/");
                     // ^^^^^^^^The hyper link above is MANDATORY^^^^^^

@@ -22,6 +22,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
 
         try {
             run(true, true, new IRunnableWithProgress() {
+                @Override
                 public void run(IProgressMonitor monitor) {
                     try {
                         monitor.beginTask("Decoding plates...",
@@ -60,6 +61,7 @@ public class DecodeDialog extends ProgressMonitorDialog {
                         }
 
                         Display.getDefault().asyncExec(new Runnable() {
+                            @Override
                             public void run() {
                                 String msg;
                                 if (rescan) {
