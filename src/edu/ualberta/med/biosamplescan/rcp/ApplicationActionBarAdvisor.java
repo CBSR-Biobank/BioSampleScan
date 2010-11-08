@@ -1,7 +1,10 @@
-
 package edu.ualberta.med.biosamplescan.rcp;
 
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
@@ -10,23 +13,52 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
+    private IWorkbenchAction aboutAction;
+
+    private IWorkbenchAction resetPerspectiveAction;
+
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
     }
 
     @Override
     protected void makeActions(IWorkbenchWindow window) {
-    // resetPerspective(window);
+        // about action
+        aboutAction = ActionFactory.ABOUT.create(window);
+        register(aboutAction);
+
+        resetPerspectiveAction = ActionFactory.RESET_PERSPECTIVE.create(window);
+        register(resetPerspectiveAction);
     }
 
     protected void resetPerspective(IWorkbenchWindow window) {
         IWorkbenchAction quickStartAction = ActionFactory.INTRO.create(window);
         register(quickStartAction);
-        IWorkbenchAction resetView = ActionFactory.RESET_PERSPECTIVE.create(window);
+        IWorkbenchAction resetView = ActionFactory.RESET_PERSPECTIVE
+            .create(window);
         register(resetView);
     }
 
     @Override
-    protected void fillMenuBar(IMenuManager menuBar) {}
+    protected void fillMenuBar(IMenuManager menuBar) {
+        MenuManager helpMenu = new MenuManager("&Help",
+            IWorkbenchActionConstants.M_HELP);
+        menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+        menuBar.add(helpMenu);
+
+        // this group will also show the "Key Assist" menu. We need to add an
+        // activity if we don't want this menu to be displayed, but it is not
+        // displayed after the product is exported
+        helpMenu.add(new Separator("group.assist"));
+
+        // for (Action action : helpMenuCustomActions) {
+        // helpMenu.add(action);
+        // }
+
+        helpMenu.add(resetPerspectiveAction);
+        helpMenu.add(new Separator());
+        helpMenu.add(aboutAction);
+
+    }
 
 }

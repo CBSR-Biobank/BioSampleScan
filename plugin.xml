@@ -12,6 +12,25 @@
       </application>
    </extension>
    <extension
+         id="BioSampleScan"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="BioSampleScan.application"
+            name="BioSampleScan">
+         <property
+               name="appName"
+               value="BioSampleScan">
+         </property>
+         <property
+               name="aboutText">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.png">
+         </property>d
+      </product>
+   </extension>
+   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="edu.ualberta.med.biosamplescan.rcp.Perspective"
@@ -286,18 +305,6 @@
             class="edu.ualberta.med.biosamplescan.Startup"></startup>
    </extension>
    <extension
-         id="BioSampleScan"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="BioSampleScan.application"
-            name="BioSampleScan">
-         <property
-               name="appName"
-               value="BioSampleScan">
-         </property>d
-      </product>
-   </extension>
-   <extension
          point="org.eclipse.ui.editors">
       <editor
             class="edu.ualberta.med.biosamplescan.editors.PalletSetEditor"
@@ -347,6 +354,14 @@
          <property
                name="appName"
                value="BioSasmpleScan">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.png">
+         </property>
+         <property
+               name="aboutText"
+               value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
          </property>
       </product>
    </extension>
