@@ -29,7 +29,6 @@ by AICML
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -58,6 +57,7 @@ by AICML
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.swt"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="scannerConfig"/>
