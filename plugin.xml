@@ -22,7 +22,8 @@
                value="BioSampleScan">
          </property>
          <property
-               name="aboutText">
+               name="aboutText"
+               value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
          </property>
          <property
                name="aboutImage"
@@ -364,5 +365,11 @@
                value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="edu.ualberta.med.biosamplescan.rcp.BioSampleScanStartup">
+      </startup>
    </extension>
 </plugin>
