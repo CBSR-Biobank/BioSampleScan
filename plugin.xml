@@ -183,19 +183,6 @@
          </separator>
       </menuContribution>
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               id="edu.ualberta.med.biosamplescan.menu.help"
-               label="Help">
-            <command
-                  commandId="edu.ualberta.med.biosamplescan.menu.about"
-                  icon="icons/ruby.png"
-                  label="About"
-                  style="push">
-            </command>
-         </menu>
-      </menuContribution>
-      <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
                id="edu.ualberta.med.biosamplescan.toolbar.file">
