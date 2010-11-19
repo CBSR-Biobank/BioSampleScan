@@ -12,23 +12,23 @@
       </application>
    </extension>
    <extension
-         id="BioSampleScan"
+         id="BioSampleScan.BioSampleScan"
          point="org.eclipse.core.runtime.products">
       <product
-            application="BioSampleScan.application"
-            name="BioSampleScan">
+            application="BioSampleScan.BioSampleScan"
+            name="BioSasmpleScan">
          <property
                name="appName"
-               value="BioSampleScan">
+               value="BioSasmpleScan">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/about.png">
          </property>
          <property
                name="aboutText"
                value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
          </property>
-         <property
-               name="aboutImage"
-               value="icons/about.png">
-         </property>d
       </product>
    </extension>
    <extension
@@ -263,11 +263,6 @@
             name="Save Image to Pallet 5">
       </command>
       <command
-            defaultHandler="edu.ualberta.med.biosamplescan.handler.help.About"
-            id="edu.ualberta.med.biosamplescan.menu.about"
-            name="Credits...">
-      </command>
-      <command
             defaultHandler="edu.ualberta.med.biosamplescan.handler.filemenu.NewScan"
             id="edu.ualberta.med.biosamplescan.commands.newview"
             name="New Scan">
@@ -332,26 +327,6 @@
             </equals>
          </with>
       </definition>
-   </extension>
-   <extension
-         id="product1"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="BioSampleScan.BioSampleScan"
-            name="BioSasmpleScan">
-         <property
-               name="appName"
-               value="BioSasmpleScan">
-         </property>
-         <property
-               name="aboutImage"
-               value="icons/about.png">
-         </property>
-         <property
-               name="aboutText"
-               value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
-         </property>
-      </product>
    </extension>
    <extension
          point="org.eclipse.ui.startup">
