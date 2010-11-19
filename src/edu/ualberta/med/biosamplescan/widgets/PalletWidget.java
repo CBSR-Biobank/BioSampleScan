@@ -95,6 +95,7 @@ public class PalletWidget extends Composite {
             model.add(new PalletModel(String.valueOf((char) ('A' + i))));
         }
         tableViewer.setInput(model);
+        resizeTable();
 
         addControlListener(new ControlAdapter() {
             @Override
@@ -135,6 +136,13 @@ public class PalletWidget extends Composite {
 
     }
 
+    private void resizeTable() {
+        GridData gd = (GridData) table.getLayoutData();
+        gd.heightHint = (8 - 1) * table.getItemHeight()
+            + table.getHeaderHeight();
+        layout(true, true);
+    }
+
     @Override
     public void setEnabled(boolean enabled) {
         setVisible(enabled);
@@ -143,7 +151,6 @@ public class PalletWidget extends Composite {
     }
 
     public void setPalletBarcodes(final Pallet pallet) {
-
         if (tableViewer.getTable().isDisposed())
             return;
 
@@ -151,18 +158,14 @@ public class PalletWidget extends Composite {
 
         for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
             modelItem = model.get(r);
-
             if (pallet == null) {
                 modelItem.o = null;
             } else {
-
                 modelItem.o = pallet.getBarcodesRow(r);
-
             }
         }
 
         tableViewer.refresh();
-
     }
 
 }
