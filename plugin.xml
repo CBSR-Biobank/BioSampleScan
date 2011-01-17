@@ -16,7 +16,7 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="BioSampleScan.BioSampleScan"
-            name="BioSasmpleScan">
+            name="CBSR Sample Scanner">
          <property
                name="appName"
                value="BioSasmpleScan">
@@ -27,7 +27,7 @@
          </property>
          <property
                name="aboutText"
-               value="Canadian BioSample Repository&#x0A;Version {0}&#x0A;by AICML">
+               value="CBSR Sample Scanner&#x0A;Version {0}&#x0A;&#x0A;Developed for the Canadian BioSample Repository by AICML .&#x0A;&#x0A;Canadian BioSample Repository: http://www.biosample.ca&#x0A;AICML: http://aicml.cs.ualberta.ca">
          </property>
       </product>
    </extension>

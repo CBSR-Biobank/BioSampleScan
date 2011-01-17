@@ -27,7 +27,7 @@ public class PalletBarcodesWidget extends Composite {
         int palletsMax = BioSampleScanPlugin.getDefault().getPalletsMax();
 
         Group g = new Group(this, SWT.NONE);
-        g.setText("Pallet bar codes");
+        g.setText("Pallet product IDs");
         g.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         g.setLayout(new GridLayout(2 * palletsMax, false));
 

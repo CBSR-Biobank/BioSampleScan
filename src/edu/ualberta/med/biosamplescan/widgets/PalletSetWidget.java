@@ -220,11 +220,11 @@ public class PalletSetWidget extends ScrolledComposite {
             if (rescan == false
                 && PalletBarcodeHistory.getInstance().existsBarcode(
                     palletBarcode)) {
-                if (!confirmMsg("Identical Barcode",
-                    "You are scanning a new pallet (pallet #" + (i + 1)
-                        + ") with a previously used barcode."
+                if (!confirmMsg("Duplicate Pallet Product ID",
+                    "You are scanning a new pallet (Pallet " + (i + 1)
+                        + ") with a previously used product ID."
                         + "\nDo you want to continue?")) {
-                    infoMsg("Pallet Ignored", "Pallet #" + (i + 1)
+                    infoMsg("Pallet Ignored", "Pallet " + (i + 1)
                         + " has been unselected form the current scan.");
                     continue;
                 }
