@@ -21,6 +21,7 @@ import edu.ualberta.med.biosamplescan.editors.PalletSetInput;
 import edu.ualberta.med.biosamplescan.sourceproviders.DebugState;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
 import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanLibResult;
 
 public class Startup implements IStartup {
 
@@ -32,18 +33,6 @@ public class Startup implements IStartup {
             public void run() {
                 if (BioSampleScanPlugin.getDefault().getSimulateScanning())
                     return;
-
-                String osname = System.getProperty("os.name");
-
-                if (osname.startsWith("Windows")) {
-                    final int result = ScanLib.getInstance()
-                        .slIsTwainAvailable();
-                    if (result != ScanLib.SC_SUCCESS) {
-                        stopApplication("Driver Error",
-                            ScanLib.getErrMsg(result));
-                        return;
-                    }
-                }
 
                 final String err = parseCommandLine();
                 if (err != null) {
@@ -88,10 +77,14 @@ public class Startup implements IStartup {
                     String msg = new String();
                     if (BioSampleScanPlugin.getDefault().getPalletCount() == 0) {
                         msg = "Please configure scanner.";
-                    } else if ((ScanLib.getInstance().slGetScannerCapability() & ScanLib.CAP_IS_SCANNER) == 0) {
-                        msg = "Please plug in a scanner and select an appropiate driver source.";
                     } else {
-                        msg = "Configuration loaded.";
+                        ScanLibResult result = ScanLib.getInstance()
+                            .getScannerCapability();
+                        if ((result.getValue() & ScanLib.CAP_IS_SCANNER) == 0) {
+                            msg = "Please plug in a scanner and select an appropiate driver source.";
+                        } else {
+                            msg = "Configuration loaded.";
+                        }
                     }
                     BioSampleScanPlugin.getDefault().updateStatusBar(msg);
 

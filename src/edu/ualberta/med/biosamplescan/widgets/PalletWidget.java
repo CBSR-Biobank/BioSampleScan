@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
 import edu.ualberta.med.biosamplescan.model.Pallet;
-import edu.ualberta.med.scannerconfig.dmscanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanCellPos;
 
 public class PalletWidget extends Composite {
 
@@ -156,7 +156,7 @@ public class PalletWidget extends Composite {
 
         PalletModel modelItem;
 
-        for (int r = 0; r < ScanCell.ROW_MAX; ++r) {
+        for (int r = 0; r < ScanCellPos.ROW_MAX; ++r) {
             modelItem = model.get(r);
             if (pallet == null) {
                 modelItem.o = null;

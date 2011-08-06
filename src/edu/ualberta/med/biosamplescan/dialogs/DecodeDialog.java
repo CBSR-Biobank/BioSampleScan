@@ -1,5 +1,6 @@
 package edu.ualberta.med.biosamplescan.dialogs;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -29,8 +30,8 @@ public class DecodeDialog extends ProgressMonitorDialog {
                             IProgressMonitor.UNKNOWN);
 
                         for (Integer pallet : palletsToDecode.keySet()) {
-                            ScanCell[][] readBarcodes = ScannerConfigPlugin
-                                .scan(pallet, profile);
+                            List<ScanCell> readBarcodes = ScannerConfigPlugin
+                                .decodePlate(pallet, profile);
 
                             if (monitor.isCanceled()) {
                                 BioSampleScanPlugin.openAsyncInformation(

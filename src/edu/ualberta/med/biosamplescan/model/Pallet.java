@@ -2,6 +2,7 @@ package edu.ualberta.med.biosamplescan.model;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -66,40 +67,44 @@ public class Pallet {
     }
 
     // returns false if the user attempts to rescan using a different pallet
-    public boolean loadFromArray(ScanCell[][] readBarcodes, boolean append) {
+    public boolean loadFromArray(List<ScanCell> readBarcodes, boolean append) {
         if ((barcodes == null) || !append) {
-            barcodes = readBarcodes;
+            // first scan
+            for (ScanCell cell : readBarcodes) {
+                int r = cell.getRow();
+                int c = cell.getColumn();
+                if ((cell.getValue() != null) && !cell.getValue().isEmpty()) {
+                    barcodes[r][c] = cell;
+                }
+            }
             return true;
         }
-        for (int r = 0; r < barcodes.length; ++r) {
-            for (int c = 0; c < barcodes[0].length; ++c) {
-                // both the previous and current bar-code entries exist
-                if ((barcodes[r][c] != null)
-                    && (barcodes[r][c].getValue() != null)
-                    && (barcodes[r][c].getValue().length() > 0)
-                    && (readBarcodes[r][c] != null)
-                    && (readBarcodes[r][c].getValue() != null)
-                    && (readBarcodes[r][c].getValue().length() > 0)) {
 
-                    // entries don't match
-                    // user is rescanning with a different plate. (what a dummy)
-                    if (!barcodes[r][c].getValue().equals(
-                        readBarcodes[r][c].getValue())) {
-                        return false;
-                    }
+        for (ScanCell cell : readBarcodes) {
+            // both the previous and current barcode entries exist
+            int r = cell.getRow();
+            int c = cell.getColumn();
+            if ((barcodes[r][c] != null) && (barcodes[r][c].getValue() != null)
+                && (barcodes[r][c].getValue().length() > 0)
+                && (cell.getValue() != null) && !cell.getValue().isEmpty()) {
+
+                // entries don't match
+                // user is rescanning with a different plate. (what a dummy)
+                if (!barcodes[r][c].getValue().equals(cell.getValue())) {
+                    return false;
                 }
             }
         }
 
         // need to merge current with new
-        for (int r = 0; r < barcodes.length; ++r) {
-            for (int c = 0; c < barcodes[0].length; ++c) {
-                if (((barcodes[r][c] == null) || (barcodes[r][c].getValue() == null))
-                    && (readBarcodes[r][c] != null)
-                    && (readBarcodes[r][c].getValue() != null)
-                    && (readBarcodes[r][c].getValue().length() > 0)) {
-                    barcodes[r][c] = readBarcodes[r][c];
-                }
+        for (ScanCell cell : readBarcodes) {
+            // both the previous and current barcode entries exist
+            int r = cell.getRow();
+            int c = cell.getColumn();
+            if ((barcodes[r][c] != null) && (barcodes[r][c].getValue() != null)
+                && (barcodes[r][c].getValue().length() > 0)
+                && (cell.getValue() != null) && !cell.getValue().isEmpty()) {
+                barcodes[r][c] = cell;
             }
         }
         return true;

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -78,7 +79,7 @@ public class PalletSet {
     }
 
     // returns false if the user attempts to rescan with a different pallet
-    public boolean loadFromArray(int id, ScanCell[][] readBarcodes,
+    public boolean loadFromArray(int id, List<ScanCell> readBarcodes,
         boolean append) {
         Assert.isTrue((id >= 0) && (id < pallets.length),
             "invalid pallet number: " + id);
