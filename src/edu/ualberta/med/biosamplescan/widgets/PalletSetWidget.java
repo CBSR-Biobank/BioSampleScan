@@ -25,8 +25,6 @@ import edu.ualberta.med.biosamplescan.model.Pallet;
 import edu.ualberta.med.biosamplescan.model.PalletBarcodeHistory;
 import edu.ualberta.med.biosamplescan.model.PalletSet;
 import edu.ualberta.med.scannerconfig.ScannerConfigPlugin;
-import edu.ualberta.med.scannerconfig.dmscanlib.ScanLib;
-import edu.ualberta.med.scannerconfig.dmscanlib.ScanLibResult;
 import edu.ualberta.med.scannerconfig.preferences.PreferenceConstants;
 import edu.ualberta.med.scannerconfig.preferences.scanner.profiles.ProfileManager;
 import edu.ualberta.med.scannerconfig.preferences.scanner.profiles.ProfileSettings;
@@ -86,25 +84,6 @@ public class PalletSetWidget extends ScrolledComposite {
         section
             .setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-        clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-        clearPlateBtn.setText("Clear Selected");
-        // clearPlateBtn.setBounds(488, 6, 90, 40);
-        clearPlateBtn.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                confirmClearPallets();
-            }
-        });
-
-        reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
-        reScanPlateBtn.setText("Re-Scan Selected");
-        reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent evt) {
-                scanPalletBtnWidgetSelected(true);
-            }
-        });
-
         scanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
         scanPlateBtn.setText("Scan Selected");
         scanPlateBtn.addSelectionListener(new SelectionAdapter() {
@@ -116,6 +95,15 @@ public class PalletSetWidget extends ScrolledComposite {
                     BioSampleScanPlugin.openAsyncError("widget selected",
                         e.getMessage());
                 }
+            }
+        });
+
+        reScanPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
+        reScanPlateBtn.setText("Re-Scan Selected");
+        reScanPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent evt) {
+                scanPalletBtnWidgetSelected(true);
             }
         });
 
@@ -135,6 +123,15 @@ public class PalletSetWidget extends ScrolledComposite {
 
         loadProfileCombo();
 
+        clearPlateBtn = new Button(section, SWT.PUSH | SWT.CENTER);
+        clearPlateBtn.setText("Clear Selected");
+        // clearPlateBtn.setBounds(488, 6, 90, 40);
+        clearPlateBtn.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent evt) {
+                confirmClearPallets();
+            }
+        });
     }
 
     private void colorTables() {
@@ -199,17 +196,6 @@ public class PalletSetWidget extends ScrolledComposite {
     }
 
     public void scanPalletBtnWidgetSelected(boolean rescan) {
-
-        ScanLib.getInstance();
-        ScanLibResult result = ScanLib.getInstance().getScannerCapability();
-        if ((result.getValue() & ScanLib.CAP_IS_SCANNER) == 0) {
-            BioSampleScanPlugin
-                .openError(
-                    "Scanner Source Not Found",
-                    "Please plug in your scanner and select an appropiate source form the configuration->preferencs->scanner menu.");
-            return;
-        }
-
         Map<String, Integer> selected = new HashMap<String, Integer>();
 
         for (int i = 0, n = BioSampleScanPlugin.getDefault().getPalletsMax(); i < n; i++) {
