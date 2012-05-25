@@ -7,6 +7,7 @@ import java.util.List;
 import org.eclipse.core.runtime.Assert;
 
 import edu.ualberta.med.scannerconfig.dmscanlib.ScanCell;
+import edu.ualberta.med.scannerconfig.dmscanlib.ScanCellPos;
 
 public class Pallet {
     private int id;
@@ -70,6 +71,7 @@ public class Pallet {
     public boolean loadFromArray(List<ScanCell> readBarcodes, boolean append) {
         if ((barcodes == null) || !append) {
             // first scan
+            barcodes = new ScanCell[ScanCellPos.ROW_MAX][ScanCellPos.COL_MAX];
             for (ScanCell cell : readBarcodes) {
                 int r = cell.getRow();
                 int c = cell.getColumn();
@@ -113,19 +115,22 @@ public class Pallet {
     @Override
     public String toString() {
         Assert.isNotNull(barcodes, "barcodes is null");
-        String result = new String();
+        StringBuffer result = new StringBuffer();
+
         for (int r = 0; r < barcodes.length; ++r) {
             for (int c = 0; c < barcodes[0].length; ++c) {
                 if ((barcodes[r][c] == null)
-                    || (barcodes[r][c].getValue() == null))
-                    continue;
-
-                result = result.concat(String.format("%s,%s,%d,%s,%s\r\n",
-                    palletBarcode, Character.toString((char) ('A' + r)), c + 1,
-                    barcodes[r][c].getValue(), new SimpleDateFormat(
-                        "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
+                    || (barcodes[r][c].getValue() == null)) {
+                    result.append(String.format("%s,%s,%d\r\n", palletBarcode,
+                        Character.toString((char) ('A' + r)), c + 1));
+                } else {
+                    result.append(String.format("%s,%s,%d,%s,%s\r\n",
+                        palletBarcode, Character.toString((char) ('A' + r)),
+                        c + 1, barcodes[r][c].getValue(), new SimpleDateFormat(
+                            "E dd/MM/yyyy HH:mm:ss").format(timestamp)));
+                }
             }
         }
-        return result;
+        return result.toString();
     }
 }
